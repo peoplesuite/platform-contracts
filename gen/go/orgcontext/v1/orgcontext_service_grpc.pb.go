@@ -19,561 +19,1193 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	OrgService_GetAssociate_FullMethodName        = "/orgcontext.v1.OrgService/GetAssociate"
-	OrgService_GetAssociateByEmail_FullMethodName = "/orgcontext.v1.OrgService/GetAssociateByEmail"
-	OrgService_GetAllAssociates_FullMethodName    = "/orgcontext.v1.OrgService/GetAllAssociates"
-	OrgService_SearchAssociates_FullMethodName    = "/orgcontext.v1.OrgService/SearchAssociates"
-	OrgService_GetDirectReports_FullMethodName    = "/orgcontext.v1.OrgService/GetDirectReports"
-	OrgService_GetReportingChain_FullMethodName   = "/orgcontext.v1.OrgService/GetReportingChain"
-	OrgService_GetOrgChart_FullMethodName         = "/orgcontext.v1.OrgService/GetOrgChart"
-	OrgService_GetUnitSubtree_FullMethodName      = "/orgcontext.v1.OrgService/GetUnitSubtree"
-	OrgService_GetUnitHeadcount_FullMethodName    = "/orgcontext.v1.OrgService/GetUnitHeadcount"
-	OrgService_GetSpanOfControl_FullMethodName    = "/orgcontext.v1.OrgService/GetSpanOfControl"
-	OrgService_GetShortestPath_FullMethodName     = "/orgcontext.v1.OrgService/GetShortestPath"
-	OrgService_GetOrphans_FullMethodName          = "/orgcontext.v1.OrgService/GetOrphans"
-	OrgService_TriggerSync_FullMethodName         = "/orgcontext.v1.OrgService/TriggerSync"
+	OrgContextQueryService_GetAssociate_FullMethodName            = "/orgcontext.v1.OrgContextQueryService/GetAssociate"
+	OrgContextQueryService_GetAssociateByUserId_FullMethodName    = "/orgcontext.v1.OrgContextQueryService/GetAssociateByUserId"
+	OrgContextQueryService_ResolveAssociateContext_FullMethodName = "/orgcontext.v1.OrgContextQueryService/ResolveAssociateContext"
+	OrgContextQueryService_GetOrgUnit_FullMethodName              = "/orgcontext.v1.OrgContextQueryService/GetOrgUnit"
+	OrgContextQueryService_GetOrgUnitTree_FullMethodName          = "/orgcontext.v1.OrgContextQueryService/GetOrgUnitTree"
+	OrgContextQueryService_GetOrgLineage_FullMethodName           = "/orgcontext.v1.OrgContextQueryService/GetOrgLineage"
+	OrgContextQueryService_GetDirectReports_FullMethodName        = "/orgcontext.v1.OrgContextQueryService/GetDirectReports"
+	OrgContextQueryService_GetIndirectReports_FullMethodName      = "/orgcontext.v1.OrgContextQueryService/GetIndirectReports"
+	OrgContextQueryService_GetUnitMembers_FullMethodName          = "/orgcontext.v1.OrgContextQueryService/GetUnitMembers"
+	OrgContextQueryService_GetHeadOfUnit_FullMethodName           = "/orgcontext.v1.OrgContextQueryService/GetHeadOfUnit"
+	OrgContextQueryService_GetAssignments_FullMethodName          = "/orgcontext.v1.OrgContextQueryService/GetAssignments"
+	OrgContextQueryService_GetEmploymentHistory_FullMethodName    = "/orgcontext.v1.OrgContextQueryService/GetEmploymentHistory"
+	OrgContextQueryService_SearchAssociates_FullMethodName        = "/orgcontext.v1.OrgContextQueryService/SearchAssociates"
+	OrgContextQueryService_SearchOrgUnits_FullMethodName          = "/orgcontext.v1.OrgContextQueryService/SearchOrgUnits"
+	OrgContextQueryService_GetUnassignedAssociates_FullMethodName = "/orgcontext.v1.OrgContextQueryService/GetUnassignedAssociates"
 )
 
-// OrgServiceClient is the client API for OrgService service.
+// OrgContextQueryServiceClient is the client API for OrgContextQueryService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type OrgServiceClient interface {
-	// ── Queries ─────────────────────────────────────────────
+type OrgContextQueryServiceClient interface {
 	GetAssociate(ctx context.Context, in *GetAssociateRequest, opts ...grpc.CallOption) (*GetAssociateResponse, error)
-	GetAssociateByEmail(ctx context.Context, in *GetAssociateByEmailRequest, opts ...grpc.CallOption) (*GetAssociateByEmailResponse, error)
-	GetAllAssociates(ctx context.Context, in *GetAllAssociatesRequest, opts ...grpc.CallOption) (*GetAllAssociatesResponse, error)
-	SearchAssociates(ctx context.Context, in *SearchAssociatesRequest, opts ...grpc.CallOption) (*SearchAssociatesResponse, error)
+	GetAssociateByUserId(ctx context.Context, in *GetAssociateByUserIdRequest, opts ...grpc.CallOption) (*GetAssociateByUserIdResponse, error)
+	ResolveAssociateContext(ctx context.Context, in *ResolveAssociateContextRequest, opts ...grpc.CallOption) (*ResolveAssociateContextResponse, error)
+	GetOrgUnit(ctx context.Context, in *GetOrgUnitRequest, opts ...grpc.CallOption) (*GetOrgUnitResponse, error)
+	GetOrgUnitTree(ctx context.Context, in *GetOrgUnitTreeRequest, opts ...grpc.CallOption) (*GetOrgUnitTreeResponse, error)
+	GetOrgLineage(ctx context.Context, in *GetOrgLineageRequest, opts ...grpc.CallOption) (*GetOrgLineageResponse, error)
 	GetDirectReports(ctx context.Context, in *GetDirectReportsRequest, opts ...grpc.CallOption) (*GetDirectReportsResponse, error)
-	GetReportingChain(ctx context.Context, in *GetReportingChainRequest, opts ...grpc.CallOption) (*GetReportingChainResponse, error)
-	GetOrgChart(ctx context.Context, in *GetOrgChartRequest, opts ...grpc.CallOption) (*GetOrgChartResponse, error)
-	GetUnitSubtree(ctx context.Context, in *GetUnitSubtreeRequest, opts ...grpc.CallOption) (*GetUnitSubtreeResponse, error)
-	GetUnitHeadcount(ctx context.Context, in *GetUnitHeadcountRequest, opts ...grpc.CallOption) (*GetUnitHeadcountResponse, error)
-	GetSpanOfControl(ctx context.Context, in *GetSpanOfControlRequest, opts ...grpc.CallOption) (*GetSpanOfControlResponse, error)
-	GetShortestPath(ctx context.Context, in *GetShortestPathRequest, opts ...grpc.CallOption) (*GetShortestPathResponse, error)
-	GetOrphans(ctx context.Context, in *GetOrphansRequest, opts ...grpc.CallOption) (*GetOrphansResponse, error)
-	// ── Commands ────────────────────────────────────────────
-	TriggerSync(ctx context.Context, in *TriggerSyncRequest, opts ...grpc.CallOption) (*TriggerSyncResponse, error)
+	GetIndirectReports(ctx context.Context, in *GetIndirectReportsRequest, opts ...grpc.CallOption) (*GetIndirectReportsResponse, error)
+	GetUnitMembers(ctx context.Context, in *GetUnitMembersRequest, opts ...grpc.CallOption) (*GetUnitMembersResponse, error)
+	GetHeadOfUnit(ctx context.Context, in *GetHeadOfUnitRequest, opts ...grpc.CallOption) (*GetHeadOfUnitResponse, error)
+	GetAssignments(ctx context.Context, in *GetAssignmentsRequest, opts ...grpc.CallOption) (*GetAssignmentsResponse, error)
+	GetEmploymentHistory(ctx context.Context, in *GetEmploymentHistoryRequest, opts ...grpc.CallOption) (*GetEmploymentHistoryResponse, error)
+	SearchAssociates(ctx context.Context, in *SearchAssociatesRequest, opts ...grpc.CallOption) (*SearchAssociatesResponse, error)
+	SearchOrgUnits(ctx context.Context, in *SearchOrgUnitsRequest, opts ...grpc.CallOption) (*SearchOrgUnitsResponse, error)
+	GetUnassignedAssociates(ctx context.Context, in *GetUnassignedAssociatesRequest, opts ...grpc.CallOption) (*GetUnassignedAssociatesResponse, error)
 }
 
-type orgServiceClient struct {
+type orgContextQueryServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewOrgServiceClient(cc grpc.ClientConnInterface) OrgServiceClient {
-	return &orgServiceClient{cc}
+func NewOrgContextQueryServiceClient(cc grpc.ClientConnInterface) OrgContextQueryServiceClient {
+	return &orgContextQueryServiceClient{cc}
 }
 
-func (c *orgServiceClient) GetAssociate(ctx context.Context, in *GetAssociateRequest, opts ...grpc.CallOption) (*GetAssociateResponse, error) {
+func (c *orgContextQueryServiceClient) GetAssociate(ctx context.Context, in *GetAssociateRequest, opts ...grpc.CallOption) (*GetAssociateResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetAssociateResponse)
-	err := c.cc.Invoke(ctx, OrgService_GetAssociate_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, OrgContextQueryService_GetAssociate_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *orgServiceClient) GetAssociateByEmail(ctx context.Context, in *GetAssociateByEmailRequest, opts ...grpc.CallOption) (*GetAssociateByEmailResponse, error) {
+func (c *orgContextQueryServiceClient) GetAssociateByUserId(ctx context.Context, in *GetAssociateByUserIdRequest, opts ...grpc.CallOption) (*GetAssociateByUserIdResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetAssociateByEmailResponse)
-	err := c.cc.Invoke(ctx, OrgService_GetAssociateByEmail_FullMethodName, in, out, cOpts...)
+	out := new(GetAssociateByUserIdResponse)
+	err := c.cc.Invoke(ctx, OrgContextQueryService_GetAssociateByUserId_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *orgServiceClient) GetAllAssociates(ctx context.Context, in *GetAllAssociatesRequest, opts ...grpc.CallOption) (*GetAllAssociatesResponse, error) {
+func (c *orgContextQueryServiceClient) ResolveAssociateContext(ctx context.Context, in *ResolveAssociateContextRequest, opts ...grpc.CallOption) (*ResolveAssociateContextResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetAllAssociatesResponse)
-	err := c.cc.Invoke(ctx, OrgService_GetAllAssociates_FullMethodName, in, out, cOpts...)
+	out := new(ResolveAssociateContextResponse)
+	err := c.cc.Invoke(ctx, OrgContextQueryService_ResolveAssociateContext_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *orgServiceClient) SearchAssociates(ctx context.Context, in *SearchAssociatesRequest, opts ...grpc.CallOption) (*SearchAssociatesResponse, error) {
+func (c *orgContextQueryServiceClient) GetOrgUnit(ctx context.Context, in *GetOrgUnitRequest, opts ...grpc.CallOption) (*GetOrgUnitResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(SearchAssociatesResponse)
-	err := c.cc.Invoke(ctx, OrgService_SearchAssociates_FullMethodName, in, out, cOpts...)
+	out := new(GetOrgUnitResponse)
+	err := c.cc.Invoke(ctx, OrgContextQueryService_GetOrgUnit_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *orgServiceClient) GetDirectReports(ctx context.Context, in *GetDirectReportsRequest, opts ...grpc.CallOption) (*GetDirectReportsResponse, error) {
+func (c *orgContextQueryServiceClient) GetOrgUnitTree(ctx context.Context, in *GetOrgUnitTreeRequest, opts ...grpc.CallOption) (*GetOrgUnitTreeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetOrgUnitTreeResponse)
+	err := c.cc.Invoke(ctx, OrgContextQueryService_GetOrgUnitTree_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orgContextQueryServiceClient) GetOrgLineage(ctx context.Context, in *GetOrgLineageRequest, opts ...grpc.CallOption) (*GetOrgLineageResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetOrgLineageResponse)
+	err := c.cc.Invoke(ctx, OrgContextQueryService_GetOrgLineage_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orgContextQueryServiceClient) GetDirectReports(ctx context.Context, in *GetDirectReportsRequest, opts ...grpc.CallOption) (*GetDirectReportsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetDirectReportsResponse)
-	err := c.cc.Invoke(ctx, OrgService_GetDirectReports_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, OrgContextQueryService_GetDirectReports_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *orgServiceClient) GetReportingChain(ctx context.Context, in *GetReportingChainRequest, opts ...grpc.CallOption) (*GetReportingChainResponse, error) {
+func (c *orgContextQueryServiceClient) GetIndirectReports(ctx context.Context, in *GetIndirectReportsRequest, opts ...grpc.CallOption) (*GetIndirectReportsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetReportingChainResponse)
-	err := c.cc.Invoke(ctx, OrgService_GetReportingChain_FullMethodName, in, out, cOpts...)
+	out := new(GetIndirectReportsResponse)
+	err := c.cc.Invoke(ctx, OrgContextQueryService_GetIndirectReports_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *orgServiceClient) GetOrgChart(ctx context.Context, in *GetOrgChartRequest, opts ...grpc.CallOption) (*GetOrgChartResponse, error) {
+func (c *orgContextQueryServiceClient) GetUnitMembers(ctx context.Context, in *GetUnitMembersRequest, opts ...grpc.CallOption) (*GetUnitMembersResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetOrgChartResponse)
-	err := c.cc.Invoke(ctx, OrgService_GetOrgChart_FullMethodName, in, out, cOpts...)
+	out := new(GetUnitMembersResponse)
+	err := c.cc.Invoke(ctx, OrgContextQueryService_GetUnitMembers_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *orgServiceClient) GetUnitSubtree(ctx context.Context, in *GetUnitSubtreeRequest, opts ...grpc.CallOption) (*GetUnitSubtreeResponse, error) {
+func (c *orgContextQueryServiceClient) GetHeadOfUnit(ctx context.Context, in *GetHeadOfUnitRequest, opts ...grpc.CallOption) (*GetHeadOfUnitResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetUnitSubtreeResponse)
-	err := c.cc.Invoke(ctx, OrgService_GetUnitSubtree_FullMethodName, in, out, cOpts...)
+	out := new(GetHeadOfUnitResponse)
+	err := c.cc.Invoke(ctx, OrgContextQueryService_GetHeadOfUnit_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *orgServiceClient) GetUnitHeadcount(ctx context.Context, in *GetUnitHeadcountRequest, opts ...grpc.CallOption) (*GetUnitHeadcountResponse, error) {
+func (c *orgContextQueryServiceClient) GetAssignments(ctx context.Context, in *GetAssignmentsRequest, opts ...grpc.CallOption) (*GetAssignmentsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetUnitHeadcountResponse)
-	err := c.cc.Invoke(ctx, OrgService_GetUnitHeadcount_FullMethodName, in, out, cOpts...)
+	out := new(GetAssignmentsResponse)
+	err := c.cc.Invoke(ctx, OrgContextQueryService_GetAssignments_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *orgServiceClient) GetSpanOfControl(ctx context.Context, in *GetSpanOfControlRequest, opts ...grpc.CallOption) (*GetSpanOfControlResponse, error) {
+func (c *orgContextQueryServiceClient) GetEmploymentHistory(ctx context.Context, in *GetEmploymentHistoryRequest, opts ...grpc.CallOption) (*GetEmploymentHistoryResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetSpanOfControlResponse)
-	err := c.cc.Invoke(ctx, OrgService_GetSpanOfControl_FullMethodName, in, out, cOpts...)
+	out := new(GetEmploymentHistoryResponse)
+	err := c.cc.Invoke(ctx, OrgContextQueryService_GetEmploymentHistory_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *orgServiceClient) GetShortestPath(ctx context.Context, in *GetShortestPathRequest, opts ...grpc.CallOption) (*GetShortestPathResponse, error) {
+func (c *orgContextQueryServiceClient) SearchAssociates(ctx context.Context, in *SearchAssociatesRequest, opts ...grpc.CallOption) (*SearchAssociatesResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetShortestPathResponse)
-	err := c.cc.Invoke(ctx, OrgService_GetShortestPath_FullMethodName, in, out, cOpts...)
+	out := new(SearchAssociatesResponse)
+	err := c.cc.Invoke(ctx, OrgContextQueryService_SearchAssociates_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *orgServiceClient) GetOrphans(ctx context.Context, in *GetOrphansRequest, opts ...grpc.CallOption) (*GetOrphansResponse, error) {
+func (c *orgContextQueryServiceClient) SearchOrgUnits(ctx context.Context, in *SearchOrgUnitsRequest, opts ...grpc.CallOption) (*SearchOrgUnitsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetOrphansResponse)
-	err := c.cc.Invoke(ctx, OrgService_GetOrphans_FullMethodName, in, out, cOpts...)
+	out := new(SearchOrgUnitsResponse)
+	err := c.cc.Invoke(ctx, OrgContextQueryService_SearchOrgUnits_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *orgServiceClient) TriggerSync(ctx context.Context, in *TriggerSyncRequest, opts ...grpc.CallOption) (*TriggerSyncResponse, error) {
+func (c *orgContextQueryServiceClient) GetUnassignedAssociates(ctx context.Context, in *GetUnassignedAssociatesRequest, opts ...grpc.CallOption) (*GetUnassignedAssociatesResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(TriggerSyncResponse)
-	err := c.cc.Invoke(ctx, OrgService_TriggerSync_FullMethodName, in, out, cOpts...)
+	out := new(GetUnassignedAssociatesResponse)
+	err := c.cc.Invoke(ctx, OrgContextQueryService_GetUnassignedAssociates_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// OrgServiceServer is the server API for OrgService service.
-// All implementations must embed UnimplementedOrgServiceServer
+// OrgContextQueryServiceServer is the server API for OrgContextQueryService service.
+// All implementations must embed UnimplementedOrgContextQueryServiceServer
 // for forward compatibility.
-type OrgServiceServer interface {
-	// ── Queries ─────────────────────────────────────────────
+type OrgContextQueryServiceServer interface {
 	GetAssociate(context.Context, *GetAssociateRequest) (*GetAssociateResponse, error)
-	GetAssociateByEmail(context.Context, *GetAssociateByEmailRequest) (*GetAssociateByEmailResponse, error)
-	GetAllAssociates(context.Context, *GetAllAssociatesRequest) (*GetAllAssociatesResponse, error)
-	SearchAssociates(context.Context, *SearchAssociatesRequest) (*SearchAssociatesResponse, error)
+	GetAssociateByUserId(context.Context, *GetAssociateByUserIdRequest) (*GetAssociateByUserIdResponse, error)
+	ResolveAssociateContext(context.Context, *ResolveAssociateContextRequest) (*ResolveAssociateContextResponse, error)
+	GetOrgUnit(context.Context, *GetOrgUnitRequest) (*GetOrgUnitResponse, error)
+	GetOrgUnitTree(context.Context, *GetOrgUnitTreeRequest) (*GetOrgUnitTreeResponse, error)
+	GetOrgLineage(context.Context, *GetOrgLineageRequest) (*GetOrgLineageResponse, error)
 	GetDirectReports(context.Context, *GetDirectReportsRequest) (*GetDirectReportsResponse, error)
-	GetReportingChain(context.Context, *GetReportingChainRequest) (*GetReportingChainResponse, error)
-	GetOrgChart(context.Context, *GetOrgChartRequest) (*GetOrgChartResponse, error)
-	GetUnitSubtree(context.Context, *GetUnitSubtreeRequest) (*GetUnitSubtreeResponse, error)
-	GetUnitHeadcount(context.Context, *GetUnitHeadcountRequest) (*GetUnitHeadcountResponse, error)
-	GetSpanOfControl(context.Context, *GetSpanOfControlRequest) (*GetSpanOfControlResponse, error)
-	GetShortestPath(context.Context, *GetShortestPathRequest) (*GetShortestPathResponse, error)
-	GetOrphans(context.Context, *GetOrphansRequest) (*GetOrphansResponse, error)
-	// ── Commands ────────────────────────────────────────────
-	TriggerSync(context.Context, *TriggerSyncRequest) (*TriggerSyncResponse, error)
-	mustEmbedUnimplementedOrgServiceServer()
+	GetIndirectReports(context.Context, *GetIndirectReportsRequest) (*GetIndirectReportsResponse, error)
+	GetUnitMembers(context.Context, *GetUnitMembersRequest) (*GetUnitMembersResponse, error)
+	GetHeadOfUnit(context.Context, *GetHeadOfUnitRequest) (*GetHeadOfUnitResponse, error)
+	GetAssignments(context.Context, *GetAssignmentsRequest) (*GetAssignmentsResponse, error)
+	GetEmploymentHistory(context.Context, *GetEmploymentHistoryRequest) (*GetEmploymentHistoryResponse, error)
+	SearchAssociates(context.Context, *SearchAssociatesRequest) (*SearchAssociatesResponse, error)
+	SearchOrgUnits(context.Context, *SearchOrgUnitsRequest) (*SearchOrgUnitsResponse, error)
+	GetUnassignedAssociates(context.Context, *GetUnassignedAssociatesRequest) (*GetUnassignedAssociatesResponse, error)
+	mustEmbedUnimplementedOrgContextQueryServiceServer()
 }
 
-// UnimplementedOrgServiceServer must be embedded to have
+// UnimplementedOrgContextQueryServiceServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedOrgServiceServer struct{}
+type UnimplementedOrgContextQueryServiceServer struct{}
 
-func (UnimplementedOrgServiceServer) GetAssociate(context.Context, *GetAssociateRequest) (*GetAssociateResponse, error) {
+func (UnimplementedOrgContextQueryServiceServer) GetAssociate(context.Context, *GetAssociateRequest) (*GetAssociateResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetAssociate not implemented")
 }
-func (UnimplementedOrgServiceServer) GetAssociateByEmail(context.Context, *GetAssociateByEmailRequest) (*GetAssociateByEmailResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetAssociateByEmail not implemented")
+func (UnimplementedOrgContextQueryServiceServer) GetAssociateByUserId(context.Context, *GetAssociateByUserIdRequest) (*GetAssociateByUserIdResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetAssociateByUserId not implemented")
 }
-func (UnimplementedOrgServiceServer) GetAllAssociates(context.Context, *GetAllAssociatesRequest) (*GetAllAssociatesResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetAllAssociates not implemented")
+func (UnimplementedOrgContextQueryServiceServer) ResolveAssociateContext(context.Context, *ResolveAssociateContextRequest) (*ResolveAssociateContextResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ResolveAssociateContext not implemented")
 }
-func (UnimplementedOrgServiceServer) SearchAssociates(context.Context, *SearchAssociatesRequest) (*SearchAssociatesResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method SearchAssociates not implemented")
+func (UnimplementedOrgContextQueryServiceServer) GetOrgUnit(context.Context, *GetOrgUnitRequest) (*GetOrgUnitResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetOrgUnit not implemented")
 }
-func (UnimplementedOrgServiceServer) GetDirectReports(context.Context, *GetDirectReportsRequest) (*GetDirectReportsResponse, error) {
+func (UnimplementedOrgContextQueryServiceServer) GetOrgUnitTree(context.Context, *GetOrgUnitTreeRequest) (*GetOrgUnitTreeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetOrgUnitTree not implemented")
+}
+func (UnimplementedOrgContextQueryServiceServer) GetOrgLineage(context.Context, *GetOrgLineageRequest) (*GetOrgLineageResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetOrgLineage not implemented")
+}
+func (UnimplementedOrgContextQueryServiceServer) GetDirectReports(context.Context, *GetDirectReportsRequest) (*GetDirectReportsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetDirectReports not implemented")
 }
-func (UnimplementedOrgServiceServer) GetReportingChain(context.Context, *GetReportingChainRequest) (*GetReportingChainResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetReportingChain not implemented")
+func (UnimplementedOrgContextQueryServiceServer) GetIndirectReports(context.Context, *GetIndirectReportsRequest) (*GetIndirectReportsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetIndirectReports not implemented")
 }
-func (UnimplementedOrgServiceServer) GetOrgChart(context.Context, *GetOrgChartRequest) (*GetOrgChartResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetOrgChart not implemented")
+func (UnimplementedOrgContextQueryServiceServer) GetUnitMembers(context.Context, *GetUnitMembersRequest) (*GetUnitMembersResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetUnitMembers not implemented")
 }
-func (UnimplementedOrgServiceServer) GetUnitSubtree(context.Context, *GetUnitSubtreeRequest) (*GetUnitSubtreeResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetUnitSubtree not implemented")
+func (UnimplementedOrgContextQueryServiceServer) GetHeadOfUnit(context.Context, *GetHeadOfUnitRequest) (*GetHeadOfUnitResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetHeadOfUnit not implemented")
 }
-func (UnimplementedOrgServiceServer) GetUnitHeadcount(context.Context, *GetUnitHeadcountRequest) (*GetUnitHeadcountResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetUnitHeadcount not implemented")
+func (UnimplementedOrgContextQueryServiceServer) GetAssignments(context.Context, *GetAssignmentsRequest) (*GetAssignmentsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetAssignments not implemented")
 }
-func (UnimplementedOrgServiceServer) GetSpanOfControl(context.Context, *GetSpanOfControlRequest) (*GetSpanOfControlResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetSpanOfControl not implemented")
+func (UnimplementedOrgContextQueryServiceServer) GetEmploymentHistory(context.Context, *GetEmploymentHistoryRequest) (*GetEmploymentHistoryResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetEmploymentHistory not implemented")
 }
-func (UnimplementedOrgServiceServer) GetShortestPath(context.Context, *GetShortestPathRequest) (*GetShortestPathResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetShortestPath not implemented")
+func (UnimplementedOrgContextQueryServiceServer) SearchAssociates(context.Context, *SearchAssociatesRequest) (*SearchAssociatesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SearchAssociates not implemented")
 }
-func (UnimplementedOrgServiceServer) GetOrphans(context.Context, *GetOrphansRequest) (*GetOrphansResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetOrphans not implemented")
+func (UnimplementedOrgContextQueryServiceServer) SearchOrgUnits(context.Context, *SearchOrgUnitsRequest) (*SearchOrgUnitsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SearchOrgUnits not implemented")
 }
-func (UnimplementedOrgServiceServer) TriggerSync(context.Context, *TriggerSyncRequest) (*TriggerSyncResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method TriggerSync not implemented")
+func (UnimplementedOrgContextQueryServiceServer) GetUnassignedAssociates(context.Context, *GetUnassignedAssociatesRequest) (*GetUnassignedAssociatesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetUnassignedAssociates not implemented")
 }
-func (UnimplementedOrgServiceServer) mustEmbedUnimplementedOrgServiceServer() {}
-func (UnimplementedOrgServiceServer) testEmbeddedByValue()                    {}
+func (UnimplementedOrgContextQueryServiceServer) mustEmbedUnimplementedOrgContextQueryServiceServer() {
+}
+func (UnimplementedOrgContextQueryServiceServer) testEmbeddedByValue() {}
 
-// UnsafeOrgServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to OrgServiceServer will
+// UnsafeOrgContextQueryServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to OrgContextQueryServiceServer will
 // result in compilation errors.
-type UnsafeOrgServiceServer interface {
-	mustEmbedUnimplementedOrgServiceServer()
+type UnsafeOrgContextQueryServiceServer interface {
+	mustEmbedUnimplementedOrgContextQueryServiceServer()
 }
 
-func RegisterOrgServiceServer(s grpc.ServiceRegistrar, srv OrgServiceServer) {
-	// If the following call panics, it indicates UnimplementedOrgServiceServer was
+func RegisterOrgContextQueryServiceServer(s grpc.ServiceRegistrar, srv OrgContextQueryServiceServer) {
+	// If the following call panics, it indicates UnimplementedOrgContextQueryServiceServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&OrgService_ServiceDesc, srv)
+	s.RegisterService(&OrgContextQueryService_ServiceDesc, srv)
 }
 
-func _OrgService_GetAssociate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _OrgContextQueryService_GetAssociate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetAssociateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrgServiceServer).GetAssociate(ctx, in)
+		return srv.(OrgContextQueryServiceServer).GetAssociate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: OrgService_GetAssociate_FullMethodName,
+		FullMethod: OrgContextQueryService_GetAssociate_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrgServiceServer).GetAssociate(ctx, req.(*GetAssociateRequest))
+		return srv.(OrgContextQueryServiceServer).GetAssociate(ctx, req.(*GetAssociateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrgService_GetAssociateByEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetAssociateByEmailRequest)
+func _OrgContextQueryService_GetAssociateByUserId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAssociateByUserIdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrgServiceServer).GetAssociateByEmail(ctx, in)
+		return srv.(OrgContextQueryServiceServer).GetAssociateByUserId(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: OrgService_GetAssociateByEmail_FullMethodName,
+		FullMethod: OrgContextQueryService_GetAssociateByUserId_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrgServiceServer).GetAssociateByEmail(ctx, req.(*GetAssociateByEmailRequest))
+		return srv.(OrgContextQueryServiceServer).GetAssociateByUserId(ctx, req.(*GetAssociateByUserIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrgService_GetAllAssociates_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetAllAssociatesRequest)
+func _OrgContextQueryService_ResolveAssociateContext_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ResolveAssociateContextRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrgServiceServer).GetAllAssociates(ctx, in)
+		return srv.(OrgContextQueryServiceServer).ResolveAssociateContext(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: OrgService_GetAllAssociates_FullMethodName,
+		FullMethod: OrgContextQueryService_ResolveAssociateContext_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrgServiceServer).GetAllAssociates(ctx, req.(*GetAllAssociatesRequest))
+		return srv.(OrgContextQueryServiceServer).ResolveAssociateContext(ctx, req.(*ResolveAssociateContextRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrgService_SearchAssociates_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SearchAssociatesRequest)
+func _OrgContextQueryService_GetOrgUnit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOrgUnitRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrgServiceServer).SearchAssociates(ctx, in)
+		return srv.(OrgContextQueryServiceServer).GetOrgUnit(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: OrgService_SearchAssociates_FullMethodName,
+		FullMethod: OrgContextQueryService_GetOrgUnit_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrgServiceServer).SearchAssociates(ctx, req.(*SearchAssociatesRequest))
+		return srv.(OrgContextQueryServiceServer).GetOrgUnit(ctx, req.(*GetOrgUnitRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrgService_GetDirectReports_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _OrgContextQueryService_GetOrgUnitTree_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOrgUnitTreeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrgContextQueryServiceServer).GetOrgUnitTree(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrgContextQueryService_GetOrgUnitTree_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrgContextQueryServiceServer).GetOrgUnitTree(ctx, req.(*GetOrgUnitTreeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrgContextQueryService_GetOrgLineage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOrgLineageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrgContextQueryServiceServer).GetOrgLineage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrgContextQueryService_GetOrgLineage_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrgContextQueryServiceServer).GetOrgLineage(ctx, req.(*GetOrgLineageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrgContextQueryService_GetDirectReports_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetDirectReportsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrgServiceServer).GetDirectReports(ctx, in)
+		return srv.(OrgContextQueryServiceServer).GetDirectReports(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: OrgService_GetDirectReports_FullMethodName,
+		FullMethod: OrgContextQueryService_GetDirectReports_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrgServiceServer).GetDirectReports(ctx, req.(*GetDirectReportsRequest))
+		return srv.(OrgContextQueryServiceServer).GetDirectReports(ctx, req.(*GetDirectReportsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrgService_GetReportingChain_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetReportingChainRequest)
+func _OrgContextQueryService_GetIndirectReports_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetIndirectReportsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrgServiceServer).GetReportingChain(ctx, in)
+		return srv.(OrgContextQueryServiceServer).GetIndirectReports(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: OrgService_GetReportingChain_FullMethodName,
+		FullMethod: OrgContextQueryService_GetIndirectReports_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrgServiceServer).GetReportingChain(ctx, req.(*GetReportingChainRequest))
+		return srv.(OrgContextQueryServiceServer).GetIndirectReports(ctx, req.(*GetIndirectReportsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrgService_GetOrgChart_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetOrgChartRequest)
+func _OrgContextQueryService_GetUnitMembers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUnitMembersRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrgServiceServer).GetOrgChart(ctx, in)
+		return srv.(OrgContextQueryServiceServer).GetUnitMembers(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: OrgService_GetOrgChart_FullMethodName,
+		FullMethod: OrgContextQueryService_GetUnitMembers_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrgServiceServer).GetOrgChart(ctx, req.(*GetOrgChartRequest))
+		return srv.(OrgContextQueryServiceServer).GetUnitMembers(ctx, req.(*GetUnitMembersRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrgService_GetUnitSubtree_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetUnitSubtreeRequest)
+func _OrgContextQueryService_GetHeadOfUnit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetHeadOfUnitRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrgServiceServer).GetUnitSubtree(ctx, in)
+		return srv.(OrgContextQueryServiceServer).GetHeadOfUnit(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: OrgService_GetUnitSubtree_FullMethodName,
+		FullMethod: OrgContextQueryService_GetHeadOfUnit_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrgServiceServer).GetUnitSubtree(ctx, req.(*GetUnitSubtreeRequest))
+		return srv.(OrgContextQueryServiceServer).GetHeadOfUnit(ctx, req.(*GetHeadOfUnitRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrgService_GetUnitHeadcount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetUnitHeadcountRequest)
+func _OrgContextQueryService_GetAssignments_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAssignmentsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrgServiceServer).GetUnitHeadcount(ctx, in)
+		return srv.(OrgContextQueryServiceServer).GetAssignments(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: OrgService_GetUnitHeadcount_FullMethodName,
+		FullMethod: OrgContextQueryService_GetAssignments_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrgServiceServer).GetUnitHeadcount(ctx, req.(*GetUnitHeadcountRequest))
+		return srv.(OrgContextQueryServiceServer).GetAssignments(ctx, req.(*GetAssignmentsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrgService_GetSpanOfControl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetSpanOfControlRequest)
+func _OrgContextQueryService_GetEmploymentHistory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetEmploymentHistoryRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrgServiceServer).GetSpanOfControl(ctx, in)
+		return srv.(OrgContextQueryServiceServer).GetEmploymentHistory(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: OrgService_GetSpanOfControl_FullMethodName,
+		FullMethod: OrgContextQueryService_GetEmploymentHistory_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrgServiceServer).GetSpanOfControl(ctx, req.(*GetSpanOfControlRequest))
+		return srv.(OrgContextQueryServiceServer).GetEmploymentHistory(ctx, req.(*GetEmploymentHistoryRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrgService_GetShortestPath_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetShortestPathRequest)
+func _OrgContextQueryService_SearchAssociates_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchAssociatesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrgServiceServer).GetShortestPath(ctx, in)
+		return srv.(OrgContextQueryServiceServer).SearchAssociates(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: OrgService_GetShortestPath_FullMethodName,
+		FullMethod: OrgContextQueryService_SearchAssociates_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrgServiceServer).GetShortestPath(ctx, req.(*GetShortestPathRequest))
+		return srv.(OrgContextQueryServiceServer).SearchAssociates(ctx, req.(*SearchAssociatesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrgService_GetOrphans_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetOrphansRequest)
+func _OrgContextQueryService_SearchOrgUnits_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchOrgUnitsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrgServiceServer).GetOrphans(ctx, in)
+		return srv.(OrgContextQueryServiceServer).SearchOrgUnits(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: OrgService_GetOrphans_FullMethodName,
+		FullMethod: OrgContextQueryService_SearchOrgUnits_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrgServiceServer).GetOrphans(ctx, req.(*GetOrphansRequest))
+		return srv.(OrgContextQueryServiceServer).SearchOrgUnits(ctx, req.(*SearchOrgUnitsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrgService_TriggerSync_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TriggerSyncRequest)
+func _OrgContextQueryService_GetUnassignedAssociates_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUnassignedAssociatesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrgServiceServer).TriggerSync(ctx, in)
+		return srv.(OrgContextQueryServiceServer).GetUnassignedAssociates(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: OrgService_TriggerSync_FullMethodName,
+		FullMethod: OrgContextQueryService_GetUnassignedAssociates_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrgServiceServer).TriggerSync(ctx, req.(*TriggerSyncRequest))
+		return srv.(OrgContextQueryServiceServer).GetUnassignedAssociates(ctx, req.(*GetUnassignedAssociatesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// OrgService_ServiceDesc is the grpc.ServiceDesc for OrgService service.
+// OrgContextQueryService_ServiceDesc is the grpc.ServiceDesc for OrgContextQueryService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var OrgService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "orgcontext.v1.OrgService",
-	HandlerType: (*OrgServiceServer)(nil),
+var OrgContextQueryService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "orgcontext.v1.OrgContextQueryService",
+	HandlerType: (*OrgContextQueryServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "GetAssociate",
-			Handler:    _OrgService_GetAssociate_Handler,
+			Handler:    _OrgContextQueryService_GetAssociate_Handler,
 		},
 		{
-			MethodName: "GetAssociateByEmail",
-			Handler:    _OrgService_GetAssociateByEmail_Handler,
+			MethodName: "GetAssociateByUserId",
+			Handler:    _OrgContextQueryService_GetAssociateByUserId_Handler,
 		},
 		{
-			MethodName: "GetAllAssociates",
-			Handler:    _OrgService_GetAllAssociates_Handler,
+			MethodName: "ResolveAssociateContext",
+			Handler:    _OrgContextQueryService_ResolveAssociateContext_Handler,
 		},
 		{
-			MethodName: "SearchAssociates",
-			Handler:    _OrgService_SearchAssociates_Handler,
+			MethodName: "GetOrgUnit",
+			Handler:    _OrgContextQueryService_GetOrgUnit_Handler,
+		},
+		{
+			MethodName: "GetOrgUnitTree",
+			Handler:    _OrgContextQueryService_GetOrgUnitTree_Handler,
+		},
+		{
+			MethodName: "GetOrgLineage",
+			Handler:    _OrgContextQueryService_GetOrgLineage_Handler,
 		},
 		{
 			MethodName: "GetDirectReports",
-			Handler:    _OrgService_GetDirectReports_Handler,
+			Handler:    _OrgContextQueryService_GetDirectReports_Handler,
 		},
 		{
-			MethodName: "GetReportingChain",
-			Handler:    _OrgService_GetReportingChain_Handler,
+			MethodName: "GetIndirectReports",
+			Handler:    _OrgContextQueryService_GetIndirectReports_Handler,
 		},
 		{
-			MethodName: "GetOrgChart",
-			Handler:    _OrgService_GetOrgChart_Handler,
+			MethodName: "GetUnitMembers",
+			Handler:    _OrgContextQueryService_GetUnitMembers_Handler,
 		},
 		{
-			MethodName: "GetUnitSubtree",
-			Handler:    _OrgService_GetUnitSubtree_Handler,
+			MethodName: "GetHeadOfUnit",
+			Handler:    _OrgContextQueryService_GetHeadOfUnit_Handler,
 		},
 		{
-			MethodName: "GetUnitHeadcount",
-			Handler:    _OrgService_GetUnitHeadcount_Handler,
+			MethodName: "GetAssignments",
+			Handler:    _OrgContextQueryService_GetAssignments_Handler,
 		},
 		{
-			MethodName: "GetSpanOfControl",
-			Handler:    _OrgService_GetSpanOfControl_Handler,
+			MethodName: "GetEmploymentHistory",
+			Handler:    _OrgContextQueryService_GetEmploymentHistory_Handler,
 		},
 		{
-			MethodName: "GetShortestPath",
-			Handler:    _OrgService_GetShortestPath_Handler,
+			MethodName: "SearchAssociates",
+			Handler:    _OrgContextQueryService_SearchAssociates_Handler,
 		},
 		{
-			MethodName: "GetOrphans",
-			Handler:    _OrgService_GetOrphans_Handler,
+			MethodName: "SearchOrgUnits",
+			Handler:    _OrgContextQueryService_SearchOrgUnits_Handler,
 		},
 		{
-			MethodName: "TriggerSync",
-			Handler:    _OrgService_TriggerSync_Handler,
+			MethodName: "GetUnassignedAssociates",
+			Handler:    _OrgContextQueryService_GetUnassignedAssociates_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "orgcontext/v1/orgcontext_service.proto",
+}
+
+const (
+	OrgContextCommandService_UpsertOrgUnit_FullMethodName                 = "/orgcontext.v1.OrgContextCommandService/UpsertOrgUnit"
+	OrgContextCommandService_UpsertPosition_FullMethodName                = "/orgcontext.v1.OrgContextCommandService/UpsertPosition"
+	OrgContextCommandService_UpsertAssociate_FullMethodName               = "/orgcontext.v1.OrgContextCommandService/UpsertAssociate"
+	OrgContextCommandService_UpsertPositionAssignment_FullMethodName      = "/orgcontext.v1.OrgContextCommandService/UpsertPositionAssignment"
+	OrgContextCommandService_UpsertEmploymentEpisode_FullMethodName       = "/orgcontext.v1.OrgContextCommandService/UpsertEmploymentEpisode"
+	OrgContextCommandService_SetManagerRelation_FullMethodName            = "/orgcontext.v1.OrgContextCommandService/SetManagerRelation"
+	OrgContextCommandService_SetHeadOfUnit_FullMethodName                 = "/orgcontext.v1.OrgContextCommandService/SetHeadOfUnit"
+	OrgContextCommandService_AssignAssociateToPosition_FullMethodName     = "/orgcontext.v1.OrgContextCommandService/AssignAssociateToPosition"
+	OrgContextCommandService_UnassignAssociateFromPosition_FullMethodName = "/orgcontext.v1.OrgContextCommandService/UnassignAssociateFromPosition"
+	OrgContextCommandService_IngestAssociateBatch_FullMethodName          = "/orgcontext.v1.OrgContextCommandService/IngestAssociateBatch"
+	OrgContextCommandService_IngestSnapshot_FullMethodName                = "/orgcontext.v1.OrgContextCommandService/IngestSnapshot"
+	OrgContextCommandService_ApplyDelta_FullMethodName                    = "/orgcontext.v1.OrgContextCommandService/ApplyDelta"
+	OrgContextCommandService_RebuildDerivedRelations_FullMethodName       = "/orgcontext.v1.OrgContextCommandService/RebuildDerivedRelations"
+)
+
+// OrgContextCommandServiceClient is the client API for OrgContextCommandService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type OrgContextCommandServiceClient interface {
+	UpsertOrgUnit(ctx context.Context, in *UpsertOrgUnitRequest, opts ...grpc.CallOption) (*UpsertOrgUnitResponse, error)
+	UpsertPosition(ctx context.Context, in *UpsertPositionRequest, opts ...grpc.CallOption) (*UpsertPositionResponse, error)
+	UpsertAssociate(ctx context.Context, in *UpsertAssociateRequest, opts ...grpc.CallOption) (*UpsertAssociateResponse, error)
+	UpsertPositionAssignment(ctx context.Context, in *UpsertPositionAssignmentRequest, opts ...grpc.CallOption) (*UpsertPositionAssignmentResponse, error)
+	UpsertEmploymentEpisode(ctx context.Context, in *UpsertEmploymentEpisodeRequest, opts ...grpc.CallOption) (*UpsertEmploymentEpisodeResponse, error)
+	SetManagerRelation(ctx context.Context, in *SetManagerRelationRequest, opts ...grpc.CallOption) (*SetManagerRelationResponse, error)
+	SetHeadOfUnit(ctx context.Context, in *SetHeadOfUnitRequest, opts ...grpc.CallOption) (*SetHeadOfUnitResponse, error)
+	AssignAssociateToPosition(ctx context.Context, in *AssignAssociateToPositionRequest, opts ...grpc.CallOption) (*AssignAssociateToPositionResponse, error)
+	UnassignAssociateFromPosition(ctx context.Context, in *UnassignAssociateFromPositionRequest, opts ...grpc.CallOption) (*UnassignAssociateFromPositionResponse, error)
+	IngestAssociateBatch(ctx context.Context, in *IngestAssociateBatchRequest, opts ...grpc.CallOption) (*IngestAssociateBatchResponse, error)
+	IngestSnapshot(ctx context.Context, in *IngestSnapshotRequest, opts ...grpc.CallOption) (*IngestSnapshotResponse, error)
+	ApplyDelta(ctx context.Context, in *ApplyDeltaRequest, opts ...grpc.CallOption) (*ApplyDeltaResponse, error)
+	RebuildDerivedRelations(ctx context.Context, in *RebuildDerivedRelationsRequest, opts ...grpc.CallOption) (*RebuildDerivedRelationsResponse, error)
+}
+
+type orgContextCommandServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewOrgContextCommandServiceClient(cc grpc.ClientConnInterface) OrgContextCommandServiceClient {
+	return &orgContextCommandServiceClient{cc}
+}
+
+func (c *orgContextCommandServiceClient) UpsertOrgUnit(ctx context.Context, in *UpsertOrgUnitRequest, opts ...grpc.CallOption) (*UpsertOrgUnitResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpsertOrgUnitResponse)
+	err := c.cc.Invoke(ctx, OrgContextCommandService_UpsertOrgUnit_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orgContextCommandServiceClient) UpsertPosition(ctx context.Context, in *UpsertPositionRequest, opts ...grpc.CallOption) (*UpsertPositionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpsertPositionResponse)
+	err := c.cc.Invoke(ctx, OrgContextCommandService_UpsertPosition_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orgContextCommandServiceClient) UpsertAssociate(ctx context.Context, in *UpsertAssociateRequest, opts ...grpc.CallOption) (*UpsertAssociateResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpsertAssociateResponse)
+	err := c.cc.Invoke(ctx, OrgContextCommandService_UpsertAssociate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orgContextCommandServiceClient) UpsertPositionAssignment(ctx context.Context, in *UpsertPositionAssignmentRequest, opts ...grpc.CallOption) (*UpsertPositionAssignmentResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpsertPositionAssignmentResponse)
+	err := c.cc.Invoke(ctx, OrgContextCommandService_UpsertPositionAssignment_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orgContextCommandServiceClient) UpsertEmploymentEpisode(ctx context.Context, in *UpsertEmploymentEpisodeRequest, opts ...grpc.CallOption) (*UpsertEmploymentEpisodeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpsertEmploymentEpisodeResponse)
+	err := c.cc.Invoke(ctx, OrgContextCommandService_UpsertEmploymentEpisode_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orgContextCommandServiceClient) SetManagerRelation(ctx context.Context, in *SetManagerRelationRequest, opts ...grpc.CallOption) (*SetManagerRelationResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SetManagerRelationResponse)
+	err := c.cc.Invoke(ctx, OrgContextCommandService_SetManagerRelation_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orgContextCommandServiceClient) SetHeadOfUnit(ctx context.Context, in *SetHeadOfUnitRequest, opts ...grpc.CallOption) (*SetHeadOfUnitResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SetHeadOfUnitResponse)
+	err := c.cc.Invoke(ctx, OrgContextCommandService_SetHeadOfUnit_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orgContextCommandServiceClient) AssignAssociateToPosition(ctx context.Context, in *AssignAssociateToPositionRequest, opts ...grpc.CallOption) (*AssignAssociateToPositionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AssignAssociateToPositionResponse)
+	err := c.cc.Invoke(ctx, OrgContextCommandService_AssignAssociateToPosition_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orgContextCommandServiceClient) UnassignAssociateFromPosition(ctx context.Context, in *UnassignAssociateFromPositionRequest, opts ...grpc.CallOption) (*UnassignAssociateFromPositionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UnassignAssociateFromPositionResponse)
+	err := c.cc.Invoke(ctx, OrgContextCommandService_UnassignAssociateFromPosition_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orgContextCommandServiceClient) IngestAssociateBatch(ctx context.Context, in *IngestAssociateBatchRequest, opts ...grpc.CallOption) (*IngestAssociateBatchResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(IngestAssociateBatchResponse)
+	err := c.cc.Invoke(ctx, OrgContextCommandService_IngestAssociateBatch_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orgContextCommandServiceClient) IngestSnapshot(ctx context.Context, in *IngestSnapshotRequest, opts ...grpc.CallOption) (*IngestSnapshotResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(IngestSnapshotResponse)
+	err := c.cc.Invoke(ctx, OrgContextCommandService_IngestSnapshot_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orgContextCommandServiceClient) ApplyDelta(ctx context.Context, in *ApplyDeltaRequest, opts ...grpc.CallOption) (*ApplyDeltaResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ApplyDeltaResponse)
+	err := c.cc.Invoke(ctx, OrgContextCommandService_ApplyDelta_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orgContextCommandServiceClient) RebuildDerivedRelations(ctx context.Context, in *RebuildDerivedRelationsRequest, opts ...grpc.CallOption) (*RebuildDerivedRelationsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RebuildDerivedRelationsResponse)
+	err := c.cc.Invoke(ctx, OrgContextCommandService_RebuildDerivedRelations_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// OrgContextCommandServiceServer is the server API for OrgContextCommandService service.
+// All implementations must embed UnimplementedOrgContextCommandServiceServer
+// for forward compatibility.
+type OrgContextCommandServiceServer interface {
+	UpsertOrgUnit(context.Context, *UpsertOrgUnitRequest) (*UpsertOrgUnitResponse, error)
+	UpsertPosition(context.Context, *UpsertPositionRequest) (*UpsertPositionResponse, error)
+	UpsertAssociate(context.Context, *UpsertAssociateRequest) (*UpsertAssociateResponse, error)
+	UpsertPositionAssignment(context.Context, *UpsertPositionAssignmentRequest) (*UpsertPositionAssignmentResponse, error)
+	UpsertEmploymentEpisode(context.Context, *UpsertEmploymentEpisodeRequest) (*UpsertEmploymentEpisodeResponse, error)
+	SetManagerRelation(context.Context, *SetManagerRelationRequest) (*SetManagerRelationResponse, error)
+	SetHeadOfUnit(context.Context, *SetHeadOfUnitRequest) (*SetHeadOfUnitResponse, error)
+	AssignAssociateToPosition(context.Context, *AssignAssociateToPositionRequest) (*AssignAssociateToPositionResponse, error)
+	UnassignAssociateFromPosition(context.Context, *UnassignAssociateFromPositionRequest) (*UnassignAssociateFromPositionResponse, error)
+	IngestAssociateBatch(context.Context, *IngestAssociateBatchRequest) (*IngestAssociateBatchResponse, error)
+	IngestSnapshot(context.Context, *IngestSnapshotRequest) (*IngestSnapshotResponse, error)
+	ApplyDelta(context.Context, *ApplyDeltaRequest) (*ApplyDeltaResponse, error)
+	RebuildDerivedRelations(context.Context, *RebuildDerivedRelationsRequest) (*RebuildDerivedRelationsResponse, error)
+	mustEmbedUnimplementedOrgContextCommandServiceServer()
+}
+
+// UnimplementedOrgContextCommandServiceServer must be embedded to have
+// forward compatible implementations.
+//
+// NOTE: this should be embedded by value instead of pointer to avoid a nil
+// pointer dereference when methods are called.
+type UnimplementedOrgContextCommandServiceServer struct{}
+
+func (UnimplementedOrgContextCommandServiceServer) UpsertOrgUnit(context.Context, *UpsertOrgUnitRequest) (*UpsertOrgUnitResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpsertOrgUnit not implemented")
+}
+func (UnimplementedOrgContextCommandServiceServer) UpsertPosition(context.Context, *UpsertPositionRequest) (*UpsertPositionResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpsertPosition not implemented")
+}
+func (UnimplementedOrgContextCommandServiceServer) UpsertAssociate(context.Context, *UpsertAssociateRequest) (*UpsertAssociateResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpsertAssociate not implemented")
+}
+func (UnimplementedOrgContextCommandServiceServer) UpsertPositionAssignment(context.Context, *UpsertPositionAssignmentRequest) (*UpsertPositionAssignmentResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpsertPositionAssignment not implemented")
+}
+func (UnimplementedOrgContextCommandServiceServer) UpsertEmploymentEpisode(context.Context, *UpsertEmploymentEpisodeRequest) (*UpsertEmploymentEpisodeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpsertEmploymentEpisode not implemented")
+}
+func (UnimplementedOrgContextCommandServiceServer) SetManagerRelation(context.Context, *SetManagerRelationRequest) (*SetManagerRelationResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SetManagerRelation not implemented")
+}
+func (UnimplementedOrgContextCommandServiceServer) SetHeadOfUnit(context.Context, *SetHeadOfUnitRequest) (*SetHeadOfUnitResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SetHeadOfUnit not implemented")
+}
+func (UnimplementedOrgContextCommandServiceServer) AssignAssociateToPosition(context.Context, *AssignAssociateToPositionRequest) (*AssignAssociateToPositionResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AssignAssociateToPosition not implemented")
+}
+func (UnimplementedOrgContextCommandServiceServer) UnassignAssociateFromPosition(context.Context, *UnassignAssociateFromPositionRequest) (*UnassignAssociateFromPositionResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method UnassignAssociateFromPosition not implemented")
+}
+func (UnimplementedOrgContextCommandServiceServer) IngestAssociateBatch(context.Context, *IngestAssociateBatchRequest) (*IngestAssociateBatchResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method IngestAssociateBatch not implemented")
+}
+func (UnimplementedOrgContextCommandServiceServer) IngestSnapshot(context.Context, *IngestSnapshotRequest) (*IngestSnapshotResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method IngestSnapshot not implemented")
+}
+func (UnimplementedOrgContextCommandServiceServer) ApplyDelta(context.Context, *ApplyDeltaRequest) (*ApplyDeltaResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ApplyDelta not implemented")
+}
+func (UnimplementedOrgContextCommandServiceServer) RebuildDerivedRelations(context.Context, *RebuildDerivedRelationsRequest) (*RebuildDerivedRelationsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RebuildDerivedRelations not implemented")
+}
+func (UnimplementedOrgContextCommandServiceServer) mustEmbedUnimplementedOrgContextCommandServiceServer() {
+}
+func (UnimplementedOrgContextCommandServiceServer) testEmbeddedByValue() {}
+
+// UnsafeOrgContextCommandServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to OrgContextCommandServiceServer will
+// result in compilation errors.
+type UnsafeOrgContextCommandServiceServer interface {
+	mustEmbedUnimplementedOrgContextCommandServiceServer()
+}
+
+func RegisterOrgContextCommandServiceServer(s grpc.ServiceRegistrar, srv OrgContextCommandServiceServer) {
+	// If the following call panics, it indicates UnimplementedOrgContextCommandServiceServer was
+	// embedded by pointer and is nil.  This will cause panics if an
+	// unimplemented method is ever invoked, so we test this at initialization
+	// time to prevent it from happening at runtime later due to I/O.
+	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
+		t.testEmbeddedByValue()
+	}
+	s.RegisterService(&OrgContextCommandService_ServiceDesc, srv)
+}
+
+func _OrgContextCommandService_UpsertOrgUnit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpsertOrgUnitRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrgContextCommandServiceServer).UpsertOrgUnit(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrgContextCommandService_UpsertOrgUnit_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrgContextCommandServiceServer).UpsertOrgUnit(ctx, req.(*UpsertOrgUnitRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrgContextCommandService_UpsertPosition_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpsertPositionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrgContextCommandServiceServer).UpsertPosition(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrgContextCommandService_UpsertPosition_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrgContextCommandServiceServer).UpsertPosition(ctx, req.(*UpsertPositionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrgContextCommandService_UpsertAssociate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpsertAssociateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrgContextCommandServiceServer).UpsertAssociate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrgContextCommandService_UpsertAssociate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrgContextCommandServiceServer).UpsertAssociate(ctx, req.(*UpsertAssociateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrgContextCommandService_UpsertPositionAssignment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpsertPositionAssignmentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrgContextCommandServiceServer).UpsertPositionAssignment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrgContextCommandService_UpsertPositionAssignment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrgContextCommandServiceServer).UpsertPositionAssignment(ctx, req.(*UpsertPositionAssignmentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrgContextCommandService_UpsertEmploymentEpisode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpsertEmploymentEpisodeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrgContextCommandServiceServer).UpsertEmploymentEpisode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrgContextCommandService_UpsertEmploymentEpisode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrgContextCommandServiceServer).UpsertEmploymentEpisode(ctx, req.(*UpsertEmploymentEpisodeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrgContextCommandService_SetManagerRelation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetManagerRelationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrgContextCommandServiceServer).SetManagerRelation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrgContextCommandService_SetManagerRelation_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrgContextCommandServiceServer).SetManagerRelation(ctx, req.(*SetManagerRelationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrgContextCommandService_SetHeadOfUnit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetHeadOfUnitRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrgContextCommandServiceServer).SetHeadOfUnit(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrgContextCommandService_SetHeadOfUnit_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrgContextCommandServiceServer).SetHeadOfUnit(ctx, req.(*SetHeadOfUnitRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrgContextCommandService_AssignAssociateToPosition_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AssignAssociateToPositionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrgContextCommandServiceServer).AssignAssociateToPosition(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrgContextCommandService_AssignAssociateToPosition_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrgContextCommandServiceServer).AssignAssociateToPosition(ctx, req.(*AssignAssociateToPositionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrgContextCommandService_UnassignAssociateFromPosition_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UnassignAssociateFromPositionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrgContextCommandServiceServer).UnassignAssociateFromPosition(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrgContextCommandService_UnassignAssociateFromPosition_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrgContextCommandServiceServer).UnassignAssociateFromPosition(ctx, req.(*UnassignAssociateFromPositionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrgContextCommandService_IngestAssociateBatch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IngestAssociateBatchRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrgContextCommandServiceServer).IngestAssociateBatch(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrgContextCommandService_IngestAssociateBatch_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrgContextCommandServiceServer).IngestAssociateBatch(ctx, req.(*IngestAssociateBatchRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrgContextCommandService_IngestSnapshot_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IngestSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrgContextCommandServiceServer).IngestSnapshot(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrgContextCommandService_IngestSnapshot_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrgContextCommandServiceServer).IngestSnapshot(ctx, req.(*IngestSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrgContextCommandService_ApplyDelta_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ApplyDeltaRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrgContextCommandServiceServer).ApplyDelta(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrgContextCommandService_ApplyDelta_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrgContextCommandServiceServer).ApplyDelta(ctx, req.(*ApplyDeltaRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrgContextCommandService_RebuildDerivedRelations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RebuildDerivedRelationsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrgContextCommandServiceServer).RebuildDerivedRelations(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrgContextCommandService_RebuildDerivedRelations_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrgContextCommandServiceServer).RebuildDerivedRelations(ctx, req.(*RebuildDerivedRelationsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// OrgContextCommandService_ServiceDesc is the grpc.ServiceDesc for OrgContextCommandService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var OrgContextCommandService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "orgcontext.v1.OrgContextCommandService",
+	HandlerType: (*OrgContextCommandServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "UpsertOrgUnit",
+			Handler:    _OrgContextCommandService_UpsertOrgUnit_Handler,
+		},
+		{
+			MethodName: "UpsertPosition",
+			Handler:    _OrgContextCommandService_UpsertPosition_Handler,
+		},
+		{
+			MethodName: "UpsertAssociate",
+			Handler:    _OrgContextCommandService_UpsertAssociate_Handler,
+		},
+		{
+			MethodName: "UpsertPositionAssignment",
+			Handler:    _OrgContextCommandService_UpsertPositionAssignment_Handler,
+		},
+		{
+			MethodName: "UpsertEmploymentEpisode",
+			Handler:    _OrgContextCommandService_UpsertEmploymentEpisode_Handler,
+		},
+		{
+			MethodName: "SetManagerRelation",
+			Handler:    _OrgContextCommandService_SetManagerRelation_Handler,
+		},
+		{
+			MethodName: "SetHeadOfUnit",
+			Handler:    _OrgContextCommandService_SetHeadOfUnit_Handler,
+		},
+		{
+			MethodName: "AssignAssociateToPosition",
+			Handler:    _OrgContextCommandService_AssignAssociateToPosition_Handler,
+		},
+		{
+			MethodName: "UnassignAssociateFromPosition",
+			Handler:    _OrgContextCommandService_UnassignAssociateFromPosition_Handler,
+		},
+		{
+			MethodName: "IngestAssociateBatch",
+			Handler:    _OrgContextCommandService_IngestAssociateBatch_Handler,
+		},
+		{
+			MethodName: "IngestSnapshot",
+			Handler:    _OrgContextCommandService_IngestSnapshot_Handler,
+		},
+		{
+			MethodName: "ApplyDelta",
+			Handler:    _OrgContextCommandService_ApplyDelta_Handler,
+		},
+		{
+			MethodName: "RebuildDerivedRelations",
+			Handler:    _OrgContextCommandService_RebuildDerivedRelations_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

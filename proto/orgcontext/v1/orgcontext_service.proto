@@ -2,29 +2,46 @@ syntax = "proto3";
 
 package orgcontext.v1;
 
-option go_package = "peoplesuite/platform-contracts/gen/go/orgcontext/v1;orgcontextv1";
+option go_package = "github.com/peoplesuite/platform-core/api/proto/orgcontext/v1;orgcontextv1";
 
 import "orgcontext/v1/orgcontext.proto";
 
-// ═══════════════════════════════════════════════════════════════
-//  SERVICE
-// ═══════════════════════════════════════════════════════════════
+service OrgContextQueryService {
+  rpc GetAssociate(GetAssociateRequest) returns (GetAssociateResponse);
+  rpc GetAssociateByUserId(GetAssociateByUserIdRequest) returns (GetAssociateByUserIdResponse);
+  rpc ResolveAssociateContext(ResolveAssociateContextRequest) returns (ResolveAssociateContextResponse);
 
-service OrgService {
-  // ── Queries ─────────────────────────────────────────────
-  rpc GetAssociate(GetAssociateRequest)             returns (GetAssociateResponse);
-  rpc GetAssociateByEmail(GetAssociateByEmailRequest) returns (GetAssociateByEmailResponse);
-  rpc GetAllAssociates(GetAllAssociatesRequest)     returns (GetAllAssociatesResponse);
-  rpc SearchAssociates(SearchAssociatesRequest)     returns (SearchAssociatesResponse);
-  rpc GetDirectReports(GetDirectReportsRequest)     returns (GetDirectReportsResponse);
-  rpc GetReportingChain(GetReportingChainRequest)   returns (GetReportingChainResponse);
-  rpc GetOrgChart(GetOrgChartRequest)               returns (GetOrgChartResponse);
-  rpc GetUnitSubtree(GetUnitSubtreeRequest)         returns (GetUnitSubtreeResponse);
-  rpc GetUnitHeadcount(GetUnitHeadcountRequest)     returns (GetUnitHeadcountResponse);
-  rpc GetSpanOfControl(GetSpanOfControlRequest)     returns (GetSpanOfControlResponse);
-  rpc GetShortestPath(GetShortestPathRequest)       returns (GetShortestPathResponse);
-  rpc GetOrphans(GetOrphansRequest)                 returns (GetOrphansResponse);
+  rpc GetOrgUnit(GetOrgUnitRequest) returns (GetOrgUnitResponse);
+  rpc GetOrgUnitTree(GetOrgUnitTreeRequest) returns (GetOrgUnitTreeResponse);
+  rpc GetOrgLineage(GetOrgLineageRequest) returns (GetOrgLineageResponse);
 
-  // ── Commands ────────────────────────────────────────────
-  rpc TriggerSync(TriggerSyncRequest)               returns (TriggerSyncResponse);
+  rpc GetDirectReports(GetDirectReportsRequest) returns (GetDirectReportsResponse);
+  rpc GetIndirectReports(GetIndirectReportsRequest) returns (GetIndirectReportsResponse);
+  rpc GetUnitMembers(GetUnitMembersRequest) returns (GetUnitMembersResponse);
+  rpc GetHeadOfUnit(GetHeadOfUnitRequest) returns (GetHeadOfUnitResponse);
+
+  rpc GetAssignments(GetAssignmentsRequest) returns (GetAssignmentsResponse);
+  rpc GetEmploymentHistory(GetEmploymentHistoryRequest) returns (GetEmploymentHistoryResponse);
+
+  rpc SearchAssociates(SearchAssociatesRequest) returns (SearchAssociatesResponse);
+  rpc SearchOrgUnits(SearchOrgUnitsRequest) returns (SearchOrgUnitsResponse);
+  rpc GetUnassignedAssociates(GetUnassignedAssociatesRequest) returns (GetUnassignedAssociatesResponse);
+}
+
+service OrgContextCommandService {
+  rpc UpsertOrgUnit(UpsertOrgUnitRequest) returns (UpsertOrgUnitResponse);
+  rpc UpsertPosition(UpsertPositionRequest) returns (UpsertPositionResponse);
+  rpc UpsertAssociate(UpsertAssociateRequest) returns (UpsertAssociateResponse);
+  rpc UpsertPositionAssignment(UpsertPositionAssignmentRequest) returns (UpsertPositionAssignmentResponse);
+  rpc UpsertEmploymentEpisode(UpsertEmploymentEpisodeRequest) returns (UpsertEmploymentEpisodeResponse);
+
+  rpc SetManagerRelation(SetManagerRelationRequest) returns (SetManagerRelationResponse);
+  rpc SetHeadOfUnit(SetHeadOfUnitRequest) returns (SetHeadOfUnitResponse);
+  rpc AssignAssociateToPosition(AssignAssociateToPositionRequest) returns (AssignAssociateToPositionResponse);
+  rpc UnassignAssociateFromPosition(UnassignAssociateFromPositionRequest) returns (UnassignAssociateFromPositionResponse);
+
+  rpc IngestAssociateBatch(IngestAssociateBatchRequest) returns (IngestAssociateBatchResponse);
+  rpc IngestSnapshot(IngestSnapshotRequest) returns (IngestSnapshotResponse);
+  rpc ApplyDelta(ApplyDeltaRequest) returns (ApplyDeltaResponse);
+  rpc RebuildDerivedRelations(RebuildDerivedRelationsRequest) returns (RebuildDerivedRelationsResponse);
 }

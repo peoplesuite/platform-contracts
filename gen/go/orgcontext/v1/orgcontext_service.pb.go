@@ -24,81 +24,157 @@ var File_orgcontext_v1_orgcontext_service_proto protoreflect.FileDescriptor
 
 const file_orgcontext_v1_orgcontext_service_proto_rawDesc = "" +
 	"\n" +
-	"&orgcontext/v1/orgcontext_service.proto\x12\rorgcontext.v1\x1a\x1eorgcontext/v1/orgcontext.proto2\xf4\t\n" +
+	"&orgcontext/v1/orgcontext_service.proto\x12\rorgcontext.v1\x1a\x1eorgcontext/v1/orgcontext.proto2\x83\f\n" +
+	"\x16OrgContextQueryService\x12W\n" +
+	"\fGetAssociate\x12\".orgcontext.v1.GetAssociateRequest\x1a#.orgcontext.v1.GetAssociateResponse\x12o\n" +
+	"\x14GetAssociateByUserId\x12*.orgcontext.v1.GetAssociateByUserIdRequest\x1a+.orgcontext.v1.GetAssociateByUserIdResponse\x12x\n" +
+	"\x17ResolveAssociateContext\x12-.orgcontext.v1.ResolveAssociateContextRequest\x1a..orgcontext.v1.ResolveAssociateContextResponse\x12Q\n" +
 	"\n" +
-	"OrgService\x12W\n" +
-	"\fGetAssociate\x12\".orgcontext.v1.GetAssociateRequest\x1a#.orgcontext.v1.GetAssociateResponse\x12l\n" +
-	"\x13GetAssociateByEmail\x12).orgcontext.v1.GetAssociateByEmailRequest\x1a*.orgcontext.v1.GetAssociateByEmailResponse\x12c\n" +
-	"\x10GetAllAssociates\x12&.orgcontext.v1.GetAllAssociatesRequest\x1a'.orgcontext.v1.GetAllAssociatesResponse\x12c\n" +
-	"\x10SearchAssociates\x12&.orgcontext.v1.SearchAssociatesRequest\x1a'.orgcontext.v1.SearchAssociatesResponse\x12c\n" +
-	"\x10GetDirectReports\x12&.orgcontext.v1.GetDirectReportsRequest\x1a'.orgcontext.v1.GetDirectReportsResponse\x12f\n" +
-	"\x11GetReportingChain\x12'.orgcontext.v1.GetReportingChainRequest\x1a(.orgcontext.v1.GetReportingChainResponse\x12T\n" +
-	"\vGetOrgChart\x12!.orgcontext.v1.GetOrgChartRequest\x1a\".orgcontext.v1.GetOrgChartResponse\x12]\n" +
-	"\x0eGetUnitSubtree\x12$.orgcontext.v1.GetUnitSubtreeRequest\x1a%.orgcontext.v1.GetUnitSubtreeResponse\x12c\n" +
-	"\x10GetUnitHeadcount\x12&.orgcontext.v1.GetUnitHeadcountRequest\x1a'.orgcontext.v1.GetUnitHeadcountResponse\x12c\n" +
-	"\x10GetSpanOfControl\x12&.orgcontext.v1.GetSpanOfControlRequest\x1a'.orgcontext.v1.GetSpanOfControlResponse\x12`\n" +
-	"\x0fGetShortestPath\x12%.orgcontext.v1.GetShortestPathRequest\x1a&.orgcontext.v1.GetShortestPathResponse\x12Q\n" +
+	"GetOrgUnit\x12 .orgcontext.v1.GetOrgUnitRequest\x1a!.orgcontext.v1.GetOrgUnitResponse\x12]\n" +
+	"\x0eGetOrgUnitTree\x12$.orgcontext.v1.GetOrgUnitTreeRequest\x1a%.orgcontext.v1.GetOrgUnitTreeResponse\x12Z\n" +
+	"\rGetOrgLineage\x12#.orgcontext.v1.GetOrgLineageRequest\x1a$.orgcontext.v1.GetOrgLineageResponse\x12c\n" +
+	"\x10GetDirectReports\x12&.orgcontext.v1.GetDirectReportsRequest\x1a'.orgcontext.v1.GetDirectReportsResponse\x12i\n" +
+	"\x12GetIndirectReports\x12(.orgcontext.v1.GetIndirectReportsRequest\x1a).orgcontext.v1.GetIndirectReportsResponse\x12]\n" +
+	"\x0eGetUnitMembers\x12$.orgcontext.v1.GetUnitMembersRequest\x1a%.orgcontext.v1.GetUnitMembersResponse\x12Z\n" +
+	"\rGetHeadOfUnit\x12#.orgcontext.v1.GetHeadOfUnitRequest\x1a$.orgcontext.v1.GetHeadOfUnitResponse\x12]\n" +
+	"\x0eGetAssignments\x12$.orgcontext.v1.GetAssignmentsRequest\x1a%.orgcontext.v1.GetAssignmentsResponse\x12o\n" +
+	"\x14GetEmploymentHistory\x12*.orgcontext.v1.GetEmploymentHistoryRequest\x1a+.orgcontext.v1.GetEmploymentHistoryResponse\x12c\n" +
+	"\x10SearchAssociates\x12&.orgcontext.v1.SearchAssociatesRequest\x1a'.orgcontext.v1.SearchAssociatesResponse\x12]\n" +
+	"\x0eSearchOrgUnits\x12$.orgcontext.v1.SearchOrgUnitsRequest\x1a%.orgcontext.v1.SearchOrgUnitsResponse\x12x\n" +
+	"\x17GetUnassignedAssociates\x12-.orgcontext.v1.GetUnassignedAssociatesRequest\x1a..orgcontext.v1.GetUnassignedAssociatesResponse2\x9f\v\n" +
+	"\x18OrgContextCommandService\x12Z\n" +
+	"\rUpsertOrgUnit\x12#.orgcontext.v1.UpsertOrgUnitRequest\x1a$.orgcontext.v1.UpsertOrgUnitResponse\x12]\n" +
+	"\x0eUpsertPosition\x12$.orgcontext.v1.UpsertPositionRequest\x1a%.orgcontext.v1.UpsertPositionResponse\x12`\n" +
+	"\x0fUpsertAssociate\x12%.orgcontext.v1.UpsertAssociateRequest\x1a&.orgcontext.v1.UpsertAssociateResponse\x12{\n" +
+	"\x18UpsertPositionAssignment\x12..orgcontext.v1.UpsertPositionAssignmentRequest\x1a/.orgcontext.v1.UpsertPositionAssignmentResponse\x12x\n" +
+	"\x17UpsertEmploymentEpisode\x12-.orgcontext.v1.UpsertEmploymentEpisodeRequest\x1a..orgcontext.v1.UpsertEmploymentEpisodeResponse\x12i\n" +
+	"\x12SetManagerRelation\x12(.orgcontext.v1.SetManagerRelationRequest\x1a).orgcontext.v1.SetManagerRelationResponse\x12Z\n" +
+	"\rSetHeadOfUnit\x12#.orgcontext.v1.SetHeadOfUnitRequest\x1a$.orgcontext.v1.SetHeadOfUnitResponse\x12~\n" +
+	"\x19AssignAssociateToPosition\x12/.orgcontext.v1.AssignAssociateToPositionRequest\x1a0.orgcontext.v1.AssignAssociateToPositionResponse\x12\x8a\x01\n" +
+	"\x1dUnassignAssociateFromPosition\x123.orgcontext.v1.UnassignAssociateFromPositionRequest\x1a4.orgcontext.v1.UnassignAssociateFromPositionResponse\x12o\n" +
+	"\x14IngestAssociateBatch\x12*.orgcontext.v1.IngestAssociateBatchRequest\x1a+.orgcontext.v1.IngestAssociateBatchResponse\x12]\n" +
+	"\x0eIngestSnapshot\x12$.orgcontext.v1.IngestSnapshotRequest\x1a%.orgcontext.v1.IngestSnapshotResponse\x12Q\n" +
 	"\n" +
-	"GetOrphans\x12 .orgcontext.v1.GetOrphansRequest\x1a!.orgcontext.v1.GetOrphansResponse\x12T\n" +
-	"\vTriggerSync\x12!.orgcontext.v1.TriggerSyncRequest\x1a\".orgcontext.v1.TriggerSyncResponseBBZ@peoplesuite/platform-contracts/gen/go/orgcontext/v1;orgcontextv1b\x06proto3"
+	"ApplyDelta\x12 .orgcontext.v1.ApplyDeltaRequest\x1a!.orgcontext.v1.ApplyDeltaResponse\x12x\n" +
+	"\x17RebuildDerivedRelations\x12-.orgcontext.v1.RebuildDerivedRelationsRequest\x1a..orgcontext.v1.RebuildDerivedRelationsResponseBKZIgithub.com/peoplesuite/platform-core/api/proto/orgcontext/v1;orgcontextv1b\x06proto3"
 
 var file_orgcontext_v1_orgcontext_service_proto_goTypes = []any{
-	(*GetAssociateRequest)(nil),         // 0: orgcontext.v1.GetAssociateRequest
-	(*GetAssociateByEmailRequest)(nil),  // 1: orgcontext.v1.GetAssociateByEmailRequest
-	(*GetAllAssociatesRequest)(nil),     // 2: orgcontext.v1.GetAllAssociatesRequest
-	(*SearchAssociatesRequest)(nil),     // 3: orgcontext.v1.SearchAssociatesRequest
-	(*GetDirectReportsRequest)(nil),     // 4: orgcontext.v1.GetDirectReportsRequest
-	(*GetReportingChainRequest)(nil),    // 5: orgcontext.v1.GetReportingChainRequest
-	(*GetOrgChartRequest)(nil),          // 6: orgcontext.v1.GetOrgChartRequest
-	(*GetUnitSubtreeRequest)(nil),       // 7: orgcontext.v1.GetUnitSubtreeRequest
-	(*GetUnitHeadcountRequest)(nil),     // 8: orgcontext.v1.GetUnitHeadcountRequest
-	(*GetSpanOfControlRequest)(nil),     // 9: orgcontext.v1.GetSpanOfControlRequest
-	(*GetShortestPathRequest)(nil),      // 10: orgcontext.v1.GetShortestPathRequest
-	(*GetOrphansRequest)(nil),           // 11: orgcontext.v1.GetOrphansRequest
-	(*TriggerSyncRequest)(nil),          // 12: orgcontext.v1.TriggerSyncRequest
-	(*GetAssociateResponse)(nil),        // 13: orgcontext.v1.GetAssociateResponse
-	(*GetAssociateByEmailResponse)(nil), // 14: orgcontext.v1.GetAssociateByEmailResponse
-	(*GetAllAssociatesResponse)(nil),    // 15: orgcontext.v1.GetAllAssociatesResponse
-	(*SearchAssociatesResponse)(nil),    // 16: orgcontext.v1.SearchAssociatesResponse
-	(*GetDirectReportsResponse)(nil),    // 17: orgcontext.v1.GetDirectReportsResponse
-	(*GetReportingChainResponse)(nil),   // 18: orgcontext.v1.GetReportingChainResponse
-	(*GetOrgChartResponse)(nil),         // 19: orgcontext.v1.GetOrgChartResponse
-	(*GetUnitSubtreeResponse)(nil),      // 20: orgcontext.v1.GetUnitSubtreeResponse
-	(*GetUnitHeadcountResponse)(nil),    // 21: orgcontext.v1.GetUnitHeadcountResponse
-	(*GetSpanOfControlResponse)(nil),    // 22: orgcontext.v1.GetSpanOfControlResponse
-	(*GetShortestPathResponse)(nil),     // 23: orgcontext.v1.GetShortestPathResponse
-	(*GetOrphansResponse)(nil),          // 24: orgcontext.v1.GetOrphansResponse
-	(*TriggerSyncResponse)(nil),         // 25: orgcontext.v1.TriggerSyncResponse
+	(*GetAssociateRequest)(nil),                   // 0: orgcontext.v1.GetAssociateRequest
+	(*GetAssociateByUserIdRequest)(nil),           // 1: orgcontext.v1.GetAssociateByUserIdRequest
+	(*ResolveAssociateContextRequest)(nil),        // 2: orgcontext.v1.ResolveAssociateContextRequest
+	(*GetOrgUnitRequest)(nil),                     // 3: orgcontext.v1.GetOrgUnitRequest
+	(*GetOrgUnitTreeRequest)(nil),                 // 4: orgcontext.v1.GetOrgUnitTreeRequest
+	(*GetOrgLineageRequest)(nil),                  // 5: orgcontext.v1.GetOrgLineageRequest
+	(*GetDirectReportsRequest)(nil),               // 6: orgcontext.v1.GetDirectReportsRequest
+	(*GetIndirectReportsRequest)(nil),             // 7: orgcontext.v1.GetIndirectReportsRequest
+	(*GetUnitMembersRequest)(nil),                 // 8: orgcontext.v1.GetUnitMembersRequest
+	(*GetHeadOfUnitRequest)(nil),                  // 9: orgcontext.v1.GetHeadOfUnitRequest
+	(*GetAssignmentsRequest)(nil),                 // 10: orgcontext.v1.GetAssignmentsRequest
+	(*GetEmploymentHistoryRequest)(nil),           // 11: orgcontext.v1.GetEmploymentHistoryRequest
+	(*SearchAssociatesRequest)(nil),               // 12: orgcontext.v1.SearchAssociatesRequest
+	(*SearchOrgUnitsRequest)(nil),                 // 13: orgcontext.v1.SearchOrgUnitsRequest
+	(*GetUnassignedAssociatesRequest)(nil),        // 14: orgcontext.v1.GetUnassignedAssociatesRequest
+	(*UpsertOrgUnitRequest)(nil),                  // 15: orgcontext.v1.UpsertOrgUnitRequest
+	(*UpsertPositionRequest)(nil),                 // 16: orgcontext.v1.UpsertPositionRequest
+	(*UpsertAssociateRequest)(nil),                // 17: orgcontext.v1.UpsertAssociateRequest
+	(*UpsertPositionAssignmentRequest)(nil),       // 18: orgcontext.v1.UpsertPositionAssignmentRequest
+	(*UpsertEmploymentEpisodeRequest)(nil),        // 19: orgcontext.v1.UpsertEmploymentEpisodeRequest
+	(*SetManagerRelationRequest)(nil),             // 20: orgcontext.v1.SetManagerRelationRequest
+	(*SetHeadOfUnitRequest)(nil),                  // 21: orgcontext.v1.SetHeadOfUnitRequest
+	(*AssignAssociateToPositionRequest)(nil),      // 22: orgcontext.v1.AssignAssociateToPositionRequest
+	(*UnassignAssociateFromPositionRequest)(nil),  // 23: orgcontext.v1.UnassignAssociateFromPositionRequest
+	(*IngestAssociateBatchRequest)(nil),           // 24: orgcontext.v1.IngestAssociateBatchRequest
+	(*IngestSnapshotRequest)(nil),                 // 25: orgcontext.v1.IngestSnapshotRequest
+	(*ApplyDeltaRequest)(nil),                     // 26: orgcontext.v1.ApplyDeltaRequest
+	(*RebuildDerivedRelationsRequest)(nil),        // 27: orgcontext.v1.RebuildDerivedRelationsRequest
+	(*GetAssociateResponse)(nil),                  // 28: orgcontext.v1.GetAssociateResponse
+	(*GetAssociateByUserIdResponse)(nil),          // 29: orgcontext.v1.GetAssociateByUserIdResponse
+	(*ResolveAssociateContextResponse)(nil),       // 30: orgcontext.v1.ResolveAssociateContextResponse
+	(*GetOrgUnitResponse)(nil),                    // 31: orgcontext.v1.GetOrgUnitResponse
+	(*GetOrgUnitTreeResponse)(nil),                // 32: orgcontext.v1.GetOrgUnitTreeResponse
+	(*GetOrgLineageResponse)(nil),                 // 33: orgcontext.v1.GetOrgLineageResponse
+	(*GetDirectReportsResponse)(nil),              // 34: orgcontext.v1.GetDirectReportsResponse
+	(*GetIndirectReportsResponse)(nil),            // 35: orgcontext.v1.GetIndirectReportsResponse
+	(*GetUnitMembersResponse)(nil),                // 36: orgcontext.v1.GetUnitMembersResponse
+	(*GetHeadOfUnitResponse)(nil),                 // 37: orgcontext.v1.GetHeadOfUnitResponse
+	(*GetAssignmentsResponse)(nil),                // 38: orgcontext.v1.GetAssignmentsResponse
+	(*GetEmploymentHistoryResponse)(nil),          // 39: orgcontext.v1.GetEmploymentHistoryResponse
+	(*SearchAssociatesResponse)(nil),              // 40: orgcontext.v1.SearchAssociatesResponse
+	(*SearchOrgUnitsResponse)(nil),                // 41: orgcontext.v1.SearchOrgUnitsResponse
+	(*GetUnassignedAssociatesResponse)(nil),       // 42: orgcontext.v1.GetUnassignedAssociatesResponse
+	(*UpsertOrgUnitResponse)(nil),                 // 43: orgcontext.v1.UpsertOrgUnitResponse
+	(*UpsertPositionResponse)(nil),                // 44: orgcontext.v1.UpsertPositionResponse
+	(*UpsertAssociateResponse)(nil),               // 45: orgcontext.v1.UpsertAssociateResponse
+	(*UpsertPositionAssignmentResponse)(nil),      // 46: orgcontext.v1.UpsertPositionAssignmentResponse
+	(*UpsertEmploymentEpisodeResponse)(nil),       // 47: orgcontext.v1.UpsertEmploymentEpisodeResponse
+	(*SetManagerRelationResponse)(nil),            // 48: orgcontext.v1.SetManagerRelationResponse
+	(*SetHeadOfUnitResponse)(nil),                 // 49: orgcontext.v1.SetHeadOfUnitResponse
+	(*AssignAssociateToPositionResponse)(nil),     // 50: orgcontext.v1.AssignAssociateToPositionResponse
+	(*UnassignAssociateFromPositionResponse)(nil), // 51: orgcontext.v1.UnassignAssociateFromPositionResponse
+	(*IngestAssociateBatchResponse)(nil),          // 52: orgcontext.v1.IngestAssociateBatchResponse
+	(*IngestSnapshotResponse)(nil),                // 53: orgcontext.v1.IngestSnapshotResponse
+	(*ApplyDeltaResponse)(nil),                    // 54: orgcontext.v1.ApplyDeltaResponse
+	(*RebuildDerivedRelationsResponse)(nil),       // 55: orgcontext.v1.RebuildDerivedRelationsResponse
 }
 var file_orgcontext_v1_orgcontext_service_proto_depIdxs = []int32{
-	0,  // 0: orgcontext.v1.OrgService.GetAssociate:input_type -> orgcontext.v1.GetAssociateRequest
-	1,  // 1: orgcontext.v1.OrgService.GetAssociateByEmail:input_type -> orgcontext.v1.GetAssociateByEmailRequest
-	2,  // 2: orgcontext.v1.OrgService.GetAllAssociates:input_type -> orgcontext.v1.GetAllAssociatesRequest
-	3,  // 3: orgcontext.v1.OrgService.SearchAssociates:input_type -> orgcontext.v1.SearchAssociatesRequest
-	4,  // 4: orgcontext.v1.OrgService.GetDirectReports:input_type -> orgcontext.v1.GetDirectReportsRequest
-	5,  // 5: orgcontext.v1.OrgService.GetReportingChain:input_type -> orgcontext.v1.GetReportingChainRequest
-	6,  // 6: orgcontext.v1.OrgService.GetOrgChart:input_type -> orgcontext.v1.GetOrgChartRequest
-	7,  // 7: orgcontext.v1.OrgService.GetUnitSubtree:input_type -> orgcontext.v1.GetUnitSubtreeRequest
-	8,  // 8: orgcontext.v1.OrgService.GetUnitHeadcount:input_type -> orgcontext.v1.GetUnitHeadcountRequest
-	9,  // 9: orgcontext.v1.OrgService.GetSpanOfControl:input_type -> orgcontext.v1.GetSpanOfControlRequest
-	10, // 10: orgcontext.v1.OrgService.GetShortestPath:input_type -> orgcontext.v1.GetShortestPathRequest
-	11, // 11: orgcontext.v1.OrgService.GetOrphans:input_type -> orgcontext.v1.GetOrphansRequest
-	12, // 12: orgcontext.v1.OrgService.TriggerSync:input_type -> orgcontext.v1.TriggerSyncRequest
-	13, // 13: orgcontext.v1.OrgService.GetAssociate:output_type -> orgcontext.v1.GetAssociateResponse
-	14, // 14: orgcontext.v1.OrgService.GetAssociateByEmail:output_type -> orgcontext.v1.GetAssociateByEmailResponse
-	15, // 15: orgcontext.v1.OrgService.GetAllAssociates:output_type -> orgcontext.v1.GetAllAssociatesResponse
-	16, // 16: orgcontext.v1.OrgService.SearchAssociates:output_type -> orgcontext.v1.SearchAssociatesResponse
-	17, // 17: orgcontext.v1.OrgService.GetDirectReports:output_type -> orgcontext.v1.GetDirectReportsResponse
-	18, // 18: orgcontext.v1.OrgService.GetReportingChain:output_type -> orgcontext.v1.GetReportingChainResponse
-	19, // 19: orgcontext.v1.OrgService.GetOrgChart:output_type -> orgcontext.v1.GetOrgChartResponse
-	20, // 20: orgcontext.v1.OrgService.GetUnitSubtree:output_type -> orgcontext.v1.GetUnitSubtreeResponse
-	21, // 21: orgcontext.v1.OrgService.GetUnitHeadcount:output_type -> orgcontext.v1.GetUnitHeadcountResponse
-	22, // 22: orgcontext.v1.OrgService.GetSpanOfControl:output_type -> orgcontext.v1.GetSpanOfControlResponse
-	23, // 23: orgcontext.v1.OrgService.GetShortestPath:output_type -> orgcontext.v1.GetShortestPathResponse
-	24, // 24: orgcontext.v1.OrgService.GetOrphans:output_type -> orgcontext.v1.GetOrphansResponse
-	25, // 25: orgcontext.v1.OrgService.TriggerSync:output_type -> orgcontext.v1.TriggerSyncResponse
-	13, // [13:26] is the sub-list for method output_type
-	0,  // [0:13] is the sub-list for method input_type
+	0,  // 0: orgcontext.v1.OrgContextQueryService.GetAssociate:input_type -> orgcontext.v1.GetAssociateRequest
+	1,  // 1: orgcontext.v1.OrgContextQueryService.GetAssociateByUserId:input_type -> orgcontext.v1.GetAssociateByUserIdRequest
+	2,  // 2: orgcontext.v1.OrgContextQueryService.ResolveAssociateContext:input_type -> orgcontext.v1.ResolveAssociateContextRequest
+	3,  // 3: orgcontext.v1.OrgContextQueryService.GetOrgUnit:input_type -> orgcontext.v1.GetOrgUnitRequest
+	4,  // 4: orgcontext.v1.OrgContextQueryService.GetOrgUnitTree:input_type -> orgcontext.v1.GetOrgUnitTreeRequest
+	5,  // 5: orgcontext.v1.OrgContextQueryService.GetOrgLineage:input_type -> orgcontext.v1.GetOrgLineageRequest
+	6,  // 6: orgcontext.v1.OrgContextQueryService.GetDirectReports:input_type -> orgcontext.v1.GetDirectReportsRequest
+	7,  // 7: orgcontext.v1.OrgContextQueryService.GetIndirectReports:input_type -> orgcontext.v1.GetIndirectReportsRequest
+	8,  // 8: orgcontext.v1.OrgContextQueryService.GetUnitMembers:input_type -> orgcontext.v1.GetUnitMembersRequest
+	9,  // 9: orgcontext.v1.OrgContextQueryService.GetHeadOfUnit:input_type -> orgcontext.v1.GetHeadOfUnitRequest
+	10, // 10: orgcontext.v1.OrgContextQueryService.GetAssignments:input_type -> orgcontext.v1.GetAssignmentsRequest
+	11, // 11: orgcontext.v1.OrgContextQueryService.GetEmploymentHistory:input_type -> orgcontext.v1.GetEmploymentHistoryRequest
+	12, // 12: orgcontext.v1.OrgContextQueryService.SearchAssociates:input_type -> orgcontext.v1.SearchAssociatesRequest
+	13, // 13: orgcontext.v1.OrgContextQueryService.SearchOrgUnits:input_type -> orgcontext.v1.SearchOrgUnitsRequest
+	14, // 14: orgcontext.v1.OrgContextQueryService.GetUnassignedAssociates:input_type -> orgcontext.v1.GetUnassignedAssociatesRequest
+	15, // 15: orgcontext.v1.OrgContextCommandService.UpsertOrgUnit:input_type -> orgcontext.v1.UpsertOrgUnitRequest
+	16, // 16: orgcontext.v1.OrgContextCommandService.UpsertPosition:input_type -> orgcontext.v1.UpsertPositionRequest
+	17, // 17: orgcontext.v1.OrgContextCommandService.UpsertAssociate:input_type -> orgcontext.v1.UpsertAssociateRequest
+	18, // 18: orgcontext.v1.OrgContextCommandService.UpsertPositionAssignment:input_type -> orgcontext.v1.UpsertPositionAssignmentRequest
+	19, // 19: orgcontext.v1.OrgContextCommandService.UpsertEmploymentEpisode:input_type -> orgcontext.v1.UpsertEmploymentEpisodeRequest
+	20, // 20: orgcontext.v1.OrgContextCommandService.SetManagerRelation:input_type -> orgcontext.v1.SetManagerRelationRequest
+	21, // 21: orgcontext.v1.OrgContextCommandService.SetHeadOfUnit:input_type -> orgcontext.v1.SetHeadOfUnitRequest
+	22, // 22: orgcontext.v1.OrgContextCommandService.AssignAssociateToPosition:input_type -> orgcontext.v1.AssignAssociateToPositionRequest
+	23, // 23: orgcontext.v1.OrgContextCommandService.UnassignAssociateFromPosition:input_type -> orgcontext.v1.UnassignAssociateFromPositionRequest
+	24, // 24: orgcontext.v1.OrgContextCommandService.IngestAssociateBatch:input_type -> orgcontext.v1.IngestAssociateBatchRequest
+	25, // 25: orgcontext.v1.OrgContextCommandService.IngestSnapshot:input_type -> orgcontext.v1.IngestSnapshotRequest
+	26, // 26: orgcontext.v1.OrgContextCommandService.ApplyDelta:input_type -> orgcontext.v1.ApplyDeltaRequest
+	27, // 27: orgcontext.v1.OrgContextCommandService.RebuildDerivedRelations:input_type -> orgcontext.v1.RebuildDerivedRelationsRequest
+	28, // 28: orgcontext.v1.OrgContextQueryService.GetAssociate:output_type -> orgcontext.v1.GetAssociateResponse
+	29, // 29: orgcontext.v1.OrgContextQueryService.GetAssociateByUserId:output_type -> orgcontext.v1.GetAssociateByUserIdResponse
+	30, // 30: orgcontext.v1.OrgContextQueryService.ResolveAssociateContext:output_type -> orgcontext.v1.ResolveAssociateContextResponse
+	31, // 31: orgcontext.v1.OrgContextQueryService.GetOrgUnit:output_type -> orgcontext.v1.GetOrgUnitResponse
+	32, // 32: orgcontext.v1.OrgContextQueryService.GetOrgUnitTree:output_type -> orgcontext.v1.GetOrgUnitTreeResponse
+	33, // 33: orgcontext.v1.OrgContextQueryService.GetOrgLineage:output_type -> orgcontext.v1.GetOrgLineageResponse
+	34, // 34: orgcontext.v1.OrgContextQueryService.GetDirectReports:output_type -> orgcontext.v1.GetDirectReportsResponse
+	35, // 35: orgcontext.v1.OrgContextQueryService.GetIndirectReports:output_type -> orgcontext.v1.GetIndirectReportsResponse
+	36, // 36: orgcontext.v1.OrgContextQueryService.GetUnitMembers:output_type -> orgcontext.v1.GetUnitMembersResponse
+	37, // 37: orgcontext.v1.OrgContextQueryService.GetHeadOfUnit:output_type -> orgcontext.v1.GetHeadOfUnitResponse
+	38, // 38: orgcontext.v1.OrgContextQueryService.GetAssignments:output_type -> orgcontext.v1.GetAssignmentsResponse
+	39, // 39: orgcontext.v1.OrgContextQueryService.GetEmploymentHistory:output_type -> orgcontext.v1.GetEmploymentHistoryResponse
+	40, // 40: orgcontext.v1.OrgContextQueryService.SearchAssociates:output_type -> orgcontext.v1.SearchAssociatesResponse
+	41, // 41: orgcontext.v1.OrgContextQueryService.SearchOrgUnits:output_type -> orgcontext.v1.SearchOrgUnitsResponse
+	42, // 42: orgcontext.v1.OrgContextQueryService.GetUnassignedAssociates:output_type -> orgcontext.v1.GetUnassignedAssociatesResponse
+	43, // 43: orgcontext.v1.OrgContextCommandService.UpsertOrgUnit:output_type -> orgcontext.v1.UpsertOrgUnitResponse
+	44, // 44: orgcontext.v1.OrgContextCommandService.UpsertPosition:output_type -> orgcontext.v1.UpsertPositionResponse
+	45, // 45: orgcontext.v1.OrgContextCommandService.UpsertAssociate:output_type -> orgcontext.v1.UpsertAssociateResponse
+	46, // 46: orgcontext.v1.OrgContextCommandService.UpsertPositionAssignment:output_type -> orgcontext.v1.UpsertPositionAssignmentResponse
+	47, // 47: orgcontext.v1.OrgContextCommandService.UpsertEmploymentEpisode:output_type -> orgcontext.v1.UpsertEmploymentEpisodeResponse
+	48, // 48: orgcontext.v1.OrgContextCommandService.SetManagerRelation:output_type -> orgcontext.v1.SetManagerRelationResponse
+	49, // 49: orgcontext.v1.OrgContextCommandService.SetHeadOfUnit:output_type -> orgcontext.v1.SetHeadOfUnitResponse
+	50, // 50: orgcontext.v1.OrgContextCommandService.AssignAssociateToPosition:output_type -> orgcontext.v1.AssignAssociateToPositionResponse
+	51, // 51: orgcontext.v1.OrgContextCommandService.UnassignAssociateFromPosition:output_type -> orgcontext.v1.UnassignAssociateFromPositionResponse
+	52, // 52: orgcontext.v1.OrgContextCommandService.IngestAssociateBatch:output_type -> orgcontext.v1.IngestAssociateBatchResponse
+	53, // 53: orgcontext.v1.OrgContextCommandService.IngestSnapshot:output_type -> orgcontext.v1.IngestSnapshotResponse
+	54, // 54: orgcontext.v1.OrgContextCommandService.ApplyDelta:output_type -> orgcontext.v1.ApplyDeltaResponse
+	55, // 55: orgcontext.v1.OrgContextCommandService.RebuildDerivedRelations:output_type -> orgcontext.v1.RebuildDerivedRelationsResponse
+	28, // [28:56] is the sub-list for method output_type
+	0,  // [0:28] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name
@@ -118,7 +194,7 @@ func file_orgcontext_v1_orgcontext_service_proto_init() {
 			NumEnums:      0,
 			NumMessages:   0,
 			NumExtensions: 0,
-			NumServices:   1,
+			NumServices:   2,
 		},
 		GoTypes:           file_orgcontext_v1_orgcontext_service_proto_goTypes,
 		DependencyIndexes: file_orgcontext_v1_orgcontext_service_proto_depIdxs,

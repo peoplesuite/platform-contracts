@@ -9,6 +9,7 @@ package orgcontextv1
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -21,21 +22,941 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type Position struct {
+type AssociateState int32
+
+const (
+	AssociateState_ASSOCIATE_STATE_UNSPECIFIED            AssociateState = 0
+	AssociateState_ASSOCIATE_STATE_ACTIVE_ASSIGNED        AssociateState = 1
+	AssociateState_ASSOCIATE_STATE_ACTIVE_UNASSIGNED      AssociateState = 2
+	AssociateState_ASSOCIATE_STATE_INACTIVE_HISTORY_ONLY  AssociateState = 3
+	AssociateState_ASSOCIATE_STATE_TERMINATED             AssociateState = 4
+	AssociateState_ASSOCIATE_STATE_PENDING_RECONCILIATION AssociateState = 5
+)
+
+// Enum value maps for AssociateState.
+var (
+	AssociateState_name = map[int32]string{
+		0: "ASSOCIATE_STATE_UNSPECIFIED",
+		1: "ASSOCIATE_STATE_ACTIVE_ASSIGNED",
+		2: "ASSOCIATE_STATE_ACTIVE_UNASSIGNED",
+		3: "ASSOCIATE_STATE_INACTIVE_HISTORY_ONLY",
+		4: "ASSOCIATE_STATE_TERMINATED",
+		5: "ASSOCIATE_STATE_PENDING_RECONCILIATION",
+	}
+	AssociateState_value = map[string]int32{
+		"ASSOCIATE_STATE_UNSPECIFIED":            0,
+		"ASSOCIATE_STATE_ACTIVE_ASSIGNED":        1,
+		"ASSOCIATE_STATE_ACTIVE_UNASSIGNED":      2,
+		"ASSOCIATE_STATE_INACTIVE_HISTORY_ONLY":  3,
+		"ASSOCIATE_STATE_TERMINATED":             4,
+		"ASSOCIATE_STATE_PENDING_RECONCILIATION": 5,
+	}
+)
+
+func (x AssociateState) Enum() *AssociateState {
+	p := new(AssociateState)
+	*p = x
+	return p
+}
+
+func (x AssociateState) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (AssociateState) Descriptor() protoreflect.EnumDescriptor {
+	return file_orgcontext_v1_orgcontext_proto_enumTypes[0].Descriptor()
+}
+
+func (AssociateState) Type() protoreflect.EnumType {
+	return &file_orgcontext_v1_orgcontext_proto_enumTypes[0]
+}
+
+func (x AssociateState) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use AssociateState.Descriptor instead.
+func (AssociateState) EnumDescriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{0}
+}
+
+type ManagerRelationType int32
+
+const (
+	ManagerRelationType_MANAGER_RELATION_TYPE_UNSPECIFIED          ManagerRelationType = 0
+	ManagerRelationType_MANAGER_RELATION_TYPE_PRIMARY              ManagerRelationType = 1
+	ManagerRelationType_MANAGER_RELATION_TYPE_DOTTED               ManagerRelationType = 2
+	ManagerRelationType_MANAGER_RELATION_TYPE_OTHER                ManagerRelationType = 3
+	ManagerRelationType_MANAGER_RELATION_TYPE_ACTING               ManagerRelationType = 4
+	ManagerRelationType_MANAGER_RELATION_TYPE_DERIVED_HEAD_OF_UNIT ManagerRelationType = 5
+)
+
+// Enum value maps for ManagerRelationType.
+var (
+	ManagerRelationType_name = map[int32]string{
+		0: "MANAGER_RELATION_TYPE_UNSPECIFIED",
+		1: "MANAGER_RELATION_TYPE_PRIMARY",
+		2: "MANAGER_RELATION_TYPE_DOTTED",
+		3: "MANAGER_RELATION_TYPE_OTHER",
+		4: "MANAGER_RELATION_TYPE_ACTING",
+		5: "MANAGER_RELATION_TYPE_DERIVED_HEAD_OF_UNIT",
+	}
+	ManagerRelationType_value = map[string]int32{
+		"MANAGER_RELATION_TYPE_UNSPECIFIED":          0,
+		"MANAGER_RELATION_TYPE_PRIMARY":              1,
+		"MANAGER_RELATION_TYPE_DOTTED":               2,
+		"MANAGER_RELATION_TYPE_OTHER":                3,
+		"MANAGER_RELATION_TYPE_ACTING":               4,
+		"MANAGER_RELATION_TYPE_DERIVED_HEAD_OF_UNIT": 5,
+	}
+)
+
+func (x ManagerRelationType) Enum() *ManagerRelationType {
+	p := new(ManagerRelationType)
+	*p = x
+	return p
+}
+
+func (x ManagerRelationType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ManagerRelationType) Descriptor() protoreflect.EnumDescriptor {
+	return file_orgcontext_v1_orgcontext_proto_enumTypes[1].Descriptor()
+}
+
+func (ManagerRelationType) Type() protoreflect.EnumType {
+	return &file_orgcontext_v1_orgcontext_proto_enumTypes[1]
+}
+
+func (x ManagerRelationType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ManagerRelationType.Descriptor instead.
+func (ManagerRelationType) EnumDescriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{1}
+}
+
+type AssignmentStatus int32
+
+const (
+	AssignmentStatus_ASSIGNMENT_STATUS_UNSPECIFIED AssignmentStatus = 0
+	AssignmentStatus_ASSIGNMENT_STATUS_ACTIVE      AssignmentStatus = 1
+	AssignmentStatus_ASSIGNMENT_STATUS_INACTIVE    AssignmentStatus = 2
+	AssignmentStatus_ASSIGNMENT_STATUS_HISTORICAL  AssignmentStatus = 3
+)
+
+// Enum value maps for AssignmentStatus.
+var (
+	AssignmentStatus_name = map[int32]string{
+		0: "ASSIGNMENT_STATUS_UNSPECIFIED",
+		1: "ASSIGNMENT_STATUS_ACTIVE",
+		2: "ASSIGNMENT_STATUS_INACTIVE",
+		3: "ASSIGNMENT_STATUS_HISTORICAL",
+	}
+	AssignmentStatus_value = map[string]int32{
+		"ASSIGNMENT_STATUS_UNSPECIFIED": 0,
+		"ASSIGNMENT_STATUS_ACTIVE":      1,
+		"ASSIGNMENT_STATUS_INACTIVE":    2,
+		"ASSIGNMENT_STATUS_HISTORICAL":  3,
+	}
+)
+
+func (x AssignmentStatus) Enum() *AssignmentStatus {
+	p := new(AssignmentStatus)
+	*p = x
+	return p
+}
+
+func (x AssignmentStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (AssignmentStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_orgcontext_v1_orgcontext_proto_enumTypes[2].Descriptor()
+}
+
+func (AssignmentStatus) Type() protoreflect.EnumType {
+	return &file_orgcontext_v1_orgcontext_proto_enumTypes[2]
+}
+
+func (x AssignmentStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use AssignmentStatus.Descriptor instead.
+func (AssignmentStatus) EnumDescriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{2}
+}
+
+type EmploymentEpisodeStatus int32
+
+const (
+	EmploymentEpisodeStatus_EMPLOYMENT_EPISODE_STATUS_UNSPECIFIED EmploymentEpisodeStatus = 0
+	EmploymentEpisodeStatus_EMPLOYMENT_EPISODE_STATUS_VALID       EmploymentEpisodeStatus = 1
+	EmploymentEpisodeStatus_EMPLOYMENT_EPISODE_STATUS_INVALID     EmploymentEpisodeStatus = 2
+	EmploymentEpisodeStatus_EMPLOYMENT_EPISODE_STATUS_CLOSED      EmploymentEpisodeStatus = 3
+)
+
+// Enum value maps for EmploymentEpisodeStatus.
+var (
+	EmploymentEpisodeStatus_name = map[int32]string{
+		0: "EMPLOYMENT_EPISODE_STATUS_UNSPECIFIED",
+		1: "EMPLOYMENT_EPISODE_STATUS_VALID",
+		2: "EMPLOYMENT_EPISODE_STATUS_INVALID",
+		3: "EMPLOYMENT_EPISODE_STATUS_CLOSED",
+	}
+	EmploymentEpisodeStatus_value = map[string]int32{
+		"EMPLOYMENT_EPISODE_STATUS_UNSPECIFIED": 0,
+		"EMPLOYMENT_EPISODE_STATUS_VALID":       1,
+		"EMPLOYMENT_EPISODE_STATUS_INVALID":     2,
+		"EMPLOYMENT_EPISODE_STATUS_CLOSED":      3,
+	}
+)
+
+func (x EmploymentEpisodeStatus) Enum() *EmploymentEpisodeStatus {
+	p := new(EmploymentEpisodeStatus)
+	*p = x
+	return p
+}
+
+func (x EmploymentEpisodeStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (EmploymentEpisodeStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_orgcontext_v1_orgcontext_proto_enumTypes[3].Descriptor()
+}
+
+func (EmploymentEpisodeStatus) Type() protoreflect.EnumType {
+	return &file_orgcontext_v1_orgcontext_proto_enumTypes[3]
+}
+
+func (x EmploymentEpisodeStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use EmploymentEpisodeStatus.Descriptor instead.
+func (EmploymentEpisodeStatus) EnumDescriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{3}
+}
+
+type SyncSourceType int32
+
+const (
+	SyncSourceType_SYNC_SOURCE_TYPE_UNSPECIFIED    SyncSourceType = 0
+	SyncSourceType_SYNC_SOURCE_TYPE_PEOPLESPACE    SyncSourceType = 1
+	SyncSourceType_SYNC_SOURCE_TYPE_HRIS           SyncSourceType = 2
+	SyncSourceType_SYNC_SOURCE_TYPE_ADMIN_OVERRIDE SyncSourceType = 3
+)
+
+// Enum value maps for SyncSourceType.
+var (
+	SyncSourceType_name = map[int32]string{
+		0: "SYNC_SOURCE_TYPE_UNSPECIFIED",
+		1: "SYNC_SOURCE_TYPE_PEOPLESPACE",
+		2: "SYNC_SOURCE_TYPE_HRIS",
+		3: "SYNC_SOURCE_TYPE_ADMIN_OVERRIDE",
+	}
+	SyncSourceType_value = map[string]int32{
+		"SYNC_SOURCE_TYPE_UNSPECIFIED":    0,
+		"SYNC_SOURCE_TYPE_PEOPLESPACE":    1,
+		"SYNC_SOURCE_TYPE_HRIS":           2,
+		"SYNC_SOURCE_TYPE_ADMIN_OVERRIDE": 3,
+	}
+)
+
+func (x SyncSourceType) Enum() *SyncSourceType {
+	p := new(SyncSourceType)
+	*p = x
+	return p
+}
+
+func (x SyncSourceType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (SyncSourceType) Descriptor() protoreflect.EnumDescriptor {
+	return file_orgcontext_v1_orgcontext_proto_enumTypes[4].Descriptor()
+}
+
+func (SyncSourceType) Type() protoreflect.EnumType {
+	return &file_orgcontext_v1_orgcontext_proto_enumTypes[4]
+}
+
+func (x SyncSourceType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use SyncSourceType.Descriptor instead.
+func (SyncSourceType) EnumDescriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{4}
+}
+
+type SyncMode int32
+
+const (
+	SyncMode_SYNC_MODE_UNSPECIFIED    SyncMode = 0
+	SyncMode_SYNC_MODE_FULL_SNAPSHOT  SyncMode = 1
+	SyncMode_SYNC_MODE_DELTA          SyncMode = 2
+	SyncMode_SYNC_MODE_RECONCILIATION SyncMode = 3
+)
+
+// Enum value maps for SyncMode.
+var (
+	SyncMode_name = map[int32]string{
+		0: "SYNC_MODE_UNSPECIFIED",
+		1: "SYNC_MODE_FULL_SNAPSHOT",
+		2: "SYNC_MODE_DELTA",
+		3: "SYNC_MODE_RECONCILIATION",
+	}
+	SyncMode_value = map[string]int32{
+		"SYNC_MODE_UNSPECIFIED":    0,
+		"SYNC_MODE_FULL_SNAPSHOT":  1,
+		"SYNC_MODE_DELTA":          2,
+		"SYNC_MODE_RECONCILIATION": 3,
+	}
+)
+
+func (x SyncMode) Enum() *SyncMode {
+	p := new(SyncMode)
+	*p = x
+	return p
+}
+
+func (x SyncMode) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (SyncMode) Descriptor() protoreflect.EnumDescriptor {
+	return file_orgcontext_v1_orgcontext_proto_enumTypes[5].Descriptor()
+}
+
+func (SyncMode) Type() protoreflect.EnumType {
+	return &file_orgcontext_v1_orgcontext_proto_enumTypes[5]
+}
+
+func (x SyncMode) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use SyncMode.Descriptor instead.
+func (SyncMode) EnumDescriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{5}
+}
+
+type OrgUnitNodeGroup int32
+
+const (
+	OrgUnitNodeGroup_ORG_UNIT_NODE_GROUP_UNSPECIFIED   OrgUnitNodeGroup = 0
+	OrgUnitNodeGroup_ORG_UNIT_NODE_GROUP_COMPANY       OrgUnitNodeGroup = 1
+	OrgUnitNodeGroup_ORG_UNIT_NODE_GROUP_BUSINESS_UNIT OrgUnitNodeGroup = 2
+	OrgUnitNodeGroup_ORG_UNIT_NODE_GROUP_DEPARTMENT    OrgUnitNodeGroup = 3
+	OrgUnitNodeGroup_ORG_UNIT_NODE_GROUP_CENTER        OrgUnitNodeGroup = 4
+	OrgUnitNodeGroup_ORG_UNIT_NODE_GROUP_DIVISION      OrgUnitNodeGroup = 5
+	OrgUnitNodeGroup_ORG_UNIT_NODE_GROUP_TEAM          OrgUnitNodeGroup = 6
+)
+
+// Enum value maps for OrgUnitNodeGroup.
+var (
+	OrgUnitNodeGroup_name = map[int32]string{
+		0: "ORG_UNIT_NODE_GROUP_UNSPECIFIED",
+		1: "ORG_UNIT_NODE_GROUP_COMPANY",
+		2: "ORG_UNIT_NODE_GROUP_BUSINESS_UNIT",
+		3: "ORG_UNIT_NODE_GROUP_DEPARTMENT",
+		4: "ORG_UNIT_NODE_GROUP_CENTER",
+		5: "ORG_UNIT_NODE_GROUP_DIVISION",
+		6: "ORG_UNIT_NODE_GROUP_TEAM",
+	}
+	OrgUnitNodeGroup_value = map[string]int32{
+		"ORG_UNIT_NODE_GROUP_UNSPECIFIED":   0,
+		"ORG_UNIT_NODE_GROUP_COMPANY":       1,
+		"ORG_UNIT_NODE_GROUP_BUSINESS_UNIT": 2,
+		"ORG_UNIT_NODE_GROUP_DEPARTMENT":    3,
+		"ORG_UNIT_NODE_GROUP_CENTER":        4,
+		"ORG_UNIT_NODE_GROUP_DIVISION":      5,
+		"ORG_UNIT_NODE_GROUP_TEAM":          6,
+	}
+)
+
+func (x OrgUnitNodeGroup) Enum() *OrgUnitNodeGroup {
+	p := new(OrgUnitNodeGroup)
+	*p = x
+	return p
+}
+
+func (x OrgUnitNodeGroup) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (OrgUnitNodeGroup) Descriptor() protoreflect.EnumDescriptor {
+	return file_orgcontext_v1_orgcontext_proto_enumTypes[6].Descriptor()
+}
+
+func (OrgUnitNodeGroup) Type() protoreflect.EnumType {
+	return &file_orgcontext_v1_orgcontext_proto_enumTypes[6]
+}
+
+func (x OrgUnitNodeGroup) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use OrgUnitNodeGroup.Descriptor instead.
+func (OrgUnitNodeGroup) EnumDescriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{6}
+}
+
+type LocalizedString struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	PositionType  string                 `protobuf:"bytes,1,opt,name=position_type,json=positionType,proto3" json:"position_type,omitempty"`
-	IsPrimary     bool                   `protobuf:"varint,2,opt,name=is_primary,json=isPrimary,proto3" json:"is_primary,omitempty"`
-	IsManager     bool                   `protobuf:"varint,3,opt,name=is_manager,json=isManager,proto3" json:"is_manager,omitempty"`
-	HeadOfUnit    bool                   `protobuf:"varint,4,opt,name=head_of_unit,json=headOfUnit,proto3" json:"head_of_unit,omitempty"`
-	LayerId       int32                  `protobuf:"varint,5,opt,name=layer_id,json=layerId,proto3" json:"layer_id,omitempty"`
-	UnitId        int32                  `protobuf:"varint,6,opt,name=unit_id,json=unitId,proto3" json:"unit_id,omitempty"`
+	Language      string                 `protobuf:"bytes,1,opt,name=language,proto3" json:"language,omitempty"`
+	Value         string                 `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
+func (x *LocalizedString) Reset() {
+	*x = LocalizedString{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LocalizedString) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LocalizedString) ProtoMessage() {}
+
+func (x *LocalizedString) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LocalizedString.ProtoReflect.Descriptor instead.
+func (*LocalizedString) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *LocalizedString) GetLanguage() string {
+	if x != nil {
+		return x.Language
+	}
+	return ""
+}
+
+func (x *LocalizedString) GetValue() string {
+	if x != nil {
+		return x.Value
+	}
+	return ""
+}
+
+type PersonName struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Language       string                 `protobuf:"bytes,1,opt,name=language,proto3" json:"language,omitempty"`
+	FirstName      string                 `protobuf:"bytes,2,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
+	LastName       string                 `protobuf:"bytes,3,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
+	MiddleName     string                 `protobuf:"bytes,4,opt,name=middle_name,json=middleName,proto3" json:"middle_name,omitempty"`
+	PatronymicName string                 `protobuf:"bytes,5,opt,name=patronymic_name,json=patronymicName,proto3" json:"patronymic_name,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *PersonName) Reset() {
+	*x = PersonName{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PersonName) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PersonName) ProtoMessage() {}
+
+func (x *PersonName) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PersonName.ProtoReflect.Descriptor instead.
+func (*PersonName) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *PersonName) GetLanguage() string {
+	if x != nil {
+		return x.Language
+	}
+	return ""
+}
+
+func (x *PersonName) GetFirstName() string {
+	if x != nil {
+		return x.FirstName
+	}
+	return ""
+}
+
+func (x *PersonName) GetLastName() string {
+	if x != nil {
+		return x.LastName
+	}
+	return ""
+}
+
+func (x *PersonName) GetMiddleName() string {
+	if x != nil {
+		return x.MiddleName
+	}
+	return ""
+}
+
+func (x *PersonName) GetPatronymicName() string {
+	if x != nil {
+		return x.PatronymicName
+	}
+	return ""
+}
+
+type Person struct {
+	state                protoimpl.MessageState `protogen:"open.v1"`
+	PersonId             int64                  `protobuf:"varint,1,opt,name=person_id,json=personId,proto3" json:"person_id,omitempty"`
+	UserId               string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Username             string                 `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`
+	BirthDate            string                 `protobuf:"bytes,4,opt,name=birth_date,json=birthDate,proto3" json:"birth_date,omitempty"`
+	PassportNumber       string                 `protobuf:"bytes,5,opt,name=passport_number,json=passportNumber,proto3" json:"passport_number,omitempty"`
+	IssueDate            string                 `protobuf:"bytes,6,opt,name=issue_date,json=issueDate,proto3" json:"issue_date,omitempty"`
+	Ssn                  string                 `protobuf:"bytes,7,opt,name=ssn,proto3" json:"ssn,omitempty"`
+	Country              string                 `protobuf:"bytes,8,opt,name=country,proto3" json:"country,omitempty"`
+	City                 string                 `protobuf:"bytes,9,opt,name=city,proto3" json:"city,omitempty"`
+	Address              string                 `protobuf:"bytes,10,opt,name=address,proto3" json:"address,omitempty"`
+	MobileNumber         string                 `protobuf:"bytes,11,opt,name=mobile_number,json=mobileNumber,proto3" json:"mobile_number,omitempty"`
+	EmailAddress         string                 `protobuf:"bytes,12,opt,name=email_address,json=emailAddress,proto3" json:"email_address,omitempty"`
+	BusinessPhoneNumber  string                 `protobuf:"bytes,13,opt,name=business_phone_number,json=businessPhoneNumber,proto3" json:"business_phone_number,omitempty"`
+	BusinessEmailAddress string                 `protobuf:"bytes,14,opt,name=business_email_address,json=businessEmailAddress,proto3" json:"business_email_address,omitempty"`
+	GenderId             int32                  `protobuf:"varint,15,opt,name=gender_id,json=genderId,proto3" json:"gender_id,omitempty"`
+	TwoFa                bool                   `protobuf:"varint,16,opt,name=two_fa,json=twoFa,proto3" json:"two_fa,omitempty"`
+	LocalizedNames       []*PersonName          `protobuf:"bytes,17,rep,name=localized_names,json=localizedNames,proto3" json:"localized_names,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
+}
+
+func (x *Person) Reset() {
+	*x = Person{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Person) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Person) ProtoMessage() {}
+
+func (x *Person) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Person.ProtoReflect.Descriptor instead.
+func (*Person) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *Person) GetPersonId() int64 {
+	if x != nil {
+		return x.PersonId
+	}
+	return 0
+}
+
+func (x *Person) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *Person) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *Person) GetBirthDate() string {
+	if x != nil {
+		return x.BirthDate
+	}
+	return ""
+}
+
+func (x *Person) GetPassportNumber() string {
+	if x != nil {
+		return x.PassportNumber
+	}
+	return ""
+}
+
+func (x *Person) GetIssueDate() string {
+	if x != nil {
+		return x.IssueDate
+	}
+	return ""
+}
+
+func (x *Person) GetSsn() string {
+	if x != nil {
+		return x.Ssn
+	}
+	return ""
+}
+
+func (x *Person) GetCountry() string {
+	if x != nil {
+		return x.Country
+	}
+	return ""
+}
+
+func (x *Person) GetCity() string {
+	if x != nil {
+		return x.City
+	}
+	return ""
+}
+
+func (x *Person) GetAddress() string {
+	if x != nil {
+		return x.Address
+	}
+	return ""
+}
+
+func (x *Person) GetMobileNumber() string {
+	if x != nil {
+		return x.MobileNumber
+	}
+	return ""
+}
+
+func (x *Person) GetEmailAddress() string {
+	if x != nil {
+		return x.EmailAddress
+	}
+	return ""
+}
+
+func (x *Person) GetBusinessPhoneNumber() string {
+	if x != nil {
+		return x.BusinessPhoneNumber
+	}
+	return ""
+}
+
+func (x *Person) GetBusinessEmailAddress() string {
+	if x != nil {
+		return x.BusinessEmailAddress
+	}
+	return ""
+}
+
+func (x *Person) GetGenderId() int32 {
+	if x != nil {
+		return x.GenderId
+	}
+	return 0
+}
+
+func (x *Person) GetTwoFa() bool {
+	if x != nil {
+		return x.TwoFa
+	}
+	return false
+}
+
+func (x *Person) GetLocalizedNames() []*PersonName {
+	if x != nil {
+		return x.LocalizedNames
+	}
+	return nil
+}
+
+type Company struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	CompanyNodeId   int64                  `protobuf:"varint,1,opt,name=company_node_id,json=companyNodeId,proto3" json:"company_node_id,omitempty"`
+	TenantId        string                 `protobuf:"bytes,2,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	CodeByTheSystem string                 `protobuf:"bytes,3,opt,name=code_by_the_system,json=codeByTheSystem,proto3" json:"code_by_the_system,omitempty"`
+	LocalizedNames  []*LocalizedString     `protobuf:"bytes,4,rep,name=localized_names,json=localizedNames,proto3" json:"localized_names,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *Company) Reset() {
+	*x = Company{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Company) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Company) ProtoMessage() {}
+
+func (x *Company) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Company.ProtoReflect.Descriptor instead.
+func (*Company) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *Company) GetCompanyNodeId() int64 {
+	if x != nil {
+		return x.CompanyNodeId
+	}
+	return 0
+}
+
+func (x *Company) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *Company) GetCodeByTheSystem() string {
+	if x != nil {
+		return x.CodeByTheSystem
+	}
+	return ""
+}
+
+func (x *Company) GetLocalizedNames() []*LocalizedString {
+	if x != nil {
+		return x.LocalizedNames
+	}
+	return nil
+}
+
+type OrgUnit struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	UnitNodeId       int64                  `protobuf:"varint,1,opt,name=unit_node_id,json=unitNodeId,proto3" json:"unit_node_id,omitempty"`
+	TenantId         string                 `protobuf:"bytes,2,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	CompanyNodeId    int64                  `protobuf:"varint,3,opt,name=company_node_id,json=companyNodeId,proto3" json:"company_node_id,omitempty"`
+	ParentUnitNodeId int64                  `protobuf:"varint,4,opt,name=parent_unit_node_id,json=parentUnitNodeId,proto3" json:"parent_unit_node_id,omitempty"`
+	CodeByTheSystem  string                 `protobuf:"bytes,5,opt,name=code_by_the_system,json=codeByTheSystem,proto3" json:"code_by_the_system,omitempty"`
+	DepartmentCode   string                 `protobuf:"bytes,6,opt,name=department_code,json=departmentCode,proto3" json:"department_code,omitempty"`
+	NodeGroupId      int32                  `protobuf:"varint,7,opt,name=node_group_id,json=nodeGroupId,proto3" json:"node_group_id,omitempty"`
+	NodeGroup        OrgUnitNodeGroup       `protobuf:"varint,8,opt,name=node_group,json=nodeGroup,proto3,enum=orgcontext.v1.OrgUnitNodeGroup" json:"node_group,omitempty"`
+	LocalizedNames   []*LocalizedString     `protobuf:"bytes,9,rep,name=localized_names,json=localizedNames,proto3" json:"localized_names,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *OrgUnit) Reset() {
+	*x = OrgUnit{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrgUnit) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrgUnit) ProtoMessage() {}
+
+func (x *OrgUnit) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrgUnit.ProtoReflect.Descriptor instead.
+func (*OrgUnit) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *OrgUnit) GetUnitNodeId() int64 {
+	if x != nil {
+		return x.UnitNodeId
+	}
+	return 0
+}
+
+func (x *OrgUnit) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *OrgUnit) GetCompanyNodeId() int64 {
+	if x != nil {
+		return x.CompanyNodeId
+	}
+	return 0
+}
+
+func (x *OrgUnit) GetParentUnitNodeId() int64 {
+	if x != nil {
+		return x.ParentUnitNodeId
+	}
+	return 0
+}
+
+func (x *OrgUnit) GetCodeByTheSystem() string {
+	if x != nil {
+		return x.CodeByTheSystem
+	}
+	return ""
+}
+
+func (x *OrgUnit) GetDepartmentCode() string {
+	if x != nil {
+		return x.DepartmentCode
+	}
+	return ""
+}
+
+func (x *OrgUnit) GetNodeGroupId() int32 {
+	if x != nil {
+		return x.NodeGroupId
+	}
+	return 0
+}
+
+func (x *OrgUnit) GetNodeGroup() OrgUnitNodeGroup {
+	if x != nil {
+		return x.NodeGroup
+	}
+	return OrgUnitNodeGroup_ORG_UNIT_NODE_GROUP_UNSPECIFIED
+}
+
+func (x *OrgUnit) GetLocalizedNames() []*LocalizedString {
+	if x != nil {
+		return x.LocalizedNames
+	}
+	return nil
+}
+
+type PositionType struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	PositionTypeId int64                  `protobuf:"varint,1,opt,name=position_type_id,json=positionTypeId,proto3" json:"position_type_id,omitempty"`
+	DefaultName    string                 `protobuf:"bytes,2,opt,name=default_name,json=defaultName,proto3" json:"default_name,omitempty"`
+	LocalizedNames []*LocalizedString     `protobuf:"bytes,3,rep,name=localized_names,json=localizedNames,proto3" json:"localized_names,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *PositionType) Reset() {
+	*x = PositionType{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PositionType) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PositionType) ProtoMessage() {}
+
+func (x *PositionType) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PositionType.ProtoReflect.Descriptor instead.
+func (*PositionType) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *PositionType) GetPositionTypeId() int64 {
+	if x != nil {
+		return x.PositionTypeId
+	}
+	return 0
+}
+
+func (x *PositionType) GetDefaultName() string {
+	if x != nil {
+		return x.DefaultName
+	}
+	return ""
+}
+
+func (x *PositionType) GetLocalizedNames() []*LocalizedString {
+	if x != nil {
+		return x.LocalizedNames
+	}
+	return nil
+}
+
+type Position struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	PositionId      int64                  `protobuf:"varint,1,opt,name=position_id,json=positionId,proto3" json:"position_id,omitempty"`
+	UnitNodeId      int64                  `protobuf:"varint,2,opt,name=unit_node_id,json=unitNodeId,proto3" json:"unit_node_id,omitempty"`
+	PositionTypeId  int64                  `protobuf:"varint,3,opt,name=position_type_id,json=positionTypeId,proto3" json:"position_type_id,omitempty"`
+	PositionLayerId int32                  `protobuf:"varint,4,opt,name=position_layer_id,json=positionLayerId,proto3" json:"position_layer_id,omitempty"`
+	PositionType    *PositionType          `protobuf:"bytes,5,opt,name=position_type,json=positionType,proto3" json:"position_type,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
 func (x *Position) Reset() {
 	*x = Position{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[0]
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -47,7 +968,7 @@ func (x *Position) String() string {
 func (*Position) ProtoMessage() {}
 
 func (x *Position) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[0]
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -60,74 +981,77 @@ func (x *Position) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Position.ProtoReflect.Descriptor instead.
 func (*Position) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{0}
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *Position) GetPositionType() string {
+func (x *Position) GetPositionId() int64 {
+	if x != nil {
+		return x.PositionId
+	}
+	return 0
+}
+
+func (x *Position) GetUnitNodeId() int64 {
+	if x != nil {
+		return x.UnitNodeId
+	}
+	return 0
+}
+
+func (x *Position) GetPositionTypeId() int64 {
+	if x != nil {
+		return x.PositionTypeId
+	}
+	return 0
+}
+
+func (x *Position) GetPositionLayerId() int32 {
+	if x != nil {
+		return x.PositionLayerId
+	}
+	return 0
+}
+
+func (x *Position) GetPositionType() *PositionType {
 	if x != nil {
 		return x.PositionType
 	}
-	return ""
+	return nil
 }
 
-func (x *Position) GetIsPrimary() bool {
-	if x != nil {
-		return x.IsPrimary
-	}
-	return false
+type PositionAssignment struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	PositionNodeId int64                  `protobuf:"varint,1,opt,name=position_node_id,json=positionNodeId,proto3" json:"position_node_id,omitempty"`
+	AssociateId    int64                  `protobuf:"varint,2,opt,name=associate_id,json=associateId,proto3" json:"associate_id,omitempty"`
+	PositionId     int64                  `protobuf:"varint,3,opt,name=position_id,json=positionId,proto3" json:"position_id,omitempty"`
+	UnitNodeId     int64                  `protobuf:"varint,4,opt,name=unit_node_id,json=unitNodeId,proto3" json:"unit_node_id,omitempty"`
+	IsPrimary      bool                   `protobuf:"varint,5,opt,name=is_primary,json=isPrimary,proto3" json:"is_primary,omitempty"`
+	IsManager      bool                   `protobuf:"varint,6,opt,name=is_manager,json=isManager,proto3" json:"is_manager,omitempty"`
+	HeadOfUnit     bool                   `protobuf:"varint,7,opt,name=head_of_unit,json=headOfUnit,proto3" json:"head_of_unit,omitempty"`
+	Status         AssignmentStatus       `protobuf:"varint,8,opt,name=status,proto3,enum=orgcontext.v1.AssignmentStatus" json:"status,omitempty"`
+	CreatedAt      *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt      *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	Position       *Position              `protobuf:"bytes,11,opt,name=position,proto3" json:"position,omitempty"`
+	OrgUnit        *OrgUnit               `protobuf:"bytes,12,opt,name=org_unit,json=orgUnit,proto3" json:"org_unit,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
-func (x *Position) GetIsManager() bool {
-	if x != nil {
-		return x.IsManager
-	}
-	return false
-}
-
-func (x *Position) GetHeadOfUnit() bool {
-	if x != nil {
-		return x.HeadOfUnit
-	}
-	return false
-}
-
-func (x *Position) GetLayerId() int32 {
-	if x != nil {
-		return x.LayerId
-	}
-	return 0
-}
-
-func (x *Position) GetUnitId() int32 {
-	if x != nil {
-		return x.UnitId
-	}
-	return 0
-}
-
-type UnitRef struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	UnitId        int32                  `protobuf:"varint,1,opt,name=unit_id,json=unitId,proto3" json:"unit_id,omitempty"`
-	UnitName      string                 `protobuf:"bytes,2,opt,name=unit_name,json=unitName,proto3" json:"unit_name,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UnitRef) Reset() {
-	*x = UnitRef{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[1]
+func (x *PositionAssignment) Reset() {
+	*x = PositionAssignment{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UnitRef) String() string {
+func (x *PositionAssignment) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UnitRef) ProtoMessage() {}
+func (*PositionAssignment) ProtoMessage() {}
 
-func (x *UnitRef) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[1]
+func (x *PositionAssignment) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -138,35 +1062,486 @@ func (x *UnitRef) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UnitRef.ProtoReflect.Descriptor instead.
-func (*UnitRef) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{1}
+// Deprecated: Use PositionAssignment.ProtoReflect.Descriptor instead.
+func (*PositionAssignment) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *UnitRef) GetUnitId() int32 {
+func (x *PositionAssignment) GetPositionNodeId() int64 {
 	if x != nil {
-		return x.UnitId
+		return x.PositionNodeId
 	}
 	return 0
 }
 
-func (x *UnitRef) GetUnitName() string {
+func (x *PositionAssignment) GetAssociateId() int64 {
 	if x != nil {
-		return x.UnitName
+		return x.AssociateId
+	}
+	return 0
+}
+
+func (x *PositionAssignment) GetPositionId() int64 {
+	if x != nil {
+		return x.PositionId
+	}
+	return 0
+}
+
+func (x *PositionAssignment) GetUnitNodeId() int64 {
+	if x != nil {
+		return x.UnitNodeId
+	}
+	return 0
+}
+
+func (x *PositionAssignment) GetIsPrimary() bool {
+	if x != nil {
+		return x.IsPrimary
+	}
+	return false
+}
+
+func (x *PositionAssignment) GetIsManager() bool {
+	if x != nil {
+		return x.IsManager
+	}
+	return false
+}
+
+func (x *PositionAssignment) GetHeadOfUnit() bool {
+	if x != nil {
+		return x.HeadOfUnit
+	}
+	return false
+}
+
+func (x *PositionAssignment) GetStatus() AssignmentStatus {
+	if x != nil {
+		return x.Status
+	}
+	return AssignmentStatus_ASSIGNMENT_STATUS_UNSPECIFIED
+}
+
+func (x *PositionAssignment) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *PositionAssignment) GetUpdatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return nil
+}
+
+func (x *PositionAssignment) GetPosition() *Position {
+	if x != nil {
+		return x.Position
+	}
+	return nil
+}
+
+func (x *PositionAssignment) GetOrgUnit() *OrgUnit {
+	if x != nil {
+		return x.OrgUnit
+	}
+	return nil
+}
+
+type EmploymentEpisode struct {
+	state                protoimpl.MessageState  `protogen:"open.v1"`
+	EmploymentEpisodeId  int64                   `protobuf:"varint,1,opt,name=employment_episode_id,json=employmentEpisodeId,proto3" json:"employment_episode_id,omitempty"`
+	AssociateId          int64                   `protobuf:"varint,2,opt,name=associate_id,json=associateId,proto3" json:"associate_id,omitempty"`
+	PositionNodeId       int64                   `protobuf:"varint,3,opt,name=position_node_id,json=positionNodeId,proto3" json:"position_node_id,omitempty"`
+	UnitNodeId           int64                   `protobuf:"varint,4,opt,name=unit_node_id,json=unitNodeId,proto3" json:"unit_node_id,omitempty"`
+	CompanyNodeId        int64                   `protobuf:"varint,5,opt,name=company_node_id,json=companyNodeId,proto3" json:"company_node_id,omitempty"`
+	EmploymentStoryId    int64                   `protobuf:"varint,6,opt,name=employment_story_id,json=employmentStoryId,proto3" json:"employment_story_id,omitempty"`
+	CodeByTheSystem      string                  `protobuf:"bytes,7,opt,name=code_by_the_system,json=codeByTheSystem,proto3" json:"code_by_the_system,omitempty"`
+	IsValid              bool                    `protobuf:"varint,8,opt,name=is_valid,json=isValid,proto3" json:"is_valid,omitempty"`
+	Status               EmploymentEpisodeStatus `protobuf:"varint,9,opt,name=status,proto3,enum=orgcontext.v1.EmploymentEpisodeStatus" json:"status,omitempty"`
+	EmploymentDate       *timestamppb.Timestamp  `protobuf:"bytes,10,opt,name=employment_date,json=employmentDate,proto3" json:"employment_date,omitempty"`
+	AppointmentStartDate *timestamppb.Timestamp  `protobuf:"bytes,11,opt,name=appointment_start_date,json=appointmentStartDate,proto3" json:"appointment_start_date,omitempty"`
+	AppointmentEndDate   *timestamppb.Timestamp  `protobuf:"bytes,12,opt,name=appointment_end_date,json=appointmentEndDate,proto3" json:"appointment_end_date,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
+}
+
+func (x *EmploymentEpisode) Reset() {
+	*x = EmploymentEpisode{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EmploymentEpisode) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EmploymentEpisode) ProtoMessage() {}
+
+func (x *EmploymentEpisode) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EmploymentEpisode.ProtoReflect.Descriptor instead.
+func (*EmploymentEpisode) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *EmploymentEpisode) GetEmploymentEpisodeId() int64 {
+	if x != nil {
+		return x.EmploymentEpisodeId
+	}
+	return 0
+}
+
+func (x *EmploymentEpisode) GetAssociateId() int64 {
+	if x != nil {
+		return x.AssociateId
+	}
+	return 0
+}
+
+func (x *EmploymentEpisode) GetPositionNodeId() int64 {
+	if x != nil {
+		return x.PositionNodeId
+	}
+	return 0
+}
+
+func (x *EmploymentEpisode) GetUnitNodeId() int64 {
+	if x != nil {
+		return x.UnitNodeId
+	}
+	return 0
+}
+
+func (x *EmploymentEpisode) GetCompanyNodeId() int64 {
+	if x != nil {
+		return x.CompanyNodeId
+	}
+	return 0
+}
+
+func (x *EmploymentEpisode) GetEmploymentStoryId() int64 {
+	if x != nil {
+		return x.EmploymentStoryId
+	}
+	return 0
+}
+
+func (x *EmploymentEpisode) GetCodeByTheSystem() string {
+	if x != nil {
+		return x.CodeByTheSystem
 	}
 	return ""
 }
 
+func (x *EmploymentEpisode) GetIsValid() bool {
+	if x != nil {
+		return x.IsValid
+	}
+	return false
+}
+
+func (x *EmploymentEpisode) GetStatus() EmploymentEpisodeStatus {
+	if x != nil {
+		return x.Status
+	}
+	return EmploymentEpisodeStatus_EMPLOYMENT_EPISODE_STATUS_UNSPECIFIED
+}
+
+func (x *EmploymentEpisode) GetEmploymentDate() *timestamppb.Timestamp {
+	if x != nil {
+		return x.EmploymentDate
+	}
+	return nil
+}
+
+func (x *EmploymentEpisode) GetAppointmentStartDate() *timestamppb.Timestamp {
+	if x != nil {
+		return x.AppointmentStartDate
+	}
+	return nil
+}
+
+func (x *EmploymentEpisode) GetAppointmentEndDate() *timestamppb.Timestamp {
+	if x != nil {
+		return x.AppointmentEndDate
+	}
+	return nil
+}
+
+type ManagerRelation struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	RelationId         string                 `protobuf:"bytes,1,opt,name=relation_id,json=relationId,proto3" json:"relation_id,omitempty"`
+	AssociateId        int64                  `protobuf:"varint,2,opt,name=associate_id,json=associateId,proto3" json:"associate_id,omitempty"`
+	ManagerAssociateId int64                  `protobuf:"varint,3,opt,name=manager_associate_id,json=managerAssociateId,proto3" json:"manager_associate_id,omitempty"`
+	RelationType       ManagerRelationType    `protobuf:"varint,4,opt,name=relation_type,json=relationType,proto3,enum=orgcontext.v1.ManagerRelationType" json:"relation_type,omitempty"`
+	IsActive           bool                   `protobuf:"varint,5,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
+	Source             string                 `protobuf:"bytes,6,opt,name=source,proto3" json:"source,omitempty"`
+	StartAt            *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=start_at,json=startAt,proto3" json:"start_at,omitempty"`
+	EndAt              *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=end_at,json=endAt,proto3" json:"end_at,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *ManagerRelation) Reset() {
+	*x = ManagerRelation{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ManagerRelation) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ManagerRelation) ProtoMessage() {}
+
+func (x *ManagerRelation) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ManagerRelation.ProtoReflect.Descriptor instead.
+func (*ManagerRelation) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *ManagerRelation) GetRelationId() string {
+	if x != nil {
+		return x.RelationId
+	}
+	return ""
+}
+
+func (x *ManagerRelation) GetAssociateId() int64 {
+	if x != nil {
+		return x.AssociateId
+	}
+	return 0
+}
+
+func (x *ManagerRelation) GetManagerAssociateId() int64 {
+	if x != nil {
+		return x.ManagerAssociateId
+	}
+	return 0
+}
+
+func (x *ManagerRelation) GetRelationType() ManagerRelationType {
+	if x != nil {
+		return x.RelationType
+	}
+	return ManagerRelationType_MANAGER_RELATION_TYPE_UNSPECIFIED
+}
+
+func (x *ManagerRelation) GetIsActive() bool {
+	if x != nil {
+		return x.IsActive
+	}
+	return false
+}
+
+func (x *ManagerRelation) GetSource() string {
+	if x != nil {
+		return x.Source
+	}
+	return ""
+}
+
+func (x *ManagerRelation) GetStartAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.StartAt
+	}
+	return nil
+}
+
+func (x *ManagerRelation) GetEndAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.EndAt
+	}
+	return nil
+}
+
+type Associate struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	AssociateId        int64                  `protobuf:"varint,1,opt,name=associate_id,json=associateId,proto3" json:"associate_id,omitempty"`
+	TenantId           string                 `protobuf:"bytes,2,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	EmployeeCardId     string                 `protobuf:"bytes,3,opt,name=employee_card_id,json=employeeCardId,proto3" json:"employee_card_id,omitempty"`
+	EmployeeClientCode string                 `protobuf:"bytes,4,opt,name=employee_client_code,json=employeeClientCode,proto3" json:"employee_client_code,omitempty"`
+	Evaluation         bool                   `protobuf:"varint,5,opt,name=evaluation,proto3" json:"evaluation,omitempty"`
+	NumberOfAttempts   int32                  `protobuf:"varint,6,opt,name=number_of_attempts,json=numberOfAttempts,proto3" json:"number_of_attempts,omitempty"`
+	GradeId            int32                  `protobuf:"varint,7,opt,name=grade_id,json=gradeId,proto3" json:"grade_id,omitempty"`
+	AssociateTypeId    int32                  `protobuf:"varint,8,opt,name=associate_type_id,json=associateTypeId,proto3" json:"associate_type_id,omitempty"`
+	PersonId           int64                  `protobuf:"varint,9,opt,name=person_id,json=personId,proto3" json:"person_id,omitempty"`
+	IsTerminated       bool                   `protobuf:"varint,10,opt,name=is_terminated,json=isTerminated,proto3" json:"is_terminated,omitempty"`
+	State              AssociateState         `protobuf:"varint,11,opt,name=state,proto3,enum=orgcontext.v1.AssociateState" json:"state,omitempty"`
+	Person             *Person                `protobuf:"bytes,12,opt,name=person,proto3" json:"person,omitempty"`
+	Assignments        []*PositionAssignment  `protobuf:"bytes,13,rep,name=assignments,proto3" json:"assignments,omitempty"`
+	EmploymentHistory  []*EmploymentEpisode   `protobuf:"bytes,14,rep,name=employment_history,json=employmentHistory,proto3" json:"employment_history,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *Associate) Reset() {
+	*x = Associate{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Associate) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Associate) ProtoMessage() {}
+
+func (x *Associate) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Associate.ProtoReflect.Descriptor instead.
+func (*Associate) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *Associate) GetAssociateId() int64 {
+	if x != nil {
+		return x.AssociateId
+	}
+	return 0
+}
+
+func (x *Associate) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *Associate) GetEmployeeCardId() string {
+	if x != nil {
+		return x.EmployeeCardId
+	}
+	return ""
+}
+
+func (x *Associate) GetEmployeeClientCode() string {
+	if x != nil {
+		return x.EmployeeClientCode
+	}
+	return ""
+}
+
+func (x *Associate) GetEvaluation() bool {
+	if x != nil {
+		return x.Evaluation
+	}
+	return false
+}
+
+func (x *Associate) GetNumberOfAttempts() int32 {
+	if x != nil {
+		return x.NumberOfAttempts
+	}
+	return 0
+}
+
+func (x *Associate) GetGradeId() int32 {
+	if x != nil {
+		return x.GradeId
+	}
+	return 0
+}
+
+func (x *Associate) GetAssociateTypeId() int32 {
+	if x != nil {
+		return x.AssociateTypeId
+	}
+	return 0
+}
+
+func (x *Associate) GetPersonId() int64 {
+	if x != nil {
+		return x.PersonId
+	}
+	return 0
+}
+
+func (x *Associate) GetIsTerminated() bool {
+	if x != nil {
+		return x.IsTerminated
+	}
+	return false
+}
+
+func (x *Associate) GetState() AssociateState {
+	if x != nil {
+		return x.State
+	}
+	return AssociateState_ASSOCIATE_STATE_UNSPECIFIED
+}
+
+func (x *Associate) GetPerson() *Person {
+	if x != nil {
+		return x.Person
+	}
+	return nil
+}
+
+func (x *Associate) GetAssignments() []*PositionAssignment {
+	if x != nil {
+		return x.Assignments
+	}
+	return nil
+}
+
+func (x *Associate) GetEmploymentHistory() []*EmploymentEpisode {
+	if x != nil {
+		return x.EmploymentHistory
+	}
+	return nil
+}
+
 type GetAssociateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AssociateId   int32                  `protobuf:"varint,1,opt,name=associate_id,json=associateId,proto3" json:"associate_id,omitempty"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	AssociateId   int64                  `protobuf:"varint,2,opt,name=associate_id,json=associateId,proto3" json:"associate_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *GetAssociateRequest) Reset() {
 	*x = GetAssociateRequest{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[2]
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -178,7 +1553,7 @@ func (x *GetAssociateRequest) String() string {
 func (*GetAssociateRequest) ProtoMessage() {}
 
 func (x *GetAssociateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[2]
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -191,35 +1566,85 @@ func (x *GetAssociateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAssociateRequest.ProtoReflect.Descriptor instead.
 func (*GetAssociateRequest) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{2}
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{11}
 }
 
-func (x *GetAssociateRequest) GetAssociateId() int32 {
+func (x *GetAssociateRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *GetAssociateRequest) GetAssociateId() int64 {
 	if x != nil {
 		return x.AssociateId
 	}
 	return 0
 }
 
-// GetAssociateResponse is the response for GetAssociate RPC (buf lint: RPC response naming).
+type GetAssociateByUserIdRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetAssociateByUserIdRequest) Reset() {
+	*x = GetAssociateByUserIdRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetAssociateByUserIdRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAssociateByUserIdRequest) ProtoMessage() {}
+
+func (x *GetAssociateByUserIdRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAssociateByUserIdRequest.ProtoReflect.Descriptor instead.
+func (*GetAssociateByUserIdRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *GetAssociateByUserIdRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *GetAssociateByUserIdRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
 type GetAssociateResponse struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	AssociateId    int32                  `protobuf:"varint,1,opt,name=associate_id,json=associateId,proto3" json:"associate_id,omitempty"`
-	EmployeeCardId string                 `protobuf:"bytes,2,opt,name=employee_card_id,json=employeeCardId,proto3" json:"employee_card_id,omitempty"`
-	AssociateType  string                 `protobuf:"bytes,3,opt,name=associate_type,json=associateType,proto3" json:"associate_type,omitempty"`
-	IsTerminated   bool                   `protobuf:"varint,4,opt,name=is_terminated,json=isTerminated,proto3" json:"is_terminated,omitempty"`
-	Name           string                 `protobuf:"bytes,5,opt,name=name,proto3" json:"name,omitempty"`
-	Email          string                 `protobuf:"bytes,6,opt,name=email,proto3" json:"email,omitempty"`
-	BusinessEmail  string                 `protobuf:"bytes,7,opt,name=business_email,json=businessEmail,proto3" json:"business_email,omitempty"`
-	Positions      []*Position            `protobuf:"bytes,8,rep,name=positions,proto3" json:"positions,omitempty"`
-	Units          []*UnitRef             `protobuf:"bytes,9,rep,name=units,proto3" json:"units,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Associate     *Associate             `protobuf:"bytes,1,opt,name=associate,proto3" json:"associate,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *GetAssociateResponse) Reset() {
 	*x = GetAssociateResponse{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[3]
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -231,7 +1656,7 @@ func (x *GetAssociateResponse) String() string {
 func (*GetAssociateResponse) ProtoMessage() {}
 
 func (x *GetAssociateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[3]
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -244,103 +1669,378 @@ func (x *GetAssociateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAssociateResponse.ProtoReflect.Descriptor instead.
 func (*GetAssociateResponse) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{3}
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{13}
 }
 
-func (x *GetAssociateResponse) GetAssociateId() int32 {
+func (x *GetAssociateResponse) GetAssociate() *Associate {
 	if x != nil {
-		return x.AssociateId
+		return x.Associate
+	}
+	return nil
+}
+
+type GetAssociateByUserIdResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Associate     *Associate             `protobuf:"bytes,1,opt,name=associate,proto3" json:"associate,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetAssociateByUserIdResponse) Reset() {
+	*x = GetAssociateByUserIdResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetAssociateByUserIdResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAssociateByUserIdResponse) ProtoMessage() {}
+
+func (x *GetAssociateByUserIdResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAssociateByUserIdResponse.ProtoReflect.Descriptor instead.
+func (*GetAssociateByUserIdResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *GetAssociateByUserIdResponse) GetAssociate() *Associate {
+	if x != nil {
+		return x.Associate
+	}
+	return nil
+}
+
+type ResolveAssociateContextRequest struct {
+	state    protoimpl.MessageState `protogen:"open.v1"`
+	TenantId string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	// Types that are valid to be assigned to Ref:
+	//
+	//	*ResolveAssociateContextRequest_AssociateId
+	//	*ResolveAssociateContextRequest_UserId
+	Ref           isResolveAssociateContextRequest_Ref `protobuf_oneof:"ref"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ResolveAssociateContextRequest) Reset() {
+	*x = ResolveAssociateContextRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ResolveAssociateContextRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResolveAssociateContextRequest) ProtoMessage() {}
+
+func (x *ResolveAssociateContextRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResolveAssociateContextRequest.ProtoReflect.Descriptor instead.
+func (*ResolveAssociateContextRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *ResolveAssociateContextRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *ResolveAssociateContextRequest) GetRef() isResolveAssociateContextRequest_Ref {
+	if x != nil {
+		return x.Ref
+	}
+	return nil
+}
+
+func (x *ResolveAssociateContextRequest) GetAssociateId() int64 {
+	if x != nil {
+		if x, ok := x.Ref.(*ResolveAssociateContextRequest_AssociateId); ok {
+			return x.AssociateId
+		}
 	}
 	return 0
 }
 
-func (x *GetAssociateResponse) GetEmployeeCardId() string {
+func (x *ResolveAssociateContextRequest) GetUserId() string {
 	if x != nil {
-		return x.EmployeeCardId
+		if x, ok := x.Ref.(*ResolveAssociateContextRequest_UserId); ok {
+			return x.UserId
+		}
 	}
 	return ""
 }
 
-func (x *GetAssociateResponse) GetAssociateType() string {
-	if x != nil {
-		return x.AssociateType
-	}
-	return ""
+type isResolveAssociateContextRequest_Ref interface {
+	isResolveAssociateContextRequest_Ref()
 }
 
-func (x *GetAssociateResponse) GetIsTerminated() bool {
+type ResolveAssociateContextRequest_AssociateId struct {
+	AssociateId int64 `protobuf:"varint,2,opt,name=associate_id,json=associateId,proto3,oneof"`
+}
+
+type ResolveAssociateContextRequest_UserId struct {
+	UserId string `protobuf:"bytes,3,opt,name=user_id,json=userId,proto3,oneof"`
+}
+
+func (*ResolveAssociateContextRequest_AssociateId) isResolveAssociateContextRequest_Ref() {}
+
+func (*ResolveAssociateContextRequest_UserId) isResolveAssociateContextRequest_Ref() {}
+
+type ResolveAssociateContextResponse struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	Associate          *Associate             `protobuf:"bytes,1,opt,name=associate,proto3" json:"associate,omitempty"`
+	PrimaryAssignment  *PositionAssignment    `protobuf:"bytes,2,opt,name=primary_assignment,json=primaryAssignment,proto3" json:"primary_assignment,omitempty"`
+	CurrentOrgUnit     *OrgUnit               `protobuf:"bytes,3,opt,name=current_org_unit,json=currentOrgUnit,proto3" json:"current_org_unit,omitempty"`
+	Lineage            []*OrgUnit             `protobuf:"bytes,4,rep,name=lineage,proto3" json:"lineage,omitempty"`
+	Manager            *Associate             `protobuf:"bytes,5,opt,name=manager,proto3" json:"manager,omitempty"`
+	DirectReportsCount int32                  `protobuf:"varint,6,opt,name=direct_reports_count,json=directReportsCount,proto3" json:"direct_reports_count,omitempty"`
+	IsHeadOfUnit       bool                   `protobuf:"varint,7,opt,name=is_head_of_unit,json=isHeadOfUnit,proto3" json:"is_head_of_unit,omitempty"`
+	IsManager          bool                   `protobuf:"varint,8,opt,name=is_manager,json=isManager,proto3" json:"is_manager,omitempty"`
+	RoleHints          []string               `protobuf:"bytes,9,rep,name=role_hints,json=roleHints,proto3" json:"role_hints,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *ResolveAssociateContextResponse) Reset() {
+	*x = ResolveAssociateContextResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ResolveAssociateContextResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResolveAssociateContextResponse) ProtoMessage() {}
+
+func (x *ResolveAssociateContextResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[16]
 	if x != nil {
-		return x.IsTerminated
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResolveAssociateContextResponse.ProtoReflect.Descriptor instead.
+func (*ResolveAssociateContextResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *ResolveAssociateContextResponse) GetAssociate() *Associate {
+	if x != nil {
+		return x.Associate
+	}
+	return nil
+}
+
+func (x *ResolveAssociateContextResponse) GetPrimaryAssignment() *PositionAssignment {
+	if x != nil {
+		return x.PrimaryAssignment
+	}
+	return nil
+}
+
+func (x *ResolveAssociateContextResponse) GetCurrentOrgUnit() *OrgUnit {
+	if x != nil {
+		return x.CurrentOrgUnit
+	}
+	return nil
+}
+
+func (x *ResolveAssociateContextResponse) GetLineage() []*OrgUnit {
+	if x != nil {
+		return x.Lineage
+	}
+	return nil
+}
+
+func (x *ResolveAssociateContextResponse) GetManager() *Associate {
+	if x != nil {
+		return x.Manager
+	}
+	return nil
+}
+
+func (x *ResolveAssociateContextResponse) GetDirectReportsCount() int32 {
+	if x != nil {
+		return x.DirectReportsCount
+	}
+	return 0
+}
+
+func (x *ResolveAssociateContextResponse) GetIsHeadOfUnit() bool {
+	if x != nil {
+		return x.IsHeadOfUnit
 	}
 	return false
 }
 
-func (x *GetAssociateResponse) GetName() string {
+func (x *ResolveAssociateContextResponse) GetIsManager() bool {
 	if x != nil {
-		return x.Name
+		return x.IsManager
 	}
-	return ""
+	return false
 }
 
-func (x *GetAssociateResponse) GetEmail() string {
+func (x *ResolveAssociateContextResponse) GetRoleHints() []string {
 	if x != nil {
-		return x.Email
-	}
-	return ""
-}
-
-func (x *GetAssociateResponse) GetBusinessEmail() string {
-	if x != nil {
-		return x.BusinessEmail
-	}
-	return ""
-}
-
-func (x *GetAssociateResponse) GetPositions() []*Position {
-	if x != nil {
-		return x.Positions
+		return x.RoleHints
 	}
 	return nil
 }
 
-func (x *GetAssociateResponse) GetUnits() []*UnitRef {
+type GetOrgUnitRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	UnitNodeId    int64                  `protobuf:"varint,2,opt,name=unit_node_id,json=unitNodeId,proto3" json:"unit_node_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetOrgUnitRequest) Reset() {
+	*x = GetOrgUnitRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetOrgUnitRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetOrgUnitRequest) ProtoMessage() {}
+
+func (x *GetOrgUnitRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[17]
 	if x != nil {
-		return x.Units
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetOrgUnitRequest.ProtoReflect.Descriptor instead.
+func (*GetOrgUnitRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *GetOrgUnitRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *GetOrgUnitRequest) GetUnitNodeId() int64 {
+	if x != nil {
+		return x.UnitNodeId
+	}
+	return 0
+}
+
+type GetOrgUnitResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	OrgUnit       *OrgUnit               `protobuf:"bytes,1,opt,name=org_unit,json=orgUnit,proto3" json:"org_unit,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetOrgUnitResponse) Reset() {
+	*x = GetOrgUnitResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetOrgUnitResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetOrgUnitResponse) ProtoMessage() {}
+
+func (x *GetOrgUnitResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetOrgUnitResponse.ProtoReflect.Descriptor instead.
+func (*GetOrgUnitResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *GetOrgUnitResponse) GetOrgUnit() *OrgUnit {
+	if x != nil {
+		return x.OrgUnit
 	}
 	return nil
 }
 
-// AssociateDetail is the shared associate payload (e.g. in GetAllAssociatesResponse).
-type AssociateDetail struct {
+type GetOrgUnitTreeRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	AssociateId    int32                  `protobuf:"varint,1,opt,name=associate_id,json=associateId,proto3" json:"associate_id,omitempty"`
-	EmployeeCardId string                 `protobuf:"bytes,2,opt,name=employee_card_id,json=employeeCardId,proto3" json:"employee_card_id,omitempty"`
-	AssociateType  string                 `protobuf:"bytes,3,opt,name=associate_type,json=associateType,proto3" json:"associate_type,omitempty"`
-	IsTerminated   bool                   `protobuf:"varint,4,opt,name=is_terminated,json=isTerminated,proto3" json:"is_terminated,omitempty"`
-	Name           string                 `protobuf:"bytes,5,opt,name=name,proto3" json:"name,omitempty"`
-	Email          string                 `protobuf:"bytes,6,opt,name=email,proto3" json:"email,omitempty"`
-	BusinessEmail  string                 `protobuf:"bytes,7,opt,name=business_email,json=businessEmail,proto3" json:"business_email,omitempty"`
-	Positions      []*Position            `protobuf:"bytes,8,rep,name=positions,proto3" json:"positions,omitempty"`
-	Units          []*UnitRef             `protobuf:"bytes,9,rep,name=units,proto3" json:"units,omitempty"`
+	TenantId       string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	RootUnitNodeId int64                  `protobuf:"varint,2,opt,name=root_unit_node_id,json=rootUnitNodeId,proto3" json:"root_unit_node_id,omitempty"`
+	MaxDepth       int32                  `protobuf:"varint,3,opt,name=max_depth,json=maxDepth,proto3" json:"max_depth,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
 
-func (x *AssociateDetail) Reset() {
-	*x = AssociateDetail{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[4]
+func (x *GetOrgUnitTreeRequest) Reset() {
+	*x = GetOrgUnitTreeRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AssociateDetail) String() string {
+func (x *GetOrgUnitTreeRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AssociateDetail) ProtoMessage() {}
+func (*GetOrgUnitTreeRequest) ProtoMessage() {}
 
-func (x *AssociateDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[4]
+func (x *GetOrgUnitTreeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -351,96 +2051,344 @@ func (x *AssociateDetail) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AssociateDetail.ProtoReflect.Descriptor instead.
-func (*AssociateDetail) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{4}
+// Deprecated: Use GetOrgUnitTreeRequest.ProtoReflect.Descriptor instead.
+func (*GetOrgUnitTreeRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{19}
 }
 
-func (x *AssociateDetail) GetAssociateId() int32 {
+func (x *GetOrgUnitTreeRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *GetOrgUnitTreeRequest) GetRootUnitNodeId() int64 {
+	if x != nil {
+		return x.RootUnitNodeId
+	}
+	return 0
+}
+
+func (x *GetOrgUnitTreeRequest) GetMaxDepth() int32 {
+	if x != nil {
+		return x.MaxDepth
+	}
+	return 0
+}
+
+type OrgUnitTreeNode struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	OrgUnit       *OrgUnit               `protobuf:"bytes,1,opt,name=org_unit,json=orgUnit,proto3" json:"org_unit,omitempty"`
+	Children      []*OrgUnitTreeNode     `protobuf:"bytes,2,rep,name=children,proto3" json:"children,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OrgUnitTreeNode) Reset() {
+	*x = OrgUnitTreeNode{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrgUnitTreeNode) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrgUnitTreeNode) ProtoMessage() {}
+
+func (x *OrgUnitTreeNode) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrgUnitTreeNode.ProtoReflect.Descriptor instead.
+func (*OrgUnitTreeNode) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *OrgUnitTreeNode) GetOrgUnit() *OrgUnit {
+	if x != nil {
+		return x.OrgUnit
+	}
+	return nil
+}
+
+func (x *OrgUnitTreeNode) GetChildren() []*OrgUnitTreeNode {
+	if x != nil {
+		return x.Children
+	}
+	return nil
+}
+
+type GetOrgUnitTreeResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Root          *OrgUnitTreeNode       `protobuf:"bytes,1,opt,name=root,proto3" json:"root,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetOrgUnitTreeResponse) Reset() {
+	*x = GetOrgUnitTreeResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetOrgUnitTreeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetOrgUnitTreeResponse) ProtoMessage() {}
+
+func (x *GetOrgUnitTreeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetOrgUnitTreeResponse.ProtoReflect.Descriptor instead.
+func (*GetOrgUnitTreeResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *GetOrgUnitTreeResponse) GetRoot() *OrgUnitTreeNode {
+	if x != nil {
+		return x.Root
+	}
+	return nil
+}
+
+type GetOrgLineageRequest struct {
+	state    protoimpl.MessageState `protogen:"open.v1"`
+	TenantId string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	// Types that are valid to be assigned to Ref:
+	//
+	//	*GetOrgLineageRequest_UnitNodeId
+	//	*GetOrgLineageRequest_AssociateId
+	Ref           isGetOrgLineageRequest_Ref `protobuf_oneof:"ref"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetOrgLineageRequest) Reset() {
+	*x = GetOrgLineageRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetOrgLineageRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetOrgLineageRequest) ProtoMessage() {}
+
+func (x *GetOrgLineageRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetOrgLineageRequest.ProtoReflect.Descriptor instead.
+func (*GetOrgLineageRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *GetOrgLineageRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *GetOrgLineageRequest) GetRef() isGetOrgLineageRequest_Ref {
+	if x != nil {
+		return x.Ref
+	}
+	return nil
+}
+
+func (x *GetOrgLineageRequest) GetUnitNodeId() int64 {
+	if x != nil {
+		if x, ok := x.Ref.(*GetOrgLineageRequest_UnitNodeId); ok {
+			return x.UnitNodeId
+		}
+	}
+	return 0
+}
+
+func (x *GetOrgLineageRequest) GetAssociateId() int64 {
+	if x != nil {
+		if x, ok := x.Ref.(*GetOrgLineageRequest_AssociateId); ok {
+			return x.AssociateId
+		}
+	}
+	return 0
+}
+
+type isGetOrgLineageRequest_Ref interface {
+	isGetOrgLineageRequest_Ref()
+}
+
+type GetOrgLineageRequest_UnitNodeId struct {
+	UnitNodeId int64 `protobuf:"varint,2,opt,name=unit_node_id,json=unitNodeId,proto3,oneof"`
+}
+
+type GetOrgLineageRequest_AssociateId struct {
+	AssociateId int64 `protobuf:"varint,3,opt,name=associate_id,json=associateId,proto3,oneof"`
+}
+
+func (*GetOrgLineageRequest_UnitNodeId) isGetOrgLineageRequest_Ref() {}
+
+func (*GetOrgLineageRequest_AssociateId) isGetOrgLineageRequest_Ref() {}
+
+type GetOrgLineageResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Lineage       []*OrgUnit             `protobuf:"bytes,1,rep,name=lineage,proto3" json:"lineage,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetOrgLineageResponse) Reset() {
+	*x = GetOrgLineageResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetOrgLineageResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetOrgLineageResponse) ProtoMessage() {}
+
+func (x *GetOrgLineageResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetOrgLineageResponse.ProtoReflect.Descriptor instead.
+func (*GetOrgLineageResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *GetOrgLineageResponse) GetLineage() []*OrgUnit {
+	if x != nil {
+		return x.Lineage
+	}
+	return nil
+}
+
+type GetDirectReportsRequest struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	TenantId         string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	AssociateId      int64                  `protobuf:"varint,2,opt,name=associate_id,json=associateId,proto3" json:"associate_id,omitempty"`
+	IncludeSecondary bool                   `protobuf:"varint,3,opt,name=include_secondary,json=includeSecondary,proto3" json:"include_secondary,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *GetDirectReportsRequest) Reset() {
+	*x = GetDirectReportsRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetDirectReportsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetDirectReportsRequest) ProtoMessage() {}
+
+func (x *GetDirectReportsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetDirectReportsRequest.ProtoReflect.Descriptor instead.
+func (*GetDirectReportsRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *GetDirectReportsRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *GetDirectReportsRequest) GetAssociateId() int64 {
 	if x != nil {
 		return x.AssociateId
 	}
 	return 0
 }
 
-func (x *AssociateDetail) GetEmployeeCardId() string {
+func (x *GetDirectReportsRequest) GetIncludeSecondary() bool {
 	if x != nil {
-		return x.EmployeeCardId
-	}
-	return ""
-}
-
-func (x *AssociateDetail) GetAssociateType() string {
-	if x != nil {
-		return x.AssociateType
-	}
-	return ""
-}
-
-func (x *AssociateDetail) GetIsTerminated() bool {
-	if x != nil {
-		return x.IsTerminated
+		return x.IncludeSecondary
 	}
 	return false
 }
 
-func (x *AssociateDetail) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *AssociateDetail) GetEmail() string {
-	if x != nil {
-		return x.Email
-	}
-	return ""
-}
-
-func (x *AssociateDetail) GetBusinessEmail() string {
-	if x != nil {
-		return x.BusinessEmail
-	}
-	return ""
-}
-
-func (x *AssociateDetail) GetPositions() []*Position {
-	if x != nil {
-		return x.Positions
-	}
-	return nil
-}
-
-func (x *AssociateDetail) GetUnits() []*UnitRef {
-	if x != nil {
-		return x.Units
-	}
-	return nil
-}
-
-type GetAssociateByEmailRequest struct {
+type GetDirectReportsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	Associates    []*Associate           `protobuf:"bytes,1,rep,name=associates,proto3" json:"associates,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetAssociateByEmailRequest) Reset() {
-	*x = GetAssociateByEmailRequest{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[5]
+func (x *GetDirectReportsResponse) Reset() {
+	*x = GetDirectReportsResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetAssociateByEmailRequest) String() string {
+func (x *GetDirectReportsResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetAssociateByEmailRequest) ProtoMessage() {}
+func (*GetDirectReportsResponse) ProtoMessage() {}
 
-func (x *GetAssociateByEmailRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[5]
+func (x *GetDirectReportsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -451,177 +2399,536 @@ func (x *GetAssociateByEmailRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetAssociateByEmailRequest.ProtoReflect.Descriptor instead.
-func (*GetAssociateByEmailRequest) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{5}
+// Deprecated: Use GetDirectReportsResponse.ProtoReflect.Descriptor instead.
+func (*GetDirectReportsResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{25}
 }
 
-func (x *GetAssociateByEmailRequest) GetEmail() string {
-	if x != nil {
-		return x.Email
-	}
-	return ""
-}
-
-type GetAssociateByEmailResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	AssociateId   int32                  `protobuf:"varint,1,opt,name=associate_id,json=associateId,proto3" json:"associate_id,omitempty"`
-	Found         bool                   `protobuf:"varint,2,opt,name=found,proto3" json:"found,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetAssociateByEmailResponse) Reset() {
-	*x = GetAssociateByEmailResponse{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetAssociateByEmailResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetAssociateByEmailResponse) ProtoMessage() {}
-
-func (x *GetAssociateByEmailResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetAssociateByEmailResponse.ProtoReflect.Descriptor instead.
-func (*GetAssociateByEmailResponse) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *GetAssociateByEmailResponse) GetAssociateId() int32 {
-	if x != nil {
-		return x.AssociateId
-	}
-	return 0
-}
-
-func (x *GetAssociateByEmailResponse) GetFound() bool {
-	if x != nil {
-		return x.Found
-	}
-	return false
-}
-
-type GetAllAssociatesRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Limit         int32                  `protobuf:"varint,1,opt,name=limit,proto3" json:"limit,omitempty"` // 0 = server default
-	Offset        int32                  `protobuf:"varint,2,opt,name=offset,proto3" json:"offset,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetAllAssociatesRequest) Reset() {
-	*x = GetAllAssociatesRequest{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetAllAssociatesRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetAllAssociatesRequest) ProtoMessage() {}
-
-func (x *GetAllAssociatesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetAllAssociatesRequest.ProtoReflect.Descriptor instead.
-func (*GetAllAssociatesRequest) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *GetAllAssociatesRequest) GetLimit() int32 {
-	if x != nil {
-		return x.Limit
-	}
-	return 0
-}
-
-func (x *GetAllAssociatesRequest) GetOffset() int32 {
-	if x != nil {
-		return x.Offset
-	}
-	return 0
-}
-
-type GetAllAssociatesResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Associates    []*AssociateDetail     `protobuf:"bytes,1,rep,name=associates,proto3" json:"associates,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetAllAssociatesResponse) Reset() {
-	*x = GetAllAssociatesResponse{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetAllAssociatesResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetAllAssociatesResponse) ProtoMessage() {}
-
-func (x *GetAllAssociatesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetAllAssociatesResponse.ProtoReflect.Descriptor instead.
-func (*GetAllAssociatesResponse) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *GetAllAssociatesResponse) GetAssociates() []*AssociateDetail {
+func (x *GetDirectReportsResponse) GetAssociates() []*Associate {
 	if x != nil {
 		return x.Associates
 	}
 	return nil
 }
 
+type GetIndirectReportsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	AssociateId   int64                  `protobuf:"varint,2,opt,name=associate_id,json=associateId,proto3" json:"associate_id,omitempty"`
+	MaxDepth      int32                  `protobuf:"varint,3,opt,name=max_depth,json=maxDepth,proto3" json:"max_depth,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetIndirectReportsRequest) Reset() {
+	*x = GetIndirectReportsRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetIndirectReportsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetIndirectReportsRequest) ProtoMessage() {}
+
+func (x *GetIndirectReportsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetIndirectReportsRequest.ProtoReflect.Descriptor instead.
+func (*GetIndirectReportsRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *GetIndirectReportsRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *GetIndirectReportsRequest) GetAssociateId() int64 {
+	if x != nil {
+		return x.AssociateId
+	}
+	return 0
+}
+
+func (x *GetIndirectReportsRequest) GetMaxDepth() int32 {
+	if x != nil {
+		return x.MaxDepth
+	}
+	return 0
+}
+
+type GetIndirectReportsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Associates    []*Associate           `protobuf:"bytes,1,rep,name=associates,proto3" json:"associates,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetIndirectReportsResponse) Reset() {
+	*x = GetIndirectReportsResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetIndirectReportsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetIndirectReportsResponse) ProtoMessage() {}
+
+func (x *GetIndirectReportsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetIndirectReportsResponse.ProtoReflect.Descriptor instead.
+func (*GetIndirectReportsResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *GetIndirectReportsResponse) GetAssociates() []*Associate {
+	if x != nil {
+		return x.Associates
+	}
+	return nil
+}
+
+type GetUnitMembersRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	UnitNodeId    int64                  `protobuf:"varint,2,opt,name=unit_node_id,json=unitNodeId,proto3" json:"unit_node_id,omitempty"`
+	Recursive     bool                   `protobuf:"varint,3,opt,name=recursive,proto3" json:"recursive,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUnitMembersRequest) Reset() {
+	*x = GetUnitMembersRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[28]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUnitMembersRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUnitMembersRequest) ProtoMessage() {}
+
+func (x *GetUnitMembersRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[28]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUnitMembersRequest.ProtoReflect.Descriptor instead.
+func (*GetUnitMembersRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *GetUnitMembersRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *GetUnitMembersRequest) GetUnitNodeId() int64 {
+	if x != nil {
+		return x.UnitNodeId
+	}
+	return 0
+}
+
+func (x *GetUnitMembersRequest) GetRecursive() bool {
+	if x != nil {
+		return x.Recursive
+	}
+	return false
+}
+
+type GetUnitMembersResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Associates    []*Associate           `protobuf:"bytes,1,rep,name=associates,proto3" json:"associates,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUnitMembersResponse) Reset() {
+	*x = GetUnitMembersResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[29]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUnitMembersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUnitMembersResponse) ProtoMessage() {}
+
+func (x *GetUnitMembersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[29]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUnitMembersResponse.ProtoReflect.Descriptor instead.
+func (*GetUnitMembersResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{29}
+}
+
+func (x *GetUnitMembersResponse) GetAssociates() []*Associate {
+	if x != nil {
+		return x.Associates
+	}
+	return nil
+}
+
+type GetHeadOfUnitRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	UnitNodeId    int64                  `protobuf:"varint,2,opt,name=unit_node_id,json=unitNodeId,proto3" json:"unit_node_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetHeadOfUnitRequest) Reset() {
+	*x = GetHeadOfUnitRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[30]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetHeadOfUnitRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetHeadOfUnitRequest) ProtoMessage() {}
+
+func (x *GetHeadOfUnitRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[30]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetHeadOfUnitRequest.ProtoReflect.Descriptor instead.
+func (*GetHeadOfUnitRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{30}
+}
+
+func (x *GetHeadOfUnitRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *GetHeadOfUnitRequest) GetUnitNodeId() int64 {
+	if x != nil {
+		return x.UnitNodeId
+	}
+	return 0
+}
+
+type GetHeadOfUnitResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Associate     *Associate             `protobuf:"bytes,1,opt,name=associate,proto3" json:"associate,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetHeadOfUnitResponse) Reset() {
+	*x = GetHeadOfUnitResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[31]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetHeadOfUnitResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetHeadOfUnitResponse) ProtoMessage() {}
+
+func (x *GetHeadOfUnitResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[31]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetHeadOfUnitResponse.ProtoReflect.Descriptor instead.
+func (*GetHeadOfUnitResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{31}
+}
+
+func (x *GetHeadOfUnitResponse) GetAssociate() *Associate {
+	if x != nil {
+		return x.Associate
+	}
+	return nil
+}
+
+type GetAssignmentsRequest struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	TenantId          string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	AssociateId       int64                  `protobuf:"varint,2,opt,name=associate_id,json=associateId,proto3" json:"associate_id,omitempty"`
+	IncludeHistorical bool                   `protobuf:"varint,3,opt,name=include_historical,json=includeHistorical,proto3" json:"include_historical,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *GetAssignmentsRequest) Reset() {
+	*x = GetAssignmentsRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[32]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetAssignmentsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAssignmentsRequest) ProtoMessage() {}
+
+func (x *GetAssignmentsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[32]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAssignmentsRequest.ProtoReflect.Descriptor instead.
+func (*GetAssignmentsRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{32}
+}
+
+func (x *GetAssignmentsRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *GetAssignmentsRequest) GetAssociateId() int64 {
+	if x != nil {
+		return x.AssociateId
+	}
+	return 0
+}
+
+func (x *GetAssignmentsRequest) GetIncludeHistorical() bool {
+	if x != nil {
+		return x.IncludeHistorical
+	}
+	return false
+}
+
+type GetAssignmentsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Assignments   []*PositionAssignment  `protobuf:"bytes,1,rep,name=assignments,proto3" json:"assignments,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetAssignmentsResponse) Reset() {
+	*x = GetAssignmentsResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[33]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetAssignmentsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAssignmentsResponse) ProtoMessage() {}
+
+func (x *GetAssignmentsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[33]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAssignmentsResponse.ProtoReflect.Descriptor instead.
+func (*GetAssignmentsResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{33}
+}
+
+func (x *GetAssignmentsResponse) GetAssignments() []*PositionAssignment {
+	if x != nil {
+		return x.Assignments
+	}
+	return nil
+}
+
+type GetEmploymentHistoryRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	AssociateId   int64                  `protobuf:"varint,2,opt,name=associate_id,json=associateId,proto3" json:"associate_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetEmploymentHistoryRequest) Reset() {
+	*x = GetEmploymentHistoryRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[34]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetEmploymentHistoryRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetEmploymentHistoryRequest) ProtoMessage() {}
+
+func (x *GetEmploymentHistoryRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[34]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetEmploymentHistoryRequest.ProtoReflect.Descriptor instead.
+func (*GetEmploymentHistoryRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{34}
+}
+
+func (x *GetEmploymentHistoryRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *GetEmploymentHistoryRequest) GetAssociateId() int64 {
+	if x != nil {
+		return x.AssociateId
+	}
+	return 0
+}
+
+type GetEmploymentHistoryResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Episodes      []*EmploymentEpisode   `protobuf:"bytes,1,rep,name=episodes,proto3" json:"episodes,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetEmploymentHistoryResponse) Reset() {
+	*x = GetEmploymentHistoryResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[35]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetEmploymentHistoryResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetEmploymentHistoryResponse) ProtoMessage() {}
+
+func (x *GetEmploymentHistoryResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[35]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetEmploymentHistoryResponse.ProtoReflect.Descriptor instead.
+func (*GetEmploymentHistoryResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{35}
+}
+
+func (x *GetEmploymentHistoryResponse) GetEpisodes() []*EmploymentEpisode {
+	if x != nil {
+		return x.Episodes
+	}
+	return nil
+}
+
 type SearchAssociatesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Query         string                 `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
-	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	Query         string                 `protobuf:"bytes,2,opt,name=query,proto3" json:"query,omitempty"`
+	Limit         int32                  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
+	OnlyActive    bool                   `protobuf:"varint,4,opt,name=only_active,json=onlyActive,proto3" json:"only_active,omitempty"`
+	OnlyAssigned  bool                   `protobuf:"varint,5,opt,name=only_assigned,json=onlyAssigned,proto3" json:"only_assigned,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *SearchAssociatesRequest) Reset() {
 	*x = SearchAssociatesRequest{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[9]
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -633,7 +2940,7 @@ func (x *SearchAssociatesRequest) String() string {
 func (*SearchAssociatesRequest) ProtoMessage() {}
 
 func (x *SearchAssociatesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[9]
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -646,7 +2953,14 @@ func (x *SearchAssociatesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SearchAssociatesRequest.ProtoReflect.Descriptor instead.
 func (*SearchAssociatesRequest) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{9}
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{36}
+}
+
+func (x *SearchAssociatesRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
 }
 
 func (x *SearchAssociatesRequest) GetQuery() string {
@@ -663,92 +2977,30 @@ func (x *SearchAssociatesRequest) GetLimit() int32 {
 	return 0
 }
 
-type SearchResult struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	AssociateId   int32                  `protobuf:"varint,1,opt,name=associate_id,json=associateId,proto3" json:"associate_id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Position      string                 `protobuf:"bytes,3,opt,name=position,proto3" json:"position,omitempty"`
-	Unit          string                 `protobuf:"bytes,4,opt,name=unit,proto3" json:"unit,omitempty"`
-	Type          string                 `protobuf:"bytes,5,opt,name=type,proto3" json:"type,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SearchResult) Reset() {
-	*x = SearchResult{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[10]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SearchResult) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SearchResult) ProtoMessage() {}
-
-func (x *SearchResult) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[10]
+func (x *SearchAssociatesRequest) GetOnlyActive() bool {
 	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
+		return x.OnlyActive
 	}
-	return mi.MessageOf(x)
+	return false
 }
 
-// Deprecated: Use SearchResult.ProtoReflect.Descriptor instead.
-func (*SearchResult) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{10}
-}
-
-func (x *SearchResult) GetAssociateId() int32 {
+func (x *SearchAssociatesRequest) GetOnlyAssigned() bool {
 	if x != nil {
-		return x.AssociateId
+		return x.OnlyAssigned
 	}
-	return 0
-}
-
-func (x *SearchResult) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *SearchResult) GetPosition() string {
-	if x != nil {
-		return x.Position
-	}
-	return ""
-}
-
-func (x *SearchResult) GetUnit() string {
-	if x != nil {
-		return x.Unit
-	}
-	return ""
-}
-
-func (x *SearchResult) GetType() string {
-	if x != nil {
-		return x.Type
-	}
-	return ""
+	return false
 }
 
 type SearchAssociatesResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Results       []*SearchResult        `protobuf:"bytes,1,rep,name=results,proto3" json:"results,omitempty"`
+	Associates    []*Associate           `protobuf:"bytes,1,rep,name=associates,proto3" json:"associates,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *SearchAssociatesResponse) Reset() {
 	*x = SearchAssociatesResponse{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[11]
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -760,7 +3012,7 @@ func (x *SearchAssociatesResponse) String() string {
 func (*SearchAssociatesResponse) ProtoMessage() {}
 
 func (x *SearchAssociatesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[11]
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -773,38 +3025,40 @@ func (x *SearchAssociatesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SearchAssociatesResponse.ProtoReflect.Descriptor instead.
 func (*SearchAssociatesResponse) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{11}
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{37}
 }
 
-func (x *SearchAssociatesResponse) GetResults() []*SearchResult {
+func (x *SearchAssociatesResponse) GetAssociates() []*Associate {
 	if x != nil {
-		return x.Results
+		return x.Associates
 	}
 	return nil
 }
 
-type GetDirectReportsRequest struct {
+type SearchOrgUnitsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ManagerId     int32                  `protobuf:"varint,1,opt,name=manager_id,json=managerId,proto3" json:"manager_id,omitempty"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	Query         string                 `protobuf:"bytes,2,opt,name=query,proto3" json:"query,omitempty"`
+	Limit         int32                  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetDirectReportsRequest) Reset() {
-	*x = GetDirectReportsRequest{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[12]
+func (x *SearchOrgUnitsRequest) Reset() {
+	*x = SearchOrgUnitsRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetDirectReportsRequest) String() string {
+func (x *SearchOrgUnitsRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetDirectReportsRequest) ProtoMessage() {}
+func (*SearchOrgUnitsRequest) ProtoMessage() {}
 
-func (x *GetDirectReportsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[12]
+func (x *SearchOrgUnitsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -815,943 +3069,54 @@ func (x *GetDirectReportsRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetDirectReportsRequest.ProtoReflect.Descriptor instead.
-func (*GetDirectReportsRequest) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{12}
+// Deprecated: Use SearchOrgUnitsRequest.ProtoReflect.Descriptor instead.
+func (*SearchOrgUnitsRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{38}
 }
 
-func (x *GetDirectReportsRequest) GetManagerId() int32 {
+func (x *SearchOrgUnitsRequest) GetTenantId() string {
 	if x != nil {
-		return x.ManagerId
-	}
-	return 0
-}
-
-type DirectReport struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ManagerName   string                 `protobuf:"bytes,1,opt,name=manager_name,json=managerName,proto3" json:"manager_name,omitempty"`
-	AssociateId   int32                  `protobuf:"varint,2,opt,name=associate_id,json=associateId,proto3" json:"associate_id,omitempty"`
-	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	Position      string                 `protobuf:"bytes,4,opt,name=position,proto3" json:"position,omitempty"`
-	Unit          string                 `protobuf:"bytes,5,opt,name=unit,proto3" json:"unit,omitempty"`
-	ReportType    string                 `protobuf:"bytes,6,opt,name=report_type,json=reportType,proto3" json:"report_type,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DirectReport) Reset() {
-	*x = DirectReport{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[13]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DirectReport) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DirectReport) ProtoMessage() {}
-
-func (x *DirectReport) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[13]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DirectReport.ProtoReflect.Descriptor instead.
-func (*DirectReport) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{13}
-}
-
-func (x *DirectReport) GetManagerName() string {
-	if x != nil {
-		return x.ManagerName
+		return x.TenantId
 	}
 	return ""
 }
 
-func (x *DirectReport) GetAssociateId() int32 {
+func (x *SearchOrgUnitsRequest) GetQuery() string {
 	if x != nil {
-		return x.AssociateId
-	}
-	return 0
-}
-
-func (x *DirectReport) GetName() string {
-	if x != nil {
-		return x.Name
+		return x.Query
 	}
 	return ""
 }
 
-func (x *DirectReport) GetPosition() string {
-	if x != nil {
-		return x.Position
-	}
-	return ""
-}
-
-func (x *DirectReport) GetUnit() string {
-	if x != nil {
-		return x.Unit
-	}
-	return ""
-}
-
-func (x *DirectReport) GetReportType() string {
-	if x != nil {
-		return x.ReportType
-	}
-	return ""
-}
-
-type GetDirectReportsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Reports       []*DirectReport        `protobuf:"bytes,1,rep,name=reports,proto3" json:"reports,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetDirectReportsResponse) Reset() {
-	*x = GetDirectReportsResponse{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[14]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetDirectReportsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetDirectReportsResponse) ProtoMessage() {}
-
-func (x *GetDirectReportsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[14]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetDirectReportsResponse.ProtoReflect.Descriptor instead.
-func (*GetDirectReportsResponse) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{14}
-}
-
-func (x *GetDirectReportsResponse) GetReports() []*DirectReport {
-	if x != nil {
-		return x.Reports
-	}
-	return nil
-}
-
-type GetReportingChainRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	AssociateId   int32                  `protobuf:"varint,1,opt,name=associate_id,json=associateId,proto3" json:"associate_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetReportingChainRequest) Reset() {
-	*x = GetReportingChainRequest{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[15]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetReportingChainRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetReportingChainRequest) ProtoMessage() {}
-
-func (x *GetReportingChainRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[15]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetReportingChainRequest.ProtoReflect.Descriptor instead.
-func (*GetReportingChainRequest) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{15}
-}
-
-func (x *GetReportingChainRequest) GetAssociateId() int32 {
-	if x != nil {
-		return x.AssociateId
-	}
-	return 0
-}
-
-type ChainLink struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Level         int32                  `protobuf:"varint,1,opt,name=level,proto3" json:"level,omitempty"`
-	AssociateId   int32                  `protobuf:"varint,2,opt,name=associate_id,json=associateId,proto3" json:"associate_id,omitempty"`
-	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	Position      string                 `protobuf:"bytes,4,opt,name=position,proto3" json:"position,omitempty"`
-	Unit          string                 `protobuf:"bytes,5,opt,name=unit,proto3" json:"unit,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ChainLink) Reset() {
-	*x = ChainLink{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[16]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ChainLink) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ChainLink) ProtoMessage() {}
-
-func (x *ChainLink) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[16]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ChainLink.ProtoReflect.Descriptor instead.
-func (*ChainLink) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{16}
-}
-
-func (x *ChainLink) GetLevel() int32 {
-	if x != nil {
-		return x.Level
-	}
-	return 0
-}
-
-func (x *ChainLink) GetAssociateId() int32 {
-	if x != nil {
-		return x.AssociateId
-	}
-	return 0
-}
-
-func (x *ChainLink) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *ChainLink) GetPosition() string {
-	if x != nil {
-		return x.Position
-	}
-	return ""
-}
-
-func (x *ChainLink) GetUnit() string {
-	if x != nil {
-		return x.Unit
-	}
-	return ""
-}
-
-type GetReportingChainResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Chain         []*ChainLink           `protobuf:"bytes,1,rep,name=chain,proto3" json:"chain,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetReportingChainResponse) Reset() {
-	*x = GetReportingChainResponse{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[17]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetReportingChainResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetReportingChainResponse) ProtoMessage() {}
-
-func (x *GetReportingChainResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[17]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetReportingChainResponse.ProtoReflect.Descriptor instead.
-func (*GetReportingChainResponse) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{17}
-}
-
-func (x *GetReportingChainResponse) GetChain() []*ChainLink {
-	if x != nil {
-		return x.Chain
-	}
-	return nil
-}
-
-type GetOrgChartRequest struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	DepartmentCode string                 `protobuf:"bytes,1,opt,name=department_code,json=departmentCode,proto3" json:"department_code,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
-}
-
-func (x *GetOrgChartRequest) Reset() {
-	*x = GetOrgChartRequest{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[18]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetOrgChartRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetOrgChartRequest) ProtoMessage() {}
-
-func (x *GetOrgChartRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[18]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetOrgChartRequest.ProtoReflect.Descriptor instead.
-func (*GetOrgChartRequest) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{18}
-}
-
-func (x *GetOrgChartRequest) GetDepartmentCode() string {
-	if x != nil {
-		return x.DepartmentCode
-	}
-	return ""
-}
-
-type OrgChartEntry struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	UnitId        int32                  `protobuf:"varint,1,opt,name=unit_id,json=unitId,proto3" json:"unit_id,omitempty"`
-	UnitName      string                 `protobuf:"bytes,2,opt,name=unit_name,json=unitName,proto3" json:"unit_name,omitempty"`
-	UnitType      string                 `protobuf:"bytes,3,opt,name=unit_type,json=unitType,proto3" json:"unit_type,omitempty"`
-	Depth         int32                  `protobuf:"varint,4,opt,name=depth,proto3" json:"depth,omitempty"`
-	AssociateId   int32                  `protobuf:"varint,5,opt,name=associate_id,json=associateId,proto3" json:"associate_id,omitempty"`
-	Name          string                 `protobuf:"bytes,6,opt,name=name,proto3" json:"name,omitempty"`
-	Position      string                 `protobuf:"bytes,7,opt,name=position,proto3" json:"position,omitempty"`
-	IsManager     bool                   `protobuf:"varint,8,opt,name=is_manager,json=isManager,proto3" json:"is_manager,omitempty"`
-	HeadOfUnit    bool                   `protobuf:"varint,9,opt,name=head_of_unit,json=headOfUnit,proto3" json:"head_of_unit,omitempty"`
-	LayerId       int32                  `protobuf:"varint,10,opt,name=layer_id,json=layerId,proto3" json:"layer_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *OrgChartEntry) Reset() {
-	*x = OrgChartEntry{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[19]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *OrgChartEntry) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*OrgChartEntry) ProtoMessage() {}
-
-func (x *OrgChartEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[19]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use OrgChartEntry.ProtoReflect.Descriptor instead.
-func (*OrgChartEntry) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{19}
-}
-
-func (x *OrgChartEntry) GetUnitId() int32 {
-	if x != nil {
-		return x.UnitId
-	}
-	return 0
-}
-
-func (x *OrgChartEntry) GetUnitName() string {
-	if x != nil {
-		return x.UnitName
-	}
-	return ""
-}
-
-func (x *OrgChartEntry) GetUnitType() string {
-	if x != nil {
-		return x.UnitType
-	}
-	return ""
-}
-
-func (x *OrgChartEntry) GetDepth() int32 {
-	if x != nil {
-		return x.Depth
-	}
-	return 0
-}
-
-func (x *OrgChartEntry) GetAssociateId() int32 {
-	if x != nil {
-		return x.AssociateId
-	}
-	return 0
-}
-
-func (x *OrgChartEntry) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *OrgChartEntry) GetPosition() string {
-	if x != nil {
-		return x.Position
-	}
-	return ""
-}
-
-func (x *OrgChartEntry) GetIsManager() bool {
-	if x != nil {
-		return x.IsManager
-	}
-	return false
-}
-
-func (x *OrgChartEntry) GetHeadOfUnit() bool {
-	if x != nil {
-		return x.HeadOfUnit
-	}
-	return false
-}
-
-func (x *OrgChartEntry) GetLayerId() int32 {
-	if x != nil {
-		return x.LayerId
-	}
-	return 0
-}
-
-type GetOrgChartResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Entries       []*OrgChartEntry       `protobuf:"bytes,1,rep,name=entries,proto3" json:"entries,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetOrgChartResponse) Reset() {
-	*x = GetOrgChartResponse{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[20]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetOrgChartResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetOrgChartResponse) ProtoMessage() {}
-
-func (x *GetOrgChartResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[20]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetOrgChartResponse.ProtoReflect.Descriptor instead.
-func (*GetOrgChartResponse) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{20}
-}
-
-func (x *GetOrgChartResponse) GetEntries() []*OrgChartEntry {
-	if x != nil {
-		return x.Entries
-	}
-	return nil
-}
-
-type GetUnitSubtreeRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	RootUnitId    int32                  `protobuf:"varint,1,opt,name=root_unit_id,json=rootUnitId,proto3" json:"root_unit_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetUnitSubtreeRequest) Reset() {
-	*x = GetUnitSubtreeRequest{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[21]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetUnitSubtreeRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetUnitSubtreeRequest) ProtoMessage() {}
-
-func (x *GetUnitSubtreeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[21]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetUnitSubtreeRequest.ProtoReflect.Descriptor instead.
-func (*GetUnitSubtreeRequest) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{21}
-}
-
-func (x *GetUnitSubtreeRequest) GetRootUnitId() int32 {
-	if x != nil {
-		return x.RootUnitId
-	}
-	return 0
-}
-
-type UnitTreeEntry struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	UnitId        int32                  `protobuf:"varint,1,opt,name=unit_id,json=unitId,proto3" json:"unit_id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	NodeGroup     string                 `protobuf:"bytes,3,opt,name=node_group,json=nodeGroup,proto3" json:"node_group,omitempty"`
-	DeptCode      string                 `protobuf:"bytes,4,opt,name=dept_code,json=deptCode,proto3" json:"dept_code,omitempty"`
-	RelativeDepth int32                  `protobuf:"varint,5,opt,name=relative_depth,json=relativeDepth,proto3" json:"relative_depth,omitempty"`
-	Headcount     int32                  `protobuf:"varint,6,opt,name=headcount,proto3" json:"headcount,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UnitTreeEntry) Reset() {
-	*x = UnitTreeEntry{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[22]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UnitTreeEntry) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UnitTreeEntry) ProtoMessage() {}
-
-func (x *UnitTreeEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[22]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UnitTreeEntry.ProtoReflect.Descriptor instead.
-func (*UnitTreeEntry) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{22}
-}
-
-func (x *UnitTreeEntry) GetUnitId() int32 {
-	if x != nil {
-		return x.UnitId
-	}
-	return 0
-}
-
-func (x *UnitTreeEntry) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *UnitTreeEntry) GetNodeGroup() string {
-	if x != nil {
-		return x.NodeGroup
-	}
-	return ""
-}
-
-func (x *UnitTreeEntry) GetDeptCode() string {
-	if x != nil {
-		return x.DeptCode
-	}
-	return ""
-}
-
-func (x *UnitTreeEntry) GetRelativeDepth() int32 {
-	if x != nil {
-		return x.RelativeDepth
-	}
-	return 0
-}
-
-func (x *UnitTreeEntry) GetHeadcount() int32 {
-	if x != nil {
-		return x.Headcount
-	}
-	return 0
-}
-
-type GetUnitSubtreeResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Entries       []*UnitTreeEntry       `protobuf:"bytes,1,rep,name=entries,proto3" json:"entries,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetUnitSubtreeResponse) Reset() {
-	*x = GetUnitSubtreeResponse{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[23]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetUnitSubtreeResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetUnitSubtreeResponse) ProtoMessage() {}
-
-func (x *GetUnitSubtreeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[23]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetUnitSubtreeResponse.ProtoReflect.Descriptor instead.
-func (*GetUnitSubtreeResponse) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{23}
-}
-
-func (x *GetUnitSubtreeResponse) GetEntries() []*UnitTreeEntry {
-	if x != nil {
-		return x.Entries
-	}
-	return nil
-}
-
-type GetUnitHeadcountRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetUnitHeadcountRequest) Reset() {
-	*x = GetUnitHeadcountRequest{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[24]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetUnitHeadcountRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetUnitHeadcountRequest) ProtoMessage() {}
-
-func (x *GetUnitHeadcountRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[24]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetUnitHeadcountRequest.ProtoReflect.Descriptor instead.
-func (*GetUnitHeadcountRequest) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{24}
-}
-
-type UnitSummary struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	UnitId        int32                  `protobuf:"varint,1,opt,name=unit_id,json=unitId,proto3" json:"unit_id,omitempty"`
-	UnitName      string                 `protobuf:"bytes,2,opt,name=unit_name,json=unitName,proto3" json:"unit_name,omitempty"`
-	UnitType      string                 `protobuf:"bytes,3,opt,name=unit_type,json=unitType,proto3" json:"unit_type,omitempty"`
-	DeptCode      string                 `protobuf:"bytes,4,opt,name=dept_code,json=deptCode,proto3" json:"dept_code,omitempty"`
-	Headcount     int32                  `protobuf:"varint,5,opt,name=headcount,proto3" json:"headcount,omitempty"`
-	Employees     int32                  `protobuf:"varint,6,opt,name=employees,proto3" json:"employees,omitempty"`
-	BoardMembers  int32                  `protobuf:"varint,7,opt,name=board_members,json=boardMembers,proto3" json:"board_members,omitempty"`
-	HeadName      string                 `protobuf:"bytes,8,opt,name=head_name,json=headName,proto3" json:"head_name,omitempty"`
-	HeadPosition  string                 `protobuf:"bytes,9,opt,name=head_position,json=headPosition,proto3" json:"head_position,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UnitSummary) Reset() {
-	*x = UnitSummary{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[25]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UnitSummary) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UnitSummary) ProtoMessage() {}
-
-func (x *UnitSummary) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[25]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UnitSummary.ProtoReflect.Descriptor instead.
-func (*UnitSummary) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{25}
-}
-
-func (x *UnitSummary) GetUnitId() int32 {
-	if x != nil {
-		return x.UnitId
-	}
-	return 0
-}
-
-func (x *UnitSummary) GetUnitName() string {
-	if x != nil {
-		return x.UnitName
-	}
-	return ""
-}
-
-func (x *UnitSummary) GetUnitType() string {
-	if x != nil {
-		return x.UnitType
-	}
-	return ""
-}
-
-func (x *UnitSummary) GetDeptCode() string {
-	if x != nil {
-		return x.DeptCode
-	}
-	return ""
-}
-
-func (x *UnitSummary) GetHeadcount() int32 {
-	if x != nil {
-		return x.Headcount
-	}
-	return 0
-}
-
-func (x *UnitSummary) GetEmployees() int32 {
-	if x != nil {
-		return x.Employees
-	}
-	return 0
-}
-
-func (x *UnitSummary) GetBoardMembers() int32 {
-	if x != nil {
-		return x.BoardMembers
-	}
-	return 0
-}
-
-func (x *UnitSummary) GetHeadName() string {
-	if x != nil {
-		return x.HeadName
-	}
-	return ""
-}
-
-func (x *UnitSummary) GetHeadPosition() string {
-	if x != nil {
-		return x.HeadPosition
-	}
-	return ""
-}
-
-type GetUnitHeadcountResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Summaries     []*UnitSummary         `protobuf:"bytes,1,rep,name=summaries,proto3" json:"summaries,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetUnitHeadcountResponse) Reset() {
-	*x = GetUnitHeadcountResponse{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[26]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetUnitHeadcountResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetUnitHeadcountResponse) ProtoMessage() {}
-
-func (x *GetUnitHeadcountResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[26]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetUnitHeadcountResponse.ProtoReflect.Descriptor instead.
-func (*GetUnitHeadcountResponse) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{26}
-}
-
-func (x *GetUnitHeadcountResponse) GetSummaries() []*UnitSummary {
-	if x != nil {
-		return x.Summaries
-	}
-	return nil
-}
-
-type GetSpanOfControlRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Limit         int32                  `protobuf:"varint,1,opt,name=limit,proto3" json:"limit,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetSpanOfControlRequest) Reset() {
-	*x = GetSpanOfControlRequest{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[27]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetSpanOfControlRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetSpanOfControlRequest) ProtoMessage() {}
-
-func (x *GetSpanOfControlRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[27]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetSpanOfControlRequest.ProtoReflect.Descriptor instead.
-func (*GetSpanOfControlRequest) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{27}
-}
-
-func (x *GetSpanOfControlRequest) GetLimit() int32 {
+func (x *SearchOrgUnitsRequest) GetLimit() int32 {
 	if x != nil {
 		return x.Limit
 	}
 	return 0
 }
 
-type SpanEntry struct {
+type SearchOrgUnitsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AssociateId   int32                  `protobuf:"varint,1,opt,name=associate_id,json=associateId,proto3" json:"associate_id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Position      string                 `protobuf:"bytes,3,opt,name=position,proto3" json:"position,omitempty"`
-	DirectReports int32                  `protobuf:"varint,4,opt,name=direct_reports,json=directReports,proto3" json:"direct_reports,omitempty"`
+	OrgUnits      []*OrgUnit             `protobuf:"bytes,1,rep,name=org_units,json=orgUnits,proto3" json:"org_units,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SpanEntry) Reset() {
-	*x = SpanEntry{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[28]
+func (x *SearchOrgUnitsResponse) Reset() {
+	*x = SearchOrgUnitsResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SpanEntry) String() string {
+func (x *SearchOrgUnitsResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SpanEntry) ProtoMessage() {}
+func (*SearchOrgUnitsResponse) ProtoMessage() {}
 
-func (x *SpanEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[28]
+func (x *SearchOrgUnitsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1762,61 +3127,333 @@ func (x *SpanEntry) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SpanEntry.ProtoReflect.Descriptor instead.
-func (*SpanEntry) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{28}
+// Deprecated: Use SearchOrgUnitsResponse.ProtoReflect.Descriptor instead.
+func (*SearchOrgUnitsResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{39}
 }
 
-func (x *SpanEntry) GetAssociateId() int32 {
+func (x *SearchOrgUnitsResponse) GetOrgUnits() []*OrgUnit {
 	if x != nil {
-		return x.AssociateId
+		return x.OrgUnits
 	}
-	return 0
+	return nil
 }
 
-func (x *SpanEntry) GetName() string {
+type GetUnassignedAssociatesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUnassignedAssociatesRequest) Reset() {
+	*x = GetUnassignedAssociatesRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[40]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUnassignedAssociatesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUnassignedAssociatesRequest) ProtoMessage() {}
+
+func (x *GetUnassignedAssociatesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[40]
 	if x != nil {
-		return x.Name
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUnassignedAssociatesRequest.ProtoReflect.Descriptor instead.
+func (*GetUnassignedAssociatesRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{40}
+}
+
+func (x *GetUnassignedAssociatesRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
 	}
 	return ""
 }
 
-func (x *SpanEntry) GetPosition() string {
+func (x *GetUnassignedAssociatesRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+type GetUnassignedAssociatesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Associates    []*Associate           `protobuf:"bytes,1,rep,name=associates,proto3" json:"associates,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUnassignedAssociatesResponse) Reset() {
+	*x = GetUnassignedAssociatesResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[41]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUnassignedAssociatesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUnassignedAssociatesResponse) ProtoMessage() {}
+
+func (x *GetUnassignedAssociatesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[41]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUnassignedAssociatesResponse.ProtoReflect.Descriptor instead.
+func (*GetUnassignedAssociatesResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{41}
+}
+
+func (x *GetUnassignedAssociatesResponse) GetAssociates() []*Associate {
+	if x != nil {
+		return x.Associates
+	}
+	return nil
+}
+
+type UpsertOrgUnitRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	OrgUnit       *OrgUnit               `protobuf:"bytes,1,opt,name=org_unit,json=orgUnit,proto3" json:"org_unit,omitempty"`
+	SourceType    SyncSourceType         `protobuf:"varint,2,opt,name=source_type,json=sourceType,proto3,enum=orgcontext.v1.SyncSourceType" json:"source_type,omitempty"`
+	SourceRef     string                 `protobuf:"bytes,3,opt,name=source_ref,json=sourceRef,proto3" json:"source_ref,omitempty"`
+	CorrelationId string                 `protobuf:"bytes,4,opt,name=correlation_id,json=correlationId,proto3" json:"correlation_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpsertOrgUnitRequest) Reset() {
+	*x = UpsertOrgUnitRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[42]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpsertOrgUnitRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpsertOrgUnitRequest) ProtoMessage() {}
+
+func (x *UpsertOrgUnitRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[42]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpsertOrgUnitRequest.ProtoReflect.Descriptor instead.
+func (*UpsertOrgUnitRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{42}
+}
+
+func (x *UpsertOrgUnitRequest) GetOrgUnit() *OrgUnit {
+	if x != nil {
+		return x.OrgUnit
+	}
+	return nil
+}
+
+func (x *UpsertOrgUnitRequest) GetSourceType() SyncSourceType {
+	if x != nil {
+		return x.SourceType
+	}
+	return SyncSourceType_SYNC_SOURCE_TYPE_UNSPECIFIED
+}
+
+func (x *UpsertOrgUnitRequest) GetSourceRef() string {
+	if x != nil {
+		return x.SourceRef
+	}
+	return ""
+}
+
+func (x *UpsertOrgUnitRequest) GetCorrelationId() string {
+	if x != nil {
+		return x.CorrelationId
+	}
+	return ""
+}
+
+type UpsertOrgUnitResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	OrgUnit       *OrgUnit               `protobuf:"bytes,1,opt,name=org_unit,json=orgUnit,proto3" json:"org_unit,omitempty"`
+	Created       bool                   `protobuf:"varint,2,opt,name=created,proto3" json:"created,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpsertOrgUnitResponse) Reset() {
+	*x = UpsertOrgUnitResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[43]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpsertOrgUnitResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpsertOrgUnitResponse) ProtoMessage() {}
+
+func (x *UpsertOrgUnitResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[43]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpsertOrgUnitResponse.ProtoReflect.Descriptor instead.
+func (*UpsertOrgUnitResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{43}
+}
+
+func (x *UpsertOrgUnitResponse) GetOrgUnit() *OrgUnit {
+	if x != nil {
+		return x.OrgUnit
+	}
+	return nil
+}
+
+func (x *UpsertOrgUnitResponse) GetCreated() bool {
+	if x != nil {
+		return x.Created
+	}
+	return false
+}
+
+type UpsertPositionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	Position      *Position              `protobuf:"bytes,2,opt,name=position,proto3" json:"position,omitempty"`
+	SourceType    SyncSourceType         `protobuf:"varint,3,opt,name=source_type,json=sourceType,proto3,enum=orgcontext.v1.SyncSourceType" json:"source_type,omitempty"`
+	SourceRef     string                 `protobuf:"bytes,4,opt,name=source_ref,json=sourceRef,proto3" json:"source_ref,omitempty"`
+	CorrelationId string                 `protobuf:"bytes,5,opt,name=correlation_id,json=correlationId,proto3" json:"correlation_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpsertPositionRequest) Reset() {
+	*x = UpsertPositionRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[44]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpsertPositionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpsertPositionRequest) ProtoMessage() {}
+
+func (x *UpsertPositionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[44]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpsertPositionRequest.ProtoReflect.Descriptor instead.
+func (*UpsertPositionRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{44}
+}
+
+func (x *UpsertPositionRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *UpsertPositionRequest) GetPosition() *Position {
 	if x != nil {
 		return x.Position
 	}
+	return nil
+}
+
+func (x *UpsertPositionRequest) GetSourceType() SyncSourceType {
+	if x != nil {
+		return x.SourceType
+	}
+	return SyncSourceType_SYNC_SOURCE_TYPE_UNSPECIFIED
+}
+
+func (x *UpsertPositionRequest) GetSourceRef() string {
+	if x != nil {
+		return x.SourceRef
+	}
 	return ""
 }
 
-func (x *SpanEntry) GetDirectReports() int32 {
+func (x *UpsertPositionRequest) GetCorrelationId() string {
 	if x != nil {
-		return x.DirectReports
+		return x.CorrelationId
 	}
-	return 0
+	return ""
 }
 
-type GetSpanOfControlResponse struct {
+type UpsertPositionResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Entries       []*SpanEntry           `protobuf:"bytes,1,rep,name=entries,proto3" json:"entries,omitempty"`
+	Position      *Position              `protobuf:"bytes,1,opt,name=position,proto3" json:"position,omitempty"`
+	Created       bool                   `protobuf:"varint,2,opt,name=created,proto3" json:"created,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetSpanOfControlResponse) Reset() {
-	*x = GetSpanOfControlResponse{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[29]
+func (x *UpsertPositionResponse) Reset() {
+	*x = UpsertPositionResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[45]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetSpanOfControlResponse) String() string {
+func (x *UpsertPositionResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetSpanOfControlResponse) ProtoMessage() {}
+func (*UpsertPositionResponse) ProtoMessage() {}
 
-func (x *GetSpanOfControlResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[29]
+func (x *UpsertPositionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[45]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1827,41 +3464,50 @@ func (x *GetSpanOfControlResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetSpanOfControlResponse.ProtoReflect.Descriptor instead.
-func (*GetSpanOfControlResponse) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{29}
+// Deprecated: Use UpsertPositionResponse.ProtoReflect.Descriptor instead.
+func (*UpsertPositionResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{45}
 }
 
-func (x *GetSpanOfControlResponse) GetEntries() []*SpanEntry {
+func (x *UpsertPositionResponse) GetPosition() *Position {
 	if x != nil {
-		return x.Entries
+		return x.Position
 	}
 	return nil
 }
 
-type GetShortestPathRequest struct {
+func (x *UpsertPositionResponse) GetCreated() bool {
+	if x != nil {
+		return x.Created
+	}
+	return false
+}
+
+type UpsertAssociateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	FromId        int32                  `protobuf:"varint,1,opt,name=from_id,json=fromId,proto3" json:"from_id,omitempty"`
-	ToId          int32                  `protobuf:"varint,2,opt,name=to_id,json=toId,proto3" json:"to_id,omitempty"`
+	Associate     *Associate             `protobuf:"bytes,1,opt,name=associate,proto3" json:"associate,omitempty"`
+	SourceType    SyncSourceType         `protobuf:"varint,2,opt,name=source_type,json=sourceType,proto3,enum=orgcontext.v1.SyncSourceType" json:"source_type,omitempty"`
+	SourceRef     string                 `protobuf:"bytes,3,opt,name=source_ref,json=sourceRef,proto3" json:"source_ref,omitempty"`
+	CorrelationId string                 `protobuf:"bytes,4,opt,name=correlation_id,json=correlationId,proto3" json:"correlation_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetShortestPathRequest) Reset() {
-	*x = GetShortestPathRequest{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[30]
+func (x *UpsertAssociateRequest) Reset() {
+	*x = UpsertAssociateRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[46]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetShortestPathRequest) String() string {
+func (x *UpsertAssociateRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetShortestPathRequest) ProtoMessage() {}
+func (*UpsertAssociateRequest) ProtoMessage() {}
 
-func (x *GetShortestPathRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[30]
+func (x *UpsertAssociateRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[46]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1872,107 +3518,541 @@ func (x *GetShortestPathRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetShortestPathRequest.ProtoReflect.Descriptor instead.
-func (*GetShortestPathRequest) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{30}
+// Deprecated: Use UpsertAssociateRequest.ProtoReflect.Descriptor instead.
+func (*UpsertAssociateRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{46}
 }
 
-func (x *GetShortestPathRequest) GetFromId() int32 {
+func (x *UpsertAssociateRequest) GetAssociate() *Associate {
 	if x != nil {
-		return x.FromId
+		return x.Associate
 	}
-	return 0
+	return nil
 }
 
-func (x *GetShortestPathRequest) GetToId() int32 {
+func (x *UpsertAssociateRequest) GetSourceType() SyncSourceType {
 	if x != nil {
-		return x.ToId
+		return x.SourceType
 	}
-	return 0
+	return SyncSourceType_SYNC_SOURCE_TYPE_UNSPECIFIED
 }
 
-type PathStep struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Step          int32                  `protobuf:"varint,1,opt,name=step,proto3" json:"step,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	AssociateId   int32                  `protobuf:"varint,3,opt,name=associate_id,json=associateId,proto3" json:"associate_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *PathStep) Reset() {
-	*x = PathStep{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[31]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *PathStep) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*PathStep) ProtoMessage() {}
-
-func (x *PathStep) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[31]
+func (x *UpsertAssociateRequest) GetSourceRef() string {
 	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use PathStep.ProtoReflect.Descriptor instead.
-func (*PathStep) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{31}
-}
-
-func (x *PathStep) GetStep() int32 {
-	if x != nil {
-		return x.Step
-	}
-	return 0
-}
-
-func (x *PathStep) GetName() string {
-	if x != nil {
-		return x.Name
+		return x.SourceRef
 	}
 	return ""
 }
 
-func (x *PathStep) GetAssociateId() int32 {
+func (x *UpsertAssociateRequest) GetCorrelationId() string {
+	if x != nil {
+		return x.CorrelationId
+	}
+	return ""
+}
+
+type UpsertAssociateResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Associate     *Associate             `protobuf:"bytes,1,opt,name=associate,proto3" json:"associate,omitempty"`
+	Created       bool                   `protobuf:"varint,2,opt,name=created,proto3" json:"created,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpsertAssociateResponse) Reset() {
+	*x = UpsertAssociateResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[47]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpsertAssociateResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpsertAssociateResponse) ProtoMessage() {}
+
+func (x *UpsertAssociateResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[47]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpsertAssociateResponse.ProtoReflect.Descriptor instead.
+func (*UpsertAssociateResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{47}
+}
+
+func (x *UpsertAssociateResponse) GetAssociate() *Associate {
+	if x != nil {
+		return x.Associate
+	}
+	return nil
+}
+
+func (x *UpsertAssociateResponse) GetCreated() bool {
+	if x != nil {
+		return x.Created
+	}
+	return false
+}
+
+type UpsertPositionAssignmentRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	Assignment    *PositionAssignment    `protobuf:"bytes,2,opt,name=assignment,proto3" json:"assignment,omitempty"`
+	SourceType    SyncSourceType         `protobuf:"varint,3,opt,name=source_type,json=sourceType,proto3,enum=orgcontext.v1.SyncSourceType" json:"source_type,omitempty"`
+	SourceRef     string                 `protobuf:"bytes,4,opt,name=source_ref,json=sourceRef,proto3" json:"source_ref,omitempty"`
+	CorrelationId string                 `protobuf:"bytes,5,opt,name=correlation_id,json=correlationId,proto3" json:"correlation_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpsertPositionAssignmentRequest) Reset() {
+	*x = UpsertPositionAssignmentRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[48]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpsertPositionAssignmentRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpsertPositionAssignmentRequest) ProtoMessage() {}
+
+func (x *UpsertPositionAssignmentRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[48]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpsertPositionAssignmentRequest.ProtoReflect.Descriptor instead.
+func (*UpsertPositionAssignmentRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{48}
+}
+
+func (x *UpsertPositionAssignmentRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *UpsertPositionAssignmentRequest) GetAssignment() *PositionAssignment {
+	if x != nil {
+		return x.Assignment
+	}
+	return nil
+}
+
+func (x *UpsertPositionAssignmentRequest) GetSourceType() SyncSourceType {
+	if x != nil {
+		return x.SourceType
+	}
+	return SyncSourceType_SYNC_SOURCE_TYPE_UNSPECIFIED
+}
+
+func (x *UpsertPositionAssignmentRequest) GetSourceRef() string {
+	if x != nil {
+		return x.SourceRef
+	}
+	return ""
+}
+
+func (x *UpsertPositionAssignmentRequest) GetCorrelationId() string {
+	if x != nil {
+		return x.CorrelationId
+	}
+	return ""
+}
+
+type UpsertPositionAssignmentResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Assignment    *PositionAssignment    `protobuf:"bytes,1,opt,name=assignment,proto3" json:"assignment,omitempty"`
+	Created       bool                   `protobuf:"varint,2,opt,name=created,proto3" json:"created,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpsertPositionAssignmentResponse) Reset() {
+	*x = UpsertPositionAssignmentResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[49]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpsertPositionAssignmentResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpsertPositionAssignmentResponse) ProtoMessage() {}
+
+func (x *UpsertPositionAssignmentResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[49]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpsertPositionAssignmentResponse.ProtoReflect.Descriptor instead.
+func (*UpsertPositionAssignmentResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{49}
+}
+
+func (x *UpsertPositionAssignmentResponse) GetAssignment() *PositionAssignment {
+	if x != nil {
+		return x.Assignment
+	}
+	return nil
+}
+
+func (x *UpsertPositionAssignmentResponse) GetCreated() bool {
+	if x != nil {
+		return x.Created
+	}
+	return false
+}
+
+type UpsertEmploymentEpisodeRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	Episode       *EmploymentEpisode     `protobuf:"bytes,2,opt,name=episode,proto3" json:"episode,omitempty"`
+	SourceType    SyncSourceType         `protobuf:"varint,3,opt,name=source_type,json=sourceType,proto3,enum=orgcontext.v1.SyncSourceType" json:"source_type,omitempty"`
+	SourceRef     string                 `protobuf:"bytes,4,opt,name=source_ref,json=sourceRef,proto3" json:"source_ref,omitempty"`
+	CorrelationId string                 `protobuf:"bytes,5,opt,name=correlation_id,json=correlationId,proto3" json:"correlation_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpsertEmploymentEpisodeRequest) Reset() {
+	*x = UpsertEmploymentEpisodeRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[50]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpsertEmploymentEpisodeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpsertEmploymentEpisodeRequest) ProtoMessage() {}
+
+func (x *UpsertEmploymentEpisodeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[50]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpsertEmploymentEpisodeRequest.ProtoReflect.Descriptor instead.
+func (*UpsertEmploymentEpisodeRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{50}
+}
+
+func (x *UpsertEmploymentEpisodeRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *UpsertEmploymentEpisodeRequest) GetEpisode() *EmploymentEpisode {
+	if x != nil {
+		return x.Episode
+	}
+	return nil
+}
+
+func (x *UpsertEmploymentEpisodeRequest) GetSourceType() SyncSourceType {
+	if x != nil {
+		return x.SourceType
+	}
+	return SyncSourceType_SYNC_SOURCE_TYPE_UNSPECIFIED
+}
+
+func (x *UpsertEmploymentEpisodeRequest) GetSourceRef() string {
+	if x != nil {
+		return x.SourceRef
+	}
+	return ""
+}
+
+func (x *UpsertEmploymentEpisodeRequest) GetCorrelationId() string {
+	if x != nil {
+		return x.CorrelationId
+	}
+	return ""
+}
+
+type UpsertEmploymentEpisodeResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Episode       *EmploymentEpisode     `protobuf:"bytes,1,opt,name=episode,proto3" json:"episode,omitempty"`
+	Created       bool                   `protobuf:"varint,2,opt,name=created,proto3" json:"created,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpsertEmploymentEpisodeResponse) Reset() {
+	*x = UpsertEmploymentEpisodeResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[51]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpsertEmploymentEpisodeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpsertEmploymentEpisodeResponse) ProtoMessage() {}
+
+func (x *UpsertEmploymentEpisodeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[51]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpsertEmploymentEpisodeResponse.ProtoReflect.Descriptor instead.
+func (*UpsertEmploymentEpisodeResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{51}
+}
+
+func (x *UpsertEmploymentEpisodeResponse) GetEpisode() *EmploymentEpisode {
+	if x != nil {
+		return x.Episode
+	}
+	return nil
+}
+
+func (x *UpsertEmploymentEpisodeResponse) GetCreated() bool {
+	if x != nil {
+		return x.Created
+	}
+	return false
+}
+
+type SetManagerRelationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	Relation      *ManagerRelation       `protobuf:"bytes,2,opt,name=relation,proto3" json:"relation,omitempty"`
+	CorrelationId string                 `protobuf:"bytes,3,opt,name=correlation_id,json=correlationId,proto3" json:"correlation_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SetManagerRelationRequest) Reset() {
+	*x = SetManagerRelationRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[52]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SetManagerRelationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SetManagerRelationRequest) ProtoMessage() {}
+
+func (x *SetManagerRelationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[52]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SetManagerRelationRequest.ProtoReflect.Descriptor instead.
+func (*SetManagerRelationRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{52}
+}
+
+func (x *SetManagerRelationRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *SetManagerRelationRequest) GetRelation() *ManagerRelation {
+	if x != nil {
+		return x.Relation
+	}
+	return nil
+}
+
+func (x *SetManagerRelationRequest) GetCorrelationId() string {
+	if x != nil {
+		return x.CorrelationId
+	}
+	return ""
+}
+
+type SetManagerRelationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Relation      *ManagerRelation       `protobuf:"bytes,1,opt,name=relation,proto3" json:"relation,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SetManagerRelationResponse) Reset() {
+	*x = SetManagerRelationResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[53]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SetManagerRelationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SetManagerRelationResponse) ProtoMessage() {}
+
+func (x *SetManagerRelationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[53]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SetManagerRelationResponse.ProtoReflect.Descriptor instead.
+func (*SetManagerRelationResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{53}
+}
+
+func (x *SetManagerRelationResponse) GetRelation() *ManagerRelation {
+	if x != nil {
+		return x.Relation
+	}
+	return nil
+}
+
+type SetHeadOfUnitRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	UnitNodeId    int64                  `protobuf:"varint,2,opt,name=unit_node_id,json=unitNodeId,proto3" json:"unit_node_id,omitempty"`
+	AssociateId   int64                  `protobuf:"varint,3,opt,name=associate_id,json=associateId,proto3" json:"associate_id,omitempty"`
+	CorrelationId string                 `protobuf:"bytes,4,opt,name=correlation_id,json=correlationId,proto3" json:"correlation_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SetHeadOfUnitRequest) Reset() {
+	*x = SetHeadOfUnitRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[54]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SetHeadOfUnitRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SetHeadOfUnitRequest) ProtoMessage() {}
+
+func (x *SetHeadOfUnitRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[54]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SetHeadOfUnitRequest.ProtoReflect.Descriptor instead.
+func (*SetHeadOfUnitRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{54}
+}
+
+func (x *SetHeadOfUnitRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *SetHeadOfUnitRequest) GetUnitNodeId() int64 {
+	if x != nil {
+		return x.UnitNodeId
+	}
+	return 0
+}
+
+func (x *SetHeadOfUnitRequest) GetAssociateId() int64 {
 	if x != nil {
 		return x.AssociateId
 	}
 	return 0
 }
 
-type GetShortestPathResponse struct {
+func (x *SetHeadOfUnitRequest) GetCorrelationId() string {
+	if x != nil {
+		return x.CorrelationId
+	}
+	return ""
+}
+
+type SetHeadOfUnitResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Steps         []*PathStep            `protobuf:"bytes,1,rep,name=steps,proto3" json:"steps,omitempty"`
+	Ok            bool                   `protobuf:"varint,1,opt,name=ok,proto3" json:"ok,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetShortestPathResponse) Reset() {
-	*x = GetShortestPathResponse{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[32]
+func (x *SetHeadOfUnitResponse) Reset() {
+	*x = SetHeadOfUnitResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[55]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetShortestPathResponse) String() string {
+func (x *SetHeadOfUnitResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetShortestPathResponse) ProtoMessage() {}
+func (*SetHeadOfUnitResponse) ProtoMessage() {}
 
-func (x *GetShortestPathResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[32]
+func (x *SetHeadOfUnitResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[55]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1983,39 +4063,44 @@ func (x *GetShortestPathResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetShortestPathResponse.ProtoReflect.Descriptor instead.
-func (*GetShortestPathResponse) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{32}
+// Deprecated: Use SetHeadOfUnitResponse.ProtoReflect.Descriptor instead.
+func (*SetHeadOfUnitResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{55}
 }
 
-func (x *GetShortestPathResponse) GetSteps() []*PathStep {
+func (x *SetHeadOfUnitResponse) GetOk() bool {
 	if x != nil {
-		return x.Steps
+		return x.Ok
 	}
-	return nil
+	return false
 }
 
-type GetOrphansRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+type AssignAssociateToPositionRequest struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	TenantId       string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	AssociateId    int64                  `protobuf:"varint,2,opt,name=associate_id,json=associateId,proto3" json:"associate_id,omitempty"`
+	PositionNodeId int64                  `protobuf:"varint,3,opt,name=position_node_id,json=positionNodeId,proto3" json:"position_node_id,omitempty"`
+	IsPrimary      bool                   `protobuf:"varint,4,opt,name=is_primary,json=isPrimary,proto3" json:"is_primary,omitempty"`
+	CorrelationId  string                 `protobuf:"bytes,5,opt,name=correlation_id,json=correlationId,proto3" json:"correlation_id,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
-func (x *GetOrphansRequest) Reset() {
-	*x = GetOrphansRequest{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[33]
+func (x *AssignAssociateToPositionRequest) Reset() {
+	*x = AssignAssociateToPositionRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[56]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetOrphansRequest) String() string {
+func (x *AssignAssociateToPositionRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetOrphansRequest) ProtoMessage() {}
+func (*AssignAssociateToPositionRequest) ProtoMessage() {}
 
-func (x *GetOrphansRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[33]
+func (x *AssignAssociateToPositionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[56]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2026,93 +4111,68 @@ func (x *GetOrphansRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetOrphansRequest.ProtoReflect.Descriptor instead.
-func (*GetOrphansRequest) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{33}
+// Deprecated: Use AssignAssociateToPositionRequest.ProtoReflect.Descriptor instead.
+func (*AssignAssociateToPositionRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{56}
 }
 
-type OrphanEntry struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	AssociateId   int32                  `protobuf:"varint,1,opt,name=associate_id,json=associateId,proto3" json:"associate_id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Unit          string                 `protobuf:"bytes,3,opt,name=unit,proto3" json:"unit,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *OrphanEntry) Reset() {
-	*x = OrphanEntry{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[34]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *OrphanEntry) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*OrphanEntry) ProtoMessage() {}
-
-func (x *OrphanEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[34]
+func (x *AssignAssociateToPositionRequest) GetTenantId() string {
 	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
+		return x.TenantId
 	}
-	return mi.MessageOf(x)
+	return ""
 }
 
-// Deprecated: Use OrphanEntry.ProtoReflect.Descriptor instead.
-func (*OrphanEntry) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{34}
-}
-
-func (x *OrphanEntry) GetAssociateId() int32 {
+func (x *AssignAssociateToPositionRequest) GetAssociateId() int64 {
 	if x != nil {
 		return x.AssociateId
 	}
 	return 0
 }
 
-func (x *OrphanEntry) GetName() string {
+func (x *AssignAssociateToPositionRequest) GetPositionNodeId() int64 {
 	if x != nil {
-		return x.Name
+		return x.PositionNodeId
+	}
+	return 0
+}
+
+func (x *AssignAssociateToPositionRequest) GetIsPrimary() bool {
+	if x != nil {
+		return x.IsPrimary
+	}
+	return false
+}
+
+func (x *AssignAssociateToPositionRequest) GetCorrelationId() string {
+	if x != nil {
+		return x.CorrelationId
 	}
 	return ""
 }
 
-func (x *OrphanEntry) GetUnit() string {
-	if x != nil {
-		return x.Unit
-	}
-	return ""
-}
-
-type GetOrphansResponse struct {
+type AssignAssociateToPositionResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Orphans       []*OrphanEntry         `protobuf:"bytes,1,rep,name=orphans,proto3" json:"orphans,omitempty"`
+	Assignment    *PositionAssignment    `protobuf:"bytes,1,opt,name=assignment,proto3" json:"assignment,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetOrphansResponse) Reset() {
-	*x = GetOrphansResponse{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[35]
+func (x *AssignAssociateToPositionResponse) Reset() {
+	*x = AssignAssociateToPositionResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[57]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetOrphansResponse) String() string {
+func (x *AssignAssociateToPositionResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetOrphansResponse) ProtoMessage() {}
+func (*AssignAssociateToPositionResponse) ProtoMessage() {}
 
-func (x *GetOrphansResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[35]
+func (x *AssignAssociateToPositionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[57]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2123,39 +4183,44 @@ func (x *GetOrphansResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetOrphansResponse.ProtoReflect.Descriptor instead.
-func (*GetOrphansResponse) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{35}
+// Deprecated: Use AssignAssociateToPositionResponse.ProtoReflect.Descriptor instead.
+func (*AssignAssociateToPositionResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{57}
 }
 
-func (x *GetOrphansResponse) GetOrphans() []*OrphanEntry {
+func (x *AssignAssociateToPositionResponse) GetAssignment() *PositionAssignment {
 	if x != nil {
-		return x.Orphans
+		return x.Assignment
 	}
 	return nil
 }
 
-type TriggerSyncRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+type UnassignAssociateFromPositionRequest struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	TenantId       string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	AssociateId    int64                  `protobuf:"varint,2,opt,name=associate_id,json=associateId,proto3" json:"associate_id,omitempty"`
+	PositionNodeId int64                  `protobuf:"varint,3,opt,name=position_node_id,json=positionNodeId,proto3" json:"position_node_id,omitempty"`
+	EndedAt        *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=ended_at,json=endedAt,proto3" json:"ended_at,omitempty"`
+	CorrelationId  string                 `protobuf:"bytes,5,opt,name=correlation_id,json=correlationId,proto3" json:"correlation_id,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
-func (x *TriggerSyncRequest) Reset() {
-	*x = TriggerSyncRequest{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[36]
+func (x *UnassignAssociateFromPositionRequest) Reset() {
+	*x = UnassignAssociateFromPositionRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[58]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *TriggerSyncRequest) String() string {
+func (x *UnassignAssociateFromPositionRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*TriggerSyncRequest) ProtoMessage() {}
+func (*UnassignAssociateFromPositionRequest) ProtoMessage() {}
 
-func (x *TriggerSyncRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[36]
+func (x *UnassignAssociateFromPositionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[58]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2166,35 +4231,68 @@ func (x *TriggerSyncRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use TriggerSyncRequest.ProtoReflect.Descriptor instead.
-func (*TriggerSyncRequest) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{36}
+// Deprecated: Use UnassignAssociateFromPositionRequest.ProtoReflect.Descriptor instead.
+func (*UnassignAssociateFromPositionRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{58}
 }
 
-type TriggerSyncResponse struct {
+func (x *UnassignAssociateFromPositionRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *UnassignAssociateFromPositionRequest) GetAssociateId() int64 {
+	if x != nil {
+		return x.AssociateId
+	}
+	return 0
+}
+
+func (x *UnassignAssociateFromPositionRequest) GetPositionNodeId() int64 {
+	if x != nil {
+		return x.PositionNodeId
+	}
+	return 0
+}
+
+func (x *UnassignAssociateFromPositionRequest) GetEndedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.EndedAt
+	}
+	return nil
+}
+
+func (x *UnassignAssociateFromPositionRequest) GetCorrelationId() string {
+	if x != nil {
+		return x.CorrelationId
+	}
+	return ""
+}
+
+type UnassignAssociateFromPositionResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	WorkflowId    string                 `protobuf:"bytes,1,opt,name=workflow_id,json=workflowId,proto3" json:"workflow_id,omitempty"`
-	RunId         string                 `protobuf:"bytes,2,opt,name=run_id,json=runId,proto3" json:"run_id,omitempty"`
-	Status        string                 `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
+	Ok            bool                   `protobuf:"varint,1,opt,name=ok,proto3" json:"ok,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *TriggerSyncResponse) Reset() {
-	*x = TriggerSyncResponse{}
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[37]
+func (x *UnassignAssociateFromPositionResponse) Reset() {
+	*x = UnassignAssociateFromPositionResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[59]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *TriggerSyncResponse) String() string {
+func (x *UnassignAssociateFromPositionResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*TriggerSyncResponse) ProtoMessage() {}
+func (*UnassignAssociateFromPositionResponse) ProtoMessage() {}
 
-func (x *TriggerSyncResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[37]
+func (x *UnassignAssociateFromPositionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[59]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2205,193 +4303,971 @@ func (x *TriggerSyncResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use TriggerSyncResponse.ProtoReflect.Descriptor instead.
-func (*TriggerSyncResponse) Descriptor() ([]byte, []int) {
-	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{37}
+// Deprecated: Use UnassignAssociateFromPositionResponse.ProtoReflect.Descriptor instead.
+func (*UnassignAssociateFromPositionResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{59}
 }
 
-func (x *TriggerSyncResponse) GetWorkflowId() string {
+func (x *UnassignAssociateFromPositionResponse) GetOk() bool {
 	if x != nil {
-		return x.WorkflowId
+		return x.Ok
+	}
+	return false
+}
+
+type RawAssociatePayload struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	JsonPayload   []byte                 `protobuf:"bytes,1,opt,name=json_payload,json=jsonPayload,proto3" json:"json_payload,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RawAssociatePayload) Reset() {
+	*x = RawAssociatePayload{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[60]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RawAssociatePayload) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RawAssociatePayload) ProtoMessage() {}
+
+func (x *RawAssociatePayload) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[60]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RawAssociatePayload.ProtoReflect.Descriptor instead.
+func (*RawAssociatePayload) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{60}
+}
+
+func (x *RawAssociatePayload) GetJsonPayload() []byte {
+	if x != nil {
+		return x.JsonPayload
+	}
+	return nil
+}
+
+type IngestAssociateBatchRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	Items         []*RawAssociatePayload `protobuf:"bytes,2,rep,name=items,proto3" json:"items,omitempty"`
+	SourceType    SyncSourceType         `protobuf:"varint,3,opt,name=source_type,json=sourceType,proto3,enum=orgcontext.v1.SyncSourceType" json:"source_type,omitempty"`
+	SourceRef     string                 `protobuf:"bytes,4,opt,name=source_ref,json=sourceRef,proto3" json:"source_ref,omitempty"`
+	CorrelationId string                 `protobuf:"bytes,5,opt,name=correlation_id,json=correlationId,proto3" json:"correlation_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *IngestAssociateBatchRequest) Reset() {
+	*x = IngestAssociateBatchRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[61]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IngestAssociateBatchRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IngestAssociateBatchRequest) ProtoMessage() {}
+
+func (x *IngestAssociateBatchRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[61]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IngestAssociateBatchRequest.ProtoReflect.Descriptor instead.
+func (*IngestAssociateBatchRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{61}
+}
+
+func (x *IngestAssociateBatchRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
 	}
 	return ""
 }
 
-func (x *TriggerSyncResponse) GetRunId() string {
+func (x *IngestAssociateBatchRequest) GetItems() []*RawAssociatePayload {
 	if x != nil {
-		return x.RunId
+		return x.Items
+	}
+	return nil
+}
+
+func (x *IngestAssociateBatchRequest) GetSourceType() SyncSourceType {
+	if x != nil {
+		return x.SourceType
+	}
+	return SyncSourceType_SYNC_SOURCE_TYPE_UNSPECIFIED
+}
+
+func (x *IngestAssociateBatchRequest) GetSourceRef() string {
+	if x != nil {
+		return x.SourceRef
 	}
 	return ""
 }
 
-func (x *TriggerSyncResponse) GetStatus() string {
+func (x *IngestAssociateBatchRequest) GetCorrelationId() string {
 	if x != nil {
-		return x.Status
+		return x.CorrelationId
 	}
 	return ""
+}
+
+type IngestAssociateBatchResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Received      int32                  `protobuf:"varint,1,opt,name=received,proto3" json:"received,omitempty"`
+	Accepted      int32                  `protobuf:"varint,2,opt,name=accepted,proto3" json:"accepted,omitempty"`
+	Rejected      int32                  `protobuf:"varint,3,opt,name=rejected,proto3" json:"rejected,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *IngestAssociateBatchResponse) Reset() {
+	*x = IngestAssociateBatchResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[62]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IngestAssociateBatchResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IngestAssociateBatchResponse) ProtoMessage() {}
+
+func (x *IngestAssociateBatchResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[62]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IngestAssociateBatchResponse.ProtoReflect.Descriptor instead.
+func (*IngestAssociateBatchResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{62}
+}
+
+func (x *IngestAssociateBatchResponse) GetReceived() int32 {
+	if x != nil {
+		return x.Received
+	}
+	return 0
+}
+
+func (x *IngestAssociateBatchResponse) GetAccepted() int32 {
+	if x != nil {
+		return x.Accepted
+	}
+	return 0
+}
+
+func (x *IngestAssociateBatchResponse) GetRejected() int32 {
+	if x != nil {
+		return x.Rejected
+	}
+	return 0
+}
+
+type IngestSnapshotRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	SnapshotJson  []byte                 `protobuf:"bytes,2,opt,name=snapshot_json,json=snapshotJson,proto3" json:"snapshot_json,omitempty"`
+	SourceType    SyncSourceType         `protobuf:"varint,3,opt,name=source_type,json=sourceType,proto3,enum=orgcontext.v1.SyncSourceType" json:"source_type,omitempty"`
+	SyncMode      SyncMode               `protobuf:"varint,4,opt,name=sync_mode,json=syncMode,proto3,enum=orgcontext.v1.SyncMode" json:"sync_mode,omitempty"`
+	SourceRef     string                 `protobuf:"bytes,5,opt,name=source_ref,json=sourceRef,proto3" json:"source_ref,omitempty"`
+	CorrelationId string                 `protobuf:"bytes,6,opt,name=correlation_id,json=correlationId,proto3" json:"correlation_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *IngestSnapshotRequest) Reset() {
+	*x = IngestSnapshotRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[63]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IngestSnapshotRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IngestSnapshotRequest) ProtoMessage() {}
+
+func (x *IngestSnapshotRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[63]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IngestSnapshotRequest.ProtoReflect.Descriptor instead.
+func (*IngestSnapshotRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{63}
+}
+
+func (x *IngestSnapshotRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *IngestSnapshotRequest) GetSnapshotJson() []byte {
+	if x != nil {
+		return x.SnapshotJson
+	}
+	return nil
+}
+
+func (x *IngestSnapshotRequest) GetSourceType() SyncSourceType {
+	if x != nil {
+		return x.SourceType
+	}
+	return SyncSourceType_SYNC_SOURCE_TYPE_UNSPECIFIED
+}
+
+func (x *IngestSnapshotRequest) GetSyncMode() SyncMode {
+	if x != nil {
+		return x.SyncMode
+	}
+	return SyncMode_SYNC_MODE_UNSPECIFIED
+}
+
+func (x *IngestSnapshotRequest) GetSourceRef() string {
+	if x != nil {
+		return x.SourceRef
+	}
+	return ""
+}
+
+func (x *IngestSnapshotRequest) GetCorrelationId() string {
+	if x != nil {
+		return x.CorrelationId
+	}
+	return ""
+}
+
+type IngestSnapshotResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SyncRunId     string                 `protobuf:"bytes,1,opt,name=sync_run_id,json=syncRunId,proto3" json:"sync_run_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *IngestSnapshotResponse) Reset() {
+	*x = IngestSnapshotResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[64]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IngestSnapshotResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IngestSnapshotResponse) ProtoMessage() {}
+
+func (x *IngestSnapshotResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[64]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IngestSnapshotResponse.ProtoReflect.Descriptor instead.
+func (*IngestSnapshotResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{64}
+}
+
+func (x *IngestSnapshotResponse) GetSyncRunId() string {
+	if x != nil {
+		return x.SyncRunId
+	}
+	return ""
+}
+
+type ApplyDeltaRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	DeltaJson     []byte                 `protobuf:"bytes,2,opt,name=delta_json,json=deltaJson,proto3" json:"delta_json,omitempty"`
+	SourceType    SyncSourceType         `protobuf:"varint,3,opt,name=source_type,json=sourceType,proto3,enum=orgcontext.v1.SyncSourceType" json:"source_type,omitempty"`
+	SourceRef     string                 `protobuf:"bytes,4,opt,name=source_ref,json=sourceRef,proto3" json:"source_ref,omitempty"`
+	CorrelationId string                 `protobuf:"bytes,5,opt,name=correlation_id,json=correlationId,proto3" json:"correlation_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ApplyDeltaRequest) Reset() {
+	*x = ApplyDeltaRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[65]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ApplyDeltaRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ApplyDeltaRequest) ProtoMessage() {}
+
+func (x *ApplyDeltaRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[65]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ApplyDeltaRequest.ProtoReflect.Descriptor instead.
+func (*ApplyDeltaRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{65}
+}
+
+func (x *ApplyDeltaRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *ApplyDeltaRequest) GetDeltaJson() []byte {
+	if x != nil {
+		return x.DeltaJson
+	}
+	return nil
+}
+
+func (x *ApplyDeltaRequest) GetSourceType() SyncSourceType {
+	if x != nil {
+		return x.SourceType
+	}
+	return SyncSourceType_SYNC_SOURCE_TYPE_UNSPECIFIED
+}
+
+func (x *ApplyDeltaRequest) GetSourceRef() string {
+	if x != nil {
+		return x.SourceRef
+	}
+	return ""
+}
+
+func (x *ApplyDeltaRequest) GetCorrelationId() string {
+	if x != nil {
+		return x.CorrelationId
+	}
+	return ""
+}
+
+type ApplyDeltaResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SyncRunId     string                 `protobuf:"bytes,1,opt,name=sync_run_id,json=syncRunId,proto3" json:"sync_run_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ApplyDeltaResponse) Reset() {
+	*x = ApplyDeltaResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[66]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ApplyDeltaResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ApplyDeltaResponse) ProtoMessage() {}
+
+func (x *ApplyDeltaResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[66]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ApplyDeltaResponse.ProtoReflect.Descriptor instead.
+func (*ApplyDeltaResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{66}
+}
+
+func (x *ApplyDeltaResponse) GetSyncRunId() string {
+	if x != nil {
+		return x.SyncRunId
+	}
+	return ""
+}
+
+type RebuildDerivedRelationsRequest struct {
+	state                   protoimpl.MessageState `protogen:"open.v1"`
+	TenantId                string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	RebuildManagerRelations bool                   `protobuf:"varint,2,opt,name=rebuild_manager_relations,json=rebuildManagerRelations,proto3" json:"rebuild_manager_relations,omitempty"`
+	RebuildHeadOfUnit       bool                   `protobuf:"varint,3,opt,name=rebuild_head_of_unit,json=rebuildHeadOfUnit,proto3" json:"rebuild_head_of_unit,omitempty"`
+	RebuildMembership       bool                   `protobuf:"varint,4,opt,name=rebuild_membership,json=rebuildMembership,proto3" json:"rebuild_membership,omitempty"`
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
+}
+
+func (x *RebuildDerivedRelationsRequest) Reset() {
+	*x = RebuildDerivedRelationsRequest{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[67]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RebuildDerivedRelationsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RebuildDerivedRelationsRequest) ProtoMessage() {}
+
+func (x *RebuildDerivedRelationsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[67]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RebuildDerivedRelationsRequest.ProtoReflect.Descriptor instead.
+func (*RebuildDerivedRelationsRequest) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{67}
+}
+
+func (x *RebuildDerivedRelationsRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *RebuildDerivedRelationsRequest) GetRebuildManagerRelations() bool {
+	if x != nil {
+		return x.RebuildManagerRelations
+	}
+	return false
+}
+
+func (x *RebuildDerivedRelationsRequest) GetRebuildHeadOfUnit() bool {
+	if x != nil {
+		return x.RebuildHeadOfUnit
+	}
+	return false
+}
+
+func (x *RebuildDerivedRelationsRequest) GetRebuildMembership() bool {
+	if x != nil {
+		return x.RebuildMembership
+	}
+	return false
+}
+
+type RebuildDerivedRelationsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RebuildDerivedRelationsResponse) Reset() {
+	*x = RebuildDerivedRelationsResponse{}
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[68]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RebuildDerivedRelationsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RebuildDerivedRelationsResponse) ProtoMessage() {}
+
+func (x *RebuildDerivedRelationsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_orgcontext_v1_orgcontext_proto_msgTypes[68]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RebuildDerivedRelationsResponse.ProtoReflect.Descriptor instead.
+func (*RebuildDerivedRelationsResponse) Descriptor() ([]byte, []int) {
+	return file_orgcontext_v1_orgcontext_proto_rawDescGZIP(), []int{68}
 }
 
 var File_orgcontext_v1_orgcontext_proto protoreflect.FileDescriptor
 
 const file_orgcontext_v1_orgcontext_proto_rawDesc = "" +
 	"\n" +
-	"\x1eorgcontext/v1/orgcontext.proto\x12\rorgcontext.v1\"\xc3\x01\n" +
-	"\bPosition\x12#\n" +
-	"\rposition_type\x18\x01 \x01(\tR\fpositionType\x12\x1d\n" +
+	"\x1eorgcontext/v1/orgcontext.proto\x12\rorgcontext.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"C\n" +
+	"\x0fLocalizedString\x12\x1a\n" +
+	"\blanguage\x18\x01 \x01(\tR\blanguage\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value\"\xae\x01\n" +
 	"\n" +
-	"is_primary\x18\x02 \x01(\bR\tisPrimary\x12\x1d\n" +
+	"PersonName\x12\x1a\n" +
+	"\blanguage\x18\x01 \x01(\tR\blanguage\x12\x1d\n" +
 	"\n" +
-	"is_manager\x18\x03 \x01(\bR\tisManager\x12 \n" +
-	"\fhead_of_unit\x18\x04 \x01(\bR\n" +
-	"headOfUnit\x12\x19\n" +
-	"\blayer_id\x18\x05 \x01(\x05R\alayerId\x12\x17\n" +
-	"\aunit_id\x18\x06 \x01(\x05R\x06unitId\"?\n" +
-	"\aUnitRef\x12\x17\n" +
-	"\aunit_id\x18\x01 \x01(\x05R\x06unitId\x12\x1b\n" +
-	"\tunit_name\x18\x02 \x01(\tR\bunitName\"8\n" +
-	"\x13GetAssociateRequest\x12!\n" +
-	"\fassociate_id\x18\x01 \x01(\x05R\vassociateId\"\xe5\x02\n" +
-	"\x14GetAssociateResponse\x12!\n" +
-	"\fassociate_id\x18\x01 \x01(\x05R\vassociateId\x12(\n" +
-	"\x10employee_card_id\x18\x02 \x01(\tR\x0eemployeeCardId\x12%\n" +
-	"\x0eassociate_type\x18\x03 \x01(\tR\rassociateType\x12#\n" +
-	"\ris_terminated\x18\x04 \x01(\bR\fisTerminated\x12\x12\n" +
-	"\x04name\x18\x05 \x01(\tR\x04name\x12\x14\n" +
-	"\x05email\x18\x06 \x01(\tR\x05email\x12%\n" +
-	"\x0ebusiness_email\x18\a \x01(\tR\rbusinessEmail\x125\n" +
-	"\tpositions\x18\b \x03(\v2\x17.orgcontext.v1.PositionR\tpositions\x12,\n" +
-	"\x05units\x18\t \x03(\v2\x16.orgcontext.v1.UnitRefR\x05units\"\xe0\x02\n" +
-	"\x0fAssociateDetail\x12!\n" +
-	"\fassociate_id\x18\x01 \x01(\x05R\vassociateId\x12(\n" +
-	"\x10employee_card_id\x18\x02 \x01(\tR\x0eemployeeCardId\x12%\n" +
-	"\x0eassociate_type\x18\x03 \x01(\tR\rassociateType\x12#\n" +
-	"\ris_terminated\x18\x04 \x01(\bR\fisTerminated\x12\x12\n" +
-	"\x04name\x18\x05 \x01(\tR\x04name\x12\x14\n" +
-	"\x05email\x18\x06 \x01(\tR\x05email\x12%\n" +
-	"\x0ebusiness_email\x18\a \x01(\tR\rbusinessEmail\x125\n" +
-	"\tpositions\x18\b \x03(\v2\x17.orgcontext.v1.PositionR\tpositions\x12,\n" +
-	"\x05units\x18\t \x03(\v2\x16.orgcontext.v1.UnitRefR\x05units\"2\n" +
-	"\x1aGetAssociateByEmailRequest\x12\x14\n" +
-	"\x05email\x18\x01 \x01(\tR\x05email\"V\n" +
-	"\x1bGetAssociateByEmailResponse\x12!\n" +
-	"\fassociate_id\x18\x01 \x01(\x05R\vassociateId\x12\x14\n" +
-	"\x05found\x18\x02 \x01(\bR\x05found\"G\n" +
-	"\x17GetAllAssociatesRequest\x12\x14\n" +
-	"\x05limit\x18\x01 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x02 \x01(\x05R\x06offset\"Z\n" +
-	"\x18GetAllAssociatesResponse\x12>\n" +
+	"first_name\x18\x02 \x01(\tR\tfirstName\x12\x1b\n" +
+	"\tlast_name\x18\x03 \x01(\tR\blastName\x12\x1f\n" +
+	"\vmiddle_name\x18\x04 \x01(\tR\n" +
+	"middleName\x12'\n" +
+	"\x0fpatronymic_name\x18\x05 \x01(\tR\x0epatronymicName\"\xc7\x04\n" +
+	"\x06Person\x12\x1b\n" +
+	"\tperson_id\x18\x01 \x01(\x03R\bpersonId\x12\x17\n" +
+	"\auser_id\x18\x02 \x01(\tR\x06userId\x12\x1a\n" +
+	"\busername\x18\x03 \x01(\tR\busername\x12\x1d\n" +
 	"\n" +
-	"associates\x18\x01 \x03(\v2\x1e.orgcontext.v1.AssociateDetailR\n" +
-	"associates\"E\n" +
-	"\x17SearchAssociatesRequest\x12\x14\n" +
-	"\x05query\x18\x01 \x01(\tR\x05query\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\"\x89\x01\n" +
-	"\fSearchResult\x12!\n" +
-	"\fassociate_id\x18\x01 \x01(\x05R\vassociateId\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1a\n" +
-	"\bposition\x18\x03 \x01(\tR\bposition\x12\x12\n" +
-	"\x04unit\x18\x04 \x01(\tR\x04unit\x12\x12\n" +
-	"\x04type\x18\x05 \x01(\tR\x04type\"Q\n" +
-	"\x18SearchAssociatesResponse\x125\n" +
-	"\aresults\x18\x01 \x03(\v2\x1b.orgcontext.v1.SearchResultR\aresults\"8\n" +
-	"\x17GetDirectReportsRequest\x12\x1d\n" +
+	"birth_date\x18\x04 \x01(\tR\tbirthDate\x12'\n" +
+	"\x0fpassport_number\x18\x05 \x01(\tR\x0epassportNumber\x12\x1d\n" +
 	"\n" +
-	"manager_id\x18\x01 \x01(\x05R\tmanagerId\"\xb9\x01\n" +
-	"\fDirectReport\x12!\n" +
-	"\fmanager_name\x18\x01 \x01(\tR\vmanagerName\x12!\n" +
-	"\fassociate_id\x18\x02 \x01(\x05R\vassociateId\x12\x12\n" +
-	"\x04name\x18\x03 \x01(\tR\x04name\x12\x1a\n" +
-	"\bposition\x18\x04 \x01(\tR\bposition\x12\x12\n" +
-	"\x04unit\x18\x05 \x01(\tR\x04unit\x12\x1f\n" +
-	"\vreport_type\x18\x06 \x01(\tR\n" +
-	"reportType\"Q\n" +
-	"\x18GetDirectReportsResponse\x125\n" +
-	"\areports\x18\x01 \x03(\v2\x1b.orgcontext.v1.DirectReportR\areports\"=\n" +
-	"\x18GetReportingChainRequest\x12!\n" +
-	"\fassociate_id\x18\x01 \x01(\x05R\vassociateId\"\x88\x01\n" +
-	"\tChainLink\x12\x14\n" +
-	"\x05level\x18\x01 \x01(\x05R\x05level\x12!\n" +
-	"\fassociate_id\x18\x02 \x01(\x05R\vassociateId\x12\x12\n" +
-	"\x04name\x18\x03 \x01(\tR\x04name\x12\x1a\n" +
-	"\bposition\x18\x04 \x01(\tR\bposition\x12\x12\n" +
-	"\x04unit\x18\x05 \x01(\tR\x04unit\"K\n" +
-	"\x19GetReportingChainResponse\x12.\n" +
-	"\x05chain\x18\x01 \x03(\v2\x18.orgcontext.v1.ChainLinkR\x05chain\"=\n" +
-	"\x12GetOrgChartRequest\x12'\n" +
-	"\x0fdepartment_code\x18\x01 \x01(\tR\x0edepartmentCode\"\xa7\x02\n" +
-	"\rOrgChartEntry\x12\x17\n" +
-	"\aunit_id\x18\x01 \x01(\x05R\x06unitId\x12\x1b\n" +
-	"\tunit_name\x18\x02 \x01(\tR\bunitName\x12\x1b\n" +
-	"\tunit_type\x18\x03 \x01(\tR\bunitType\x12\x14\n" +
-	"\x05depth\x18\x04 \x01(\x05R\x05depth\x12!\n" +
-	"\fassociate_id\x18\x05 \x01(\x05R\vassociateId\x12\x12\n" +
-	"\x04name\x18\x06 \x01(\tR\x04name\x12\x1a\n" +
-	"\bposition\x18\a \x01(\tR\bposition\x12\x1d\n" +
+	"issue_date\x18\x06 \x01(\tR\tissueDate\x12\x10\n" +
+	"\x03ssn\x18\a \x01(\tR\x03ssn\x12\x18\n" +
+	"\acountry\x18\b \x01(\tR\acountry\x12\x12\n" +
+	"\x04city\x18\t \x01(\tR\x04city\x12\x18\n" +
+	"\aaddress\x18\n" +
+	" \x01(\tR\aaddress\x12#\n" +
+	"\rmobile_number\x18\v \x01(\tR\fmobileNumber\x12#\n" +
+	"\remail_address\x18\f \x01(\tR\femailAddress\x122\n" +
+	"\x15business_phone_number\x18\r \x01(\tR\x13businessPhoneNumber\x124\n" +
+	"\x16business_email_address\x18\x0e \x01(\tR\x14businessEmailAddress\x12\x1b\n" +
+	"\tgender_id\x18\x0f \x01(\x05R\bgenderId\x12\x15\n" +
+	"\x06two_fa\x18\x10 \x01(\bR\x05twoFa\x12B\n" +
+	"\x0flocalized_names\x18\x11 \x03(\v2\x19.orgcontext.v1.PersonNameR\x0elocalizedNames\"\xc4\x01\n" +
+	"\aCompany\x12&\n" +
+	"\x0fcompany_node_id\x18\x01 \x01(\x03R\rcompanyNodeId\x12\x1b\n" +
+	"\ttenant_id\x18\x02 \x01(\tR\btenantId\x12+\n" +
+	"\x12code_by_the_system\x18\x03 \x01(\tR\x0fcodeByTheSystem\x12G\n" +
+	"\x0flocalized_names\x18\x04 \x03(\v2\x1e.orgcontext.v1.LocalizedStringR\x0elocalizedNames\"\xa2\x03\n" +
+	"\aOrgUnit\x12 \n" +
+	"\funit_node_id\x18\x01 \x01(\x03R\n" +
+	"unitNodeId\x12\x1b\n" +
+	"\ttenant_id\x18\x02 \x01(\tR\btenantId\x12&\n" +
+	"\x0fcompany_node_id\x18\x03 \x01(\x03R\rcompanyNodeId\x12-\n" +
+	"\x13parent_unit_node_id\x18\x04 \x01(\x03R\x10parentUnitNodeId\x12+\n" +
+	"\x12code_by_the_system\x18\x05 \x01(\tR\x0fcodeByTheSystem\x12'\n" +
+	"\x0fdepartment_code\x18\x06 \x01(\tR\x0edepartmentCode\x12\"\n" +
+	"\rnode_group_id\x18\a \x01(\x05R\vnodeGroupId\x12>\n" +
 	"\n" +
-	"is_manager\x18\b \x01(\bR\tisManager\x12 \n" +
-	"\fhead_of_unit\x18\t \x01(\bR\n" +
-	"headOfUnit\x12\x19\n" +
-	"\blayer_id\x18\n" +
-	" \x01(\x05R\alayerId\"M\n" +
-	"\x13GetOrgChartResponse\x126\n" +
-	"\aentries\x18\x01 \x03(\v2\x1c.orgcontext.v1.OrgChartEntryR\aentries\"9\n" +
-	"\x15GetUnitSubtreeRequest\x12 \n" +
-	"\froot_unit_id\x18\x01 \x01(\x05R\n" +
-	"rootUnitId\"\xbd\x01\n" +
-	"\rUnitTreeEntry\x12\x17\n" +
-	"\aunit_id\x18\x01 \x01(\x05R\x06unitId\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1d\n" +
+	"node_group\x18\b \x01(\x0e2\x1f.orgcontext.v1.OrgUnitNodeGroupR\tnodeGroup\x12G\n" +
+	"\x0flocalized_names\x18\t \x03(\v2\x1e.orgcontext.v1.LocalizedStringR\x0elocalizedNames\"\xa4\x01\n" +
+	"\fPositionType\x12(\n" +
+	"\x10position_type_id\x18\x01 \x01(\x03R\x0epositionTypeId\x12!\n" +
+	"\fdefault_name\x18\x02 \x01(\tR\vdefaultName\x12G\n" +
+	"\x0flocalized_names\x18\x03 \x03(\v2\x1e.orgcontext.v1.LocalizedStringR\x0elocalizedNames\"\xe5\x01\n" +
+	"\bPosition\x12\x1f\n" +
+	"\vposition_id\x18\x01 \x01(\x03R\n" +
+	"positionId\x12 \n" +
+	"\funit_node_id\x18\x02 \x01(\x03R\n" +
+	"unitNodeId\x12(\n" +
+	"\x10position_type_id\x18\x03 \x01(\x03R\x0epositionTypeId\x12*\n" +
+	"\x11position_layer_id\x18\x04 \x01(\x05R\x0fpositionLayerId\x12@\n" +
+	"\rposition_type\x18\x05 \x01(\v2\x1b.orgcontext.v1.PositionTypeR\fpositionType\"\x9b\x04\n" +
+	"\x12PositionAssignment\x12(\n" +
+	"\x10position_node_id\x18\x01 \x01(\x03R\x0epositionNodeId\x12!\n" +
+	"\fassociate_id\x18\x02 \x01(\x03R\vassociateId\x12\x1f\n" +
+	"\vposition_id\x18\x03 \x01(\x03R\n" +
+	"positionId\x12 \n" +
+	"\funit_node_id\x18\x04 \x01(\x03R\n" +
+	"unitNodeId\x12\x1d\n" +
 	"\n" +
-	"node_group\x18\x03 \x01(\tR\tnodeGroup\x12\x1b\n" +
-	"\tdept_code\x18\x04 \x01(\tR\bdeptCode\x12%\n" +
-	"\x0erelative_depth\x18\x05 \x01(\x05R\rrelativeDepth\x12\x1c\n" +
-	"\theadcount\x18\x06 \x01(\x05R\theadcount\"P\n" +
-	"\x16GetUnitSubtreeResponse\x126\n" +
-	"\aentries\x18\x01 \x03(\v2\x1c.orgcontext.v1.UnitTreeEntryR\aentries\"\x19\n" +
-	"\x17GetUnitHeadcountRequest\"\xa0\x02\n" +
-	"\vUnitSummary\x12\x17\n" +
-	"\aunit_id\x18\x01 \x01(\x05R\x06unitId\x12\x1b\n" +
-	"\tunit_name\x18\x02 \x01(\tR\bunitName\x12\x1b\n" +
-	"\tunit_type\x18\x03 \x01(\tR\bunitType\x12\x1b\n" +
-	"\tdept_code\x18\x04 \x01(\tR\bdeptCode\x12\x1c\n" +
-	"\theadcount\x18\x05 \x01(\x05R\theadcount\x12\x1c\n" +
-	"\temployees\x18\x06 \x01(\x05R\temployees\x12#\n" +
-	"\rboard_members\x18\a \x01(\x05R\fboardMembers\x12\x1b\n" +
-	"\thead_name\x18\b \x01(\tR\bheadName\x12#\n" +
-	"\rhead_position\x18\t \x01(\tR\fheadPosition\"T\n" +
-	"\x18GetUnitHeadcountResponse\x128\n" +
-	"\tsummaries\x18\x01 \x03(\v2\x1a.orgcontext.v1.UnitSummaryR\tsummaries\"/\n" +
-	"\x17GetSpanOfControlRequest\x12\x14\n" +
-	"\x05limit\x18\x01 \x01(\x05R\x05limit\"\x85\x01\n" +
-	"\tSpanEntry\x12!\n" +
-	"\fassociate_id\x18\x01 \x01(\x05R\vassociateId\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1a\n" +
-	"\bposition\x18\x03 \x01(\tR\bposition\x12%\n" +
-	"\x0edirect_reports\x18\x04 \x01(\x05R\rdirectReports\"N\n" +
-	"\x18GetSpanOfControlResponse\x122\n" +
-	"\aentries\x18\x01 \x03(\v2\x18.orgcontext.v1.SpanEntryR\aentries\"F\n" +
-	"\x16GetShortestPathRequest\x12\x17\n" +
-	"\afrom_id\x18\x01 \x01(\x05R\x06fromId\x12\x13\n" +
-	"\x05to_id\x18\x02 \x01(\x05R\x04toId\"U\n" +
-	"\bPathStep\x12\x12\n" +
-	"\x04step\x18\x01 \x01(\x05R\x04step\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12!\n" +
-	"\fassociate_id\x18\x03 \x01(\x05R\vassociateId\"H\n" +
-	"\x17GetShortestPathResponse\x12-\n" +
-	"\x05steps\x18\x01 \x03(\v2\x17.orgcontext.v1.PathStepR\x05steps\"\x13\n" +
-	"\x11GetOrphansRequest\"X\n" +
-	"\vOrphanEntry\x12!\n" +
-	"\fassociate_id\x18\x01 \x01(\x05R\vassociateId\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12\x12\n" +
-	"\x04unit\x18\x03 \x01(\tR\x04unit\"J\n" +
-	"\x12GetOrphansResponse\x124\n" +
-	"\aorphans\x18\x01 \x03(\v2\x1a.orgcontext.v1.OrphanEntryR\aorphans\"\x14\n" +
-	"\x12TriggerSyncRequest\"e\n" +
-	"\x13TriggerSyncResponse\x12\x1f\n" +
-	"\vworkflow_id\x18\x01 \x01(\tR\n" +
-	"workflowId\x12\x15\n" +
-	"\x06run_id\x18\x02 \x01(\tR\x05runId\x12\x16\n" +
-	"\x06status\x18\x03 \x01(\tR\x06statusBBZ@peoplesuite/platform-contracts/gen/go/orgcontext/v1;orgcontextv1b\x06proto3"
+	"is_primary\x18\x05 \x01(\bR\tisPrimary\x12\x1d\n" +
+	"\n" +
+	"is_manager\x18\x06 \x01(\bR\tisManager\x12 \n" +
+	"\fhead_of_unit\x18\a \x01(\bR\n" +
+	"headOfUnit\x127\n" +
+	"\x06status\x18\b \x01(\x0e2\x1f.orgcontext.v1.AssignmentStatusR\x06status\x129\n" +
+	"\n" +
+	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"\n" +
+	"updated_at\x18\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x123\n" +
+	"\bposition\x18\v \x01(\v2\x17.orgcontext.v1.PositionR\bposition\x121\n" +
+	"\borg_unit\x18\f \x01(\v2\x16.orgcontext.v1.OrgUnitR\aorgUnit\"\xfb\x04\n" +
+	"\x11EmploymentEpisode\x122\n" +
+	"\x15employment_episode_id\x18\x01 \x01(\x03R\x13employmentEpisodeId\x12!\n" +
+	"\fassociate_id\x18\x02 \x01(\x03R\vassociateId\x12(\n" +
+	"\x10position_node_id\x18\x03 \x01(\x03R\x0epositionNodeId\x12 \n" +
+	"\funit_node_id\x18\x04 \x01(\x03R\n" +
+	"unitNodeId\x12&\n" +
+	"\x0fcompany_node_id\x18\x05 \x01(\x03R\rcompanyNodeId\x12.\n" +
+	"\x13employment_story_id\x18\x06 \x01(\x03R\x11employmentStoryId\x12+\n" +
+	"\x12code_by_the_system\x18\a \x01(\tR\x0fcodeByTheSystem\x12\x19\n" +
+	"\bis_valid\x18\b \x01(\bR\aisValid\x12>\n" +
+	"\x06status\x18\t \x01(\x0e2&.orgcontext.v1.EmploymentEpisodeStatusR\x06status\x12C\n" +
+	"\x0femployment_date\x18\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampR\x0eemploymentDate\x12P\n" +
+	"\x16appointment_start_date\x18\v \x01(\v2\x1a.google.protobuf.TimestampR\x14appointmentStartDate\x12L\n" +
+	"\x14appointment_end_date\x18\f \x01(\v2\x1a.google.protobuf.TimestampR\x12appointmentEndDate\"\xef\x02\n" +
+	"\x0fManagerRelation\x12\x1f\n" +
+	"\vrelation_id\x18\x01 \x01(\tR\n" +
+	"relationId\x12!\n" +
+	"\fassociate_id\x18\x02 \x01(\x03R\vassociateId\x120\n" +
+	"\x14manager_associate_id\x18\x03 \x01(\x03R\x12managerAssociateId\x12G\n" +
+	"\rrelation_type\x18\x04 \x01(\x0e2\".orgcontext.v1.ManagerRelationTypeR\frelationType\x12\x1b\n" +
+	"\tis_active\x18\x05 \x01(\bR\bisActive\x12\x16\n" +
+	"\x06source\x18\x06 \x01(\tR\x06source\x125\n" +
+	"\bstart_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\astartAt\x121\n" +
+	"\x06end_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\x05endAt\"\xf8\x04\n" +
+	"\tAssociate\x12!\n" +
+	"\fassociate_id\x18\x01 \x01(\x03R\vassociateId\x12\x1b\n" +
+	"\ttenant_id\x18\x02 \x01(\tR\btenantId\x12(\n" +
+	"\x10employee_card_id\x18\x03 \x01(\tR\x0eemployeeCardId\x120\n" +
+	"\x14employee_client_code\x18\x04 \x01(\tR\x12employeeClientCode\x12\x1e\n" +
+	"\n" +
+	"evaluation\x18\x05 \x01(\bR\n" +
+	"evaluation\x12,\n" +
+	"\x12number_of_attempts\x18\x06 \x01(\x05R\x10numberOfAttempts\x12\x19\n" +
+	"\bgrade_id\x18\a \x01(\x05R\agradeId\x12*\n" +
+	"\x11associate_type_id\x18\b \x01(\x05R\x0fassociateTypeId\x12\x1b\n" +
+	"\tperson_id\x18\t \x01(\x03R\bpersonId\x12#\n" +
+	"\ris_terminated\x18\n" +
+	" \x01(\bR\fisTerminated\x123\n" +
+	"\x05state\x18\v \x01(\x0e2\x1d.orgcontext.v1.AssociateStateR\x05state\x12-\n" +
+	"\x06person\x18\f \x01(\v2\x15.orgcontext.v1.PersonR\x06person\x12C\n" +
+	"\vassignments\x18\r \x03(\v2!.orgcontext.v1.PositionAssignmentR\vassignments\x12O\n" +
+	"\x12employment_history\x18\x0e \x03(\v2 .orgcontext.v1.EmploymentEpisodeR\x11employmentHistory\"U\n" +
+	"\x13GetAssociateRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12!\n" +
+	"\fassociate_id\x18\x02 \x01(\x03R\vassociateId\"S\n" +
+	"\x1bGetAssociateByUserIdRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12\x17\n" +
+	"\auser_id\x18\x02 \x01(\tR\x06userId\"N\n" +
+	"\x14GetAssociateResponse\x126\n" +
+	"\tassociate\x18\x01 \x01(\v2\x18.orgcontext.v1.AssociateR\tassociate\"V\n" +
+	"\x1cGetAssociateByUserIdResponse\x126\n" +
+	"\tassociate\x18\x01 \x01(\v2\x18.orgcontext.v1.AssociateR\tassociate\"\x84\x01\n" +
+	"\x1eResolveAssociateContextRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12#\n" +
+	"\fassociate_id\x18\x02 \x01(\x03H\x00R\vassociateId\x12\x19\n" +
+	"\auser_id\x18\x03 \x01(\tH\x00R\x06userIdB\x05\n" +
+	"\x03ref\"\xea\x03\n" +
+	"\x1fResolveAssociateContextResponse\x126\n" +
+	"\tassociate\x18\x01 \x01(\v2\x18.orgcontext.v1.AssociateR\tassociate\x12P\n" +
+	"\x12primary_assignment\x18\x02 \x01(\v2!.orgcontext.v1.PositionAssignmentR\x11primaryAssignment\x12@\n" +
+	"\x10current_org_unit\x18\x03 \x01(\v2\x16.orgcontext.v1.OrgUnitR\x0ecurrentOrgUnit\x120\n" +
+	"\alineage\x18\x04 \x03(\v2\x16.orgcontext.v1.OrgUnitR\alineage\x122\n" +
+	"\amanager\x18\x05 \x01(\v2\x18.orgcontext.v1.AssociateR\amanager\x120\n" +
+	"\x14direct_reports_count\x18\x06 \x01(\x05R\x12directReportsCount\x12%\n" +
+	"\x0fis_head_of_unit\x18\a \x01(\bR\fisHeadOfUnit\x12\x1d\n" +
+	"\n" +
+	"is_manager\x18\b \x01(\bR\tisManager\x12\x1d\n" +
+	"\n" +
+	"role_hints\x18\t \x03(\tR\troleHints\"R\n" +
+	"\x11GetOrgUnitRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12 \n" +
+	"\funit_node_id\x18\x02 \x01(\x03R\n" +
+	"unitNodeId\"G\n" +
+	"\x12GetOrgUnitResponse\x121\n" +
+	"\borg_unit\x18\x01 \x01(\v2\x16.orgcontext.v1.OrgUnitR\aorgUnit\"|\n" +
+	"\x15GetOrgUnitTreeRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12)\n" +
+	"\x11root_unit_node_id\x18\x02 \x01(\x03R\x0erootUnitNodeId\x12\x1b\n" +
+	"\tmax_depth\x18\x03 \x01(\x05R\bmaxDepth\"\x80\x01\n" +
+	"\x0fOrgUnitTreeNode\x121\n" +
+	"\borg_unit\x18\x01 \x01(\v2\x16.orgcontext.v1.OrgUnitR\aorgUnit\x12:\n" +
+	"\bchildren\x18\x02 \x03(\v2\x1e.orgcontext.v1.OrgUnitTreeNodeR\bchildren\"L\n" +
+	"\x16GetOrgUnitTreeResponse\x122\n" +
+	"\x04root\x18\x01 \x01(\v2\x1e.orgcontext.v1.OrgUnitTreeNodeR\x04root\"\x83\x01\n" +
+	"\x14GetOrgLineageRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12\"\n" +
+	"\funit_node_id\x18\x02 \x01(\x03H\x00R\n" +
+	"unitNodeId\x12#\n" +
+	"\fassociate_id\x18\x03 \x01(\x03H\x00R\vassociateIdB\x05\n" +
+	"\x03ref\"I\n" +
+	"\x15GetOrgLineageResponse\x120\n" +
+	"\alineage\x18\x01 \x03(\v2\x16.orgcontext.v1.OrgUnitR\alineage\"\x86\x01\n" +
+	"\x17GetDirectReportsRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12!\n" +
+	"\fassociate_id\x18\x02 \x01(\x03R\vassociateId\x12+\n" +
+	"\x11include_secondary\x18\x03 \x01(\bR\x10includeSecondary\"T\n" +
+	"\x18GetDirectReportsResponse\x128\n" +
+	"\n" +
+	"associates\x18\x01 \x03(\v2\x18.orgcontext.v1.AssociateR\n" +
+	"associates\"x\n" +
+	"\x19GetIndirectReportsRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12!\n" +
+	"\fassociate_id\x18\x02 \x01(\x03R\vassociateId\x12\x1b\n" +
+	"\tmax_depth\x18\x03 \x01(\x05R\bmaxDepth\"V\n" +
+	"\x1aGetIndirectReportsResponse\x128\n" +
+	"\n" +
+	"associates\x18\x01 \x03(\v2\x18.orgcontext.v1.AssociateR\n" +
+	"associates\"t\n" +
+	"\x15GetUnitMembersRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12 \n" +
+	"\funit_node_id\x18\x02 \x01(\x03R\n" +
+	"unitNodeId\x12\x1c\n" +
+	"\trecursive\x18\x03 \x01(\bR\trecursive\"R\n" +
+	"\x16GetUnitMembersResponse\x128\n" +
+	"\n" +
+	"associates\x18\x01 \x03(\v2\x18.orgcontext.v1.AssociateR\n" +
+	"associates\"U\n" +
+	"\x14GetHeadOfUnitRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12 \n" +
+	"\funit_node_id\x18\x02 \x01(\x03R\n" +
+	"unitNodeId\"O\n" +
+	"\x15GetHeadOfUnitResponse\x126\n" +
+	"\tassociate\x18\x01 \x01(\v2\x18.orgcontext.v1.AssociateR\tassociate\"\x86\x01\n" +
+	"\x15GetAssignmentsRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12!\n" +
+	"\fassociate_id\x18\x02 \x01(\x03R\vassociateId\x12-\n" +
+	"\x12include_historical\x18\x03 \x01(\bR\x11includeHistorical\"]\n" +
+	"\x16GetAssignmentsResponse\x12C\n" +
+	"\vassignments\x18\x01 \x03(\v2!.orgcontext.v1.PositionAssignmentR\vassignments\"]\n" +
+	"\x1bGetEmploymentHistoryRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12!\n" +
+	"\fassociate_id\x18\x02 \x01(\x03R\vassociateId\"\\\n" +
+	"\x1cGetEmploymentHistoryResponse\x12<\n" +
+	"\bepisodes\x18\x01 \x03(\v2 .orgcontext.v1.EmploymentEpisodeR\bepisodes\"\xa8\x01\n" +
+	"\x17SearchAssociatesRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12\x14\n" +
+	"\x05query\x18\x02 \x01(\tR\x05query\x12\x14\n" +
+	"\x05limit\x18\x03 \x01(\x05R\x05limit\x12\x1f\n" +
+	"\vonly_active\x18\x04 \x01(\bR\n" +
+	"onlyActive\x12#\n" +
+	"\ronly_assigned\x18\x05 \x01(\bR\fonlyAssigned\"T\n" +
+	"\x18SearchAssociatesResponse\x128\n" +
+	"\n" +
+	"associates\x18\x01 \x03(\v2\x18.orgcontext.v1.AssociateR\n" +
+	"associates\"`\n" +
+	"\x15SearchOrgUnitsRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12\x14\n" +
+	"\x05query\x18\x02 \x01(\tR\x05query\x12\x14\n" +
+	"\x05limit\x18\x03 \x01(\x05R\x05limit\"M\n" +
+	"\x16SearchOrgUnitsResponse\x123\n" +
+	"\torg_units\x18\x01 \x03(\v2\x16.orgcontext.v1.OrgUnitR\borgUnits\"S\n" +
+	"\x1eGetUnassignedAssociatesRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12\x14\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\"[\n" +
+	"\x1fGetUnassignedAssociatesResponse\x128\n" +
+	"\n" +
+	"associates\x18\x01 \x03(\v2\x18.orgcontext.v1.AssociateR\n" +
+	"associates\"\xcf\x01\n" +
+	"\x14UpsertOrgUnitRequest\x121\n" +
+	"\borg_unit\x18\x01 \x01(\v2\x16.orgcontext.v1.OrgUnitR\aorgUnit\x12>\n" +
+	"\vsource_type\x18\x02 \x01(\x0e2\x1d.orgcontext.v1.SyncSourceTypeR\n" +
+	"sourceType\x12\x1d\n" +
+	"\n" +
+	"source_ref\x18\x03 \x01(\tR\tsourceRef\x12%\n" +
+	"\x0ecorrelation_id\x18\x04 \x01(\tR\rcorrelationId\"d\n" +
+	"\x15UpsertOrgUnitResponse\x121\n" +
+	"\borg_unit\x18\x01 \x01(\v2\x16.orgcontext.v1.OrgUnitR\aorgUnit\x12\x18\n" +
+	"\acreated\x18\x02 \x01(\bR\acreated\"\xef\x01\n" +
+	"\x15UpsertPositionRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x123\n" +
+	"\bposition\x18\x02 \x01(\v2\x17.orgcontext.v1.PositionR\bposition\x12>\n" +
+	"\vsource_type\x18\x03 \x01(\x0e2\x1d.orgcontext.v1.SyncSourceTypeR\n" +
+	"sourceType\x12\x1d\n" +
+	"\n" +
+	"source_ref\x18\x04 \x01(\tR\tsourceRef\x12%\n" +
+	"\x0ecorrelation_id\x18\x05 \x01(\tR\rcorrelationId\"g\n" +
+	"\x16UpsertPositionResponse\x123\n" +
+	"\bposition\x18\x01 \x01(\v2\x17.orgcontext.v1.PositionR\bposition\x12\x18\n" +
+	"\acreated\x18\x02 \x01(\bR\acreated\"\xd6\x01\n" +
+	"\x16UpsertAssociateRequest\x126\n" +
+	"\tassociate\x18\x01 \x01(\v2\x18.orgcontext.v1.AssociateR\tassociate\x12>\n" +
+	"\vsource_type\x18\x02 \x01(\x0e2\x1d.orgcontext.v1.SyncSourceTypeR\n" +
+	"sourceType\x12\x1d\n" +
+	"\n" +
+	"source_ref\x18\x03 \x01(\tR\tsourceRef\x12%\n" +
+	"\x0ecorrelation_id\x18\x04 \x01(\tR\rcorrelationId\"k\n" +
+	"\x17UpsertAssociateResponse\x126\n" +
+	"\tassociate\x18\x01 \x01(\v2\x18.orgcontext.v1.AssociateR\tassociate\x12\x18\n" +
+	"\acreated\x18\x02 \x01(\bR\acreated\"\x87\x02\n" +
+	"\x1fUpsertPositionAssignmentRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12A\n" +
+	"\n" +
+	"assignment\x18\x02 \x01(\v2!.orgcontext.v1.PositionAssignmentR\n" +
+	"assignment\x12>\n" +
+	"\vsource_type\x18\x03 \x01(\x0e2\x1d.orgcontext.v1.SyncSourceTypeR\n" +
+	"sourceType\x12\x1d\n" +
+	"\n" +
+	"source_ref\x18\x04 \x01(\tR\tsourceRef\x12%\n" +
+	"\x0ecorrelation_id\x18\x05 \x01(\tR\rcorrelationId\"\x7f\n" +
+	" UpsertPositionAssignmentResponse\x12A\n" +
+	"\n" +
+	"assignment\x18\x01 \x01(\v2!.orgcontext.v1.PositionAssignmentR\n" +
+	"assignment\x12\x18\n" +
+	"\acreated\x18\x02 \x01(\bR\acreated\"\xff\x01\n" +
+	"\x1eUpsertEmploymentEpisodeRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12:\n" +
+	"\aepisode\x18\x02 \x01(\v2 .orgcontext.v1.EmploymentEpisodeR\aepisode\x12>\n" +
+	"\vsource_type\x18\x03 \x01(\x0e2\x1d.orgcontext.v1.SyncSourceTypeR\n" +
+	"sourceType\x12\x1d\n" +
+	"\n" +
+	"source_ref\x18\x04 \x01(\tR\tsourceRef\x12%\n" +
+	"\x0ecorrelation_id\x18\x05 \x01(\tR\rcorrelationId\"w\n" +
+	"\x1fUpsertEmploymentEpisodeResponse\x12:\n" +
+	"\aepisode\x18\x01 \x01(\v2 .orgcontext.v1.EmploymentEpisodeR\aepisode\x12\x18\n" +
+	"\acreated\x18\x02 \x01(\bR\acreated\"\x9b\x01\n" +
+	"\x19SetManagerRelationRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12:\n" +
+	"\brelation\x18\x02 \x01(\v2\x1e.orgcontext.v1.ManagerRelationR\brelation\x12%\n" +
+	"\x0ecorrelation_id\x18\x03 \x01(\tR\rcorrelationId\"X\n" +
+	"\x1aSetManagerRelationResponse\x12:\n" +
+	"\brelation\x18\x01 \x01(\v2\x1e.orgcontext.v1.ManagerRelationR\brelation\"\x9f\x01\n" +
+	"\x14SetHeadOfUnitRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12 \n" +
+	"\funit_node_id\x18\x02 \x01(\x03R\n" +
+	"unitNodeId\x12!\n" +
+	"\fassociate_id\x18\x03 \x01(\x03R\vassociateId\x12%\n" +
+	"\x0ecorrelation_id\x18\x04 \x01(\tR\rcorrelationId\"'\n" +
+	"\x15SetHeadOfUnitResponse\x12\x0e\n" +
+	"\x02ok\x18\x01 \x01(\bR\x02ok\"\xd2\x01\n" +
+	" AssignAssociateToPositionRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12!\n" +
+	"\fassociate_id\x18\x02 \x01(\x03R\vassociateId\x12(\n" +
+	"\x10position_node_id\x18\x03 \x01(\x03R\x0epositionNodeId\x12\x1d\n" +
+	"\n" +
+	"is_primary\x18\x04 \x01(\bR\tisPrimary\x12%\n" +
+	"\x0ecorrelation_id\x18\x05 \x01(\tR\rcorrelationId\"f\n" +
+	"!AssignAssociateToPositionResponse\x12A\n" +
+	"\n" +
+	"assignment\x18\x01 \x01(\v2!.orgcontext.v1.PositionAssignmentR\n" +
+	"assignment\"\xee\x01\n" +
+	"$UnassignAssociateFromPositionRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12!\n" +
+	"\fassociate_id\x18\x02 \x01(\x03R\vassociateId\x12(\n" +
+	"\x10position_node_id\x18\x03 \x01(\x03R\x0epositionNodeId\x125\n" +
+	"\bended_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\aendedAt\x12%\n" +
+	"\x0ecorrelation_id\x18\x05 \x01(\tR\rcorrelationId\"7\n" +
+	"%UnassignAssociateFromPositionResponse\x12\x0e\n" +
+	"\x02ok\x18\x01 \x01(\bR\x02ok\"8\n" +
+	"\x13RawAssociatePayload\x12!\n" +
+	"\fjson_payload\x18\x01 \x01(\fR\vjsonPayload\"\xfa\x01\n" +
+	"\x1bIngestAssociateBatchRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x128\n" +
+	"\x05items\x18\x02 \x03(\v2\".orgcontext.v1.RawAssociatePayloadR\x05items\x12>\n" +
+	"\vsource_type\x18\x03 \x01(\x0e2\x1d.orgcontext.v1.SyncSourceTypeR\n" +
+	"sourceType\x12\x1d\n" +
+	"\n" +
+	"source_ref\x18\x04 \x01(\tR\tsourceRef\x12%\n" +
+	"\x0ecorrelation_id\x18\x05 \x01(\tR\rcorrelationId\"r\n" +
+	"\x1cIngestAssociateBatchResponse\x12\x1a\n" +
+	"\breceived\x18\x01 \x01(\x05R\breceived\x12\x1a\n" +
+	"\baccepted\x18\x02 \x01(\x05R\baccepted\x12\x1a\n" +
+	"\brejected\x18\x03 \x01(\x05R\brejected\"\x95\x02\n" +
+	"\x15IngestSnapshotRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12#\n" +
+	"\rsnapshot_json\x18\x02 \x01(\fR\fsnapshotJson\x12>\n" +
+	"\vsource_type\x18\x03 \x01(\x0e2\x1d.orgcontext.v1.SyncSourceTypeR\n" +
+	"sourceType\x124\n" +
+	"\tsync_mode\x18\x04 \x01(\x0e2\x17.orgcontext.v1.SyncModeR\bsyncMode\x12\x1d\n" +
+	"\n" +
+	"source_ref\x18\x05 \x01(\tR\tsourceRef\x12%\n" +
+	"\x0ecorrelation_id\x18\x06 \x01(\tR\rcorrelationId\"8\n" +
+	"\x16IngestSnapshotResponse\x12\x1e\n" +
+	"\vsync_run_id\x18\x01 \x01(\tR\tsyncRunId\"\xd5\x01\n" +
+	"\x11ApplyDeltaRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12\x1d\n" +
+	"\n" +
+	"delta_json\x18\x02 \x01(\fR\tdeltaJson\x12>\n" +
+	"\vsource_type\x18\x03 \x01(\x0e2\x1d.orgcontext.v1.SyncSourceTypeR\n" +
+	"sourceType\x12\x1d\n" +
+	"\n" +
+	"source_ref\x18\x04 \x01(\tR\tsourceRef\x12%\n" +
+	"\x0ecorrelation_id\x18\x05 \x01(\tR\rcorrelationId\"4\n" +
+	"\x12ApplyDeltaResponse\x12\x1e\n" +
+	"\vsync_run_id\x18\x01 \x01(\tR\tsyncRunId\"\xd9\x01\n" +
+	"\x1eRebuildDerivedRelationsRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12:\n" +
+	"\x19rebuild_manager_relations\x18\x02 \x01(\bR\x17rebuildManagerRelations\x12/\n" +
+	"\x14rebuild_head_of_unit\x18\x03 \x01(\bR\x11rebuildHeadOfUnit\x12-\n" +
+	"\x12rebuild_membership\x18\x04 \x01(\bR\x11rebuildMembership\"!\n" +
+	"\x1fRebuildDerivedRelationsResponse*\xf4\x01\n" +
+	"\x0eAssociateState\x12\x1f\n" +
+	"\x1bASSOCIATE_STATE_UNSPECIFIED\x10\x00\x12#\n" +
+	"\x1fASSOCIATE_STATE_ACTIVE_ASSIGNED\x10\x01\x12%\n" +
+	"!ASSOCIATE_STATE_ACTIVE_UNASSIGNED\x10\x02\x12)\n" +
+	"%ASSOCIATE_STATE_INACTIVE_HISTORY_ONLY\x10\x03\x12\x1e\n" +
+	"\x1aASSOCIATE_STATE_TERMINATED\x10\x04\x12*\n" +
+	"&ASSOCIATE_STATE_PENDING_RECONCILIATION\x10\x05*\xf4\x01\n" +
+	"\x13ManagerRelationType\x12%\n" +
+	"!MANAGER_RELATION_TYPE_UNSPECIFIED\x10\x00\x12!\n" +
+	"\x1dMANAGER_RELATION_TYPE_PRIMARY\x10\x01\x12 \n" +
+	"\x1cMANAGER_RELATION_TYPE_DOTTED\x10\x02\x12\x1f\n" +
+	"\x1bMANAGER_RELATION_TYPE_OTHER\x10\x03\x12 \n" +
+	"\x1cMANAGER_RELATION_TYPE_ACTING\x10\x04\x12.\n" +
+	"*MANAGER_RELATION_TYPE_DERIVED_HEAD_OF_UNIT\x10\x05*\x95\x01\n" +
+	"\x10AssignmentStatus\x12!\n" +
+	"\x1dASSIGNMENT_STATUS_UNSPECIFIED\x10\x00\x12\x1c\n" +
+	"\x18ASSIGNMENT_STATUS_ACTIVE\x10\x01\x12\x1e\n" +
+	"\x1aASSIGNMENT_STATUS_INACTIVE\x10\x02\x12 \n" +
+	"\x1cASSIGNMENT_STATUS_HISTORICAL\x10\x03*\xb6\x01\n" +
+	"\x17EmploymentEpisodeStatus\x12)\n" +
+	"%EMPLOYMENT_EPISODE_STATUS_UNSPECIFIED\x10\x00\x12#\n" +
+	"\x1fEMPLOYMENT_EPISODE_STATUS_VALID\x10\x01\x12%\n" +
+	"!EMPLOYMENT_EPISODE_STATUS_INVALID\x10\x02\x12$\n" +
+	" EMPLOYMENT_EPISODE_STATUS_CLOSED\x10\x03*\x94\x01\n" +
+	"\x0eSyncSourceType\x12 \n" +
+	"\x1cSYNC_SOURCE_TYPE_UNSPECIFIED\x10\x00\x12 \n" +
+	"\x1cSYNC_SOURCE_TYPE_PEOPLESPACE\x10\x01\x12\x19\n" +
+	"\x15SYNC_SOURCE_TYPE_HRIS\x10\x02\x12#\n" +
+	"\x1fSYNC_SOURCE_TYPE_ADMIN_OVERRIDE\x10\x03*u\n" +
+	"\bSyncMode\x12\x19\n" +
+	"\x15SYNC_MODE_UNSPECIFIED\x10\x00\x12\x1b\n" +
+	"\x17SYNC_MODE_FULL_SNAPSHOT\x10\x01\x12\x13\n" +
+	"\x0fSYNC_MODE_DELTA\x10\x02\x12\x1c\n" +
+	"\x18SYNC_MODE_RECONCILIATION\x10\x03*\x83\x02\n" +
+	"\x10OrgUnitNodeGroup\x12#\n" +
+	"\x1fORG_UNIT_NODE_GROUP_UNSPECIFIED\x10\x00\x12\x1f\n" +
+	"\x1bORG_UNIT_NODE_GROUP_COMPANY\x10\x01\x12%\n" +
+	"!ORG_UNIT_NODE_GROUP_BUSINESS_UNIT\x10\x02\x12\"\n" +
+	"\x1eORG_UNIT_NODE_GROUP_DEPARTMENT\x10\x03\x12\x1e\n" +
+	"\x1aORG_UNIT_NODE_GROUP_CENTER\x10\x04\x12 \n" +
+	"\x1cORG_UNIT_NODE_GROUP_DIVISION\x10\x05\x12\x1c\n" +
+	"\x18ORG_UNIT_NODE_GROUP_TEAM\x10\x06BKZIgithub.com/peoplesuite/platform-core/api/proto/orgcontext/v1;orgcontextv1b\x06proto3"
 
 var (
 	file_orgcontext_v1_orgcontext_proto_rawDescOnce sync.Once
@@ -2405,67 +5281,160 @@ func file_orgcontext_v1_orgcontext_proto_rawDescGZIP() []byte {
 	return file_orgcontext_v1_orgcontext_proto_rawDescData
 }
 
-var file_orgcontext_v1_orgcontext_proto_msgTypes = make([]protoimpl.MessageInfo, 38)
+var file_orgcontext_v1_orgcontext_proto_enumTypes = make([]protoimpl.EnumInfo, 7)
+var file_orgcontext_v1_orgcontext_proto_msgTypes = make([]protoimpl.MessageInfo, 69)
 var file_orgcontext_v1_orgcontext_proto_goTypes = []any{
-	(*Position)(nil),                    // 0: orgcontext.v1.Position
-	(*UnitRef)(nil),                     // 1: orgcontext.v1.UnitRef
-	(*GetAssociateRequest)(nil),         // 2: orgcontext.v1.GetAssociateRequest
-	(*GetAssociateResponse)(nil),        // 3: orgcontext.v1.GetAssociateResponse
-	(*AssociateDetail)(nil),             // 4: orgcontext.v1.AssociateDetail
-	(*GetAssociateByEmailRequest)(nil),  // 5: orgcontext.v1.GetAssociateByEmailRequest
-	(*GetAssociateByEmailResponse)(nil), // 6: orgcontext.v1.GetAssociateByEmailResponse
-	(*GetAllAssociatesRequest)(nil),     // 7: orgcontext.v1.GetAllAssociatesRequest
-	(*GetAllAssociatesResponse)(nil),    // 8: orgcontext.v1.GetAllAssociatesResponse
-	(*SearchAssociatesRequest)(nil),     // 9: orgcontext.v1.SearchAssociatesRequest
-	(*SearchResult)(nil),                // 10: orgcontext.v1.SearchResult
-	(*SearchAssociatesResponse)(nil),    // 11: orgcontext.v1.SearchAssociatesResponse
-	(*GetDirectReportsRequest)(nil),     // 12: orgcontext.v1.GetDirectReportsRequest
-	(*DirectReport)(nil),                // 13: orgcontext.v1.DirectReport
-	(*GetDirectReportsResponse)(nil),    // 14: orgcontext.v1.GetDirectReportsResponse
-	(*GetReportingChainRequest)(nil),    // 15: orgcontext.v1.GetReportingChainRequest
-	(*ChainLink)(nil),                   // 16: orgcontext.v1.ChainLink
-	(*GetReportingChainResponse)(nil),   // 17: orgcontext.v1.GetReportingChainResponse
-	(*GetOrgChartRequest)(nil),          // 18: orgcontext.v1.GetOrgChartRequest
-	(*OrgChartEntry)(nil),               // 19: orgcontext.v1.OrgChartEntry
-	(*GetOrgChartResponse)(nil),         // 20: orgcontext.v1.GetOrgChartResponse
-	(*GetUnitSubtreeRequest)(nil),       // 21: orgcontext.v1.GetUnitSubtreeRequest
-	(*UnitTreeEntry)(nil),               // 22: orgcontext.v1.UnitTreeEntry
-	(*GetUnitSubtreeResponse)(nil),      // 23: orgcontext.v1.GetUnitSubtreeResponse
-	(*GetUnitHeadcountRequest)(nil),     // 24: orgcontext.v1.GetUnitHeadcountRequest
-	(*UnitSummary)(nil),                 // 25: orgcontext.v1.UnitSummary
-	(*GetUnitHeadcountResponse)(nil),    // 26: orgcontext.v1.GetUnitHeadcountResponse
-	(*GetSpanOfControlRequest)(nil),     // 27: orgcontext.v1.GetSpanOfControlRequest
-	(*SpanEntry)(nil),                   // 28: orgcontext.v1.SpanEntry
-	(*GetSpanOfControlResponse)(nil),    // 29: orgcontext.v1.GetSpanOfControlResponse
-	(*GetShortestPathRequest)(nil),      // 30: orgcontext.v1.GetShortestPathRequest
-	(*PathStep)(nil),                    // 31: orgcontext.v1.PathStep
-	(*GetShortestPathResponse)(nil),     // 32: orgcontext.v1.GetShortestPathResponse
-	(*GetOrphansRequest)(nil),           // 33: orgcontext.v1.GetOrphansRequest
-	(*OrphanEntry)(nil),                 // 34: orgcontext.v1.OrphanEntry
-	(*GetOrphansResponse)(nil),          // 35: orgcontext.v1.GetOrphansResponse
-	(*TriggerSyncRequest)(nil),          // 36: orgcontext.v1.TriggerSyncRequest
-	(*TriggerSyncResponse)(nil),         // 37: orgcontext.v1.TriggerSyncResponse
+	(AssociateState)(0),                           // 0: orgcontext.v1.AssociateState
+	(ManagerRelationType)(0),                      // 1: orgcontext.v1.ManagerRelationType
+	(AssignmentStatus)(0),                         // 2: orgcontext.v1.AssignmentStatus
+	(EmploymentEpisodeStatus)(0),                  // 3: orgcontext.v1.EmploymentEpisodeStatus
+	(SyncSourceType)(0),                           // 4: orgcontext.v1.SyncSourceType
+	(SyncMode)(0),                                 // 5: orgcontext.v1.SyncMode
+	(OrgUnitNodeGroup)(0),                         // 6: orgcontext.v1.OrgUnitNodeGroup
+	(*LocalizedString)(nil),                       // 7: orgcontext.v1.LocalizedString
+	(*PersonName)(nil),                            // 8: orgcontext.v1.PersonName
+	(*Person)(nil),                                // 9: orgcontext.v1.Person
+	(*Company)(nil),                               // 10: orgcontext.v1.Company
+	(*OrgUnit)(nil),                               // 11: orgcontext.v1.OrgUnit
+	(*PositionType)(nil),                          // 12: orgcontext.v1.PositionType
+	(*Position)(nil),                              // 13: orgcontext.v1.Position
+	(*PositionAssignment)(nil),                    // 14: orgcontext.v1.PositionAssignment
+	(*EmploymentEpisode)(nil),                     // 15: orgcontext.v1.EmploymentEpisode
+	(*ManagerRelation)(nil),                       // 16: orgcontext.v1.ManagerRelation
+	(*Associate)(nil),                             // 17: orgcontext.v1.Associate
+	(*GetAssociateRequest)(nil),                   // 18: orgcontext.v1.GetAssociateRequest
+	(*GetAssociateByUserIdRequest)(nil),           // 19: orgcontext.v1.GetAssociateByUserIdRequest
+	(*GetAssociateResponse)(nil),                  // 20: orgcontext.v1.GetAssociateResponse
+	(*GetAssociateByUserIdResponse)(nil),          // 21: orgcontext.v1.GetAssociateByUserIdResponse
+	(*ResolveAssociateContextRequest)(nil),        // 22: orgcontext.v1.ResolveAssociateContextRequest
+	(*ResolveAssociateContextResponse)(nil),       // 23: orgcontext.v1.ResolveAssociateContextResponse
+	(*GetOrgUnitRequest)(nil),                     // 24: orgcontext.v1.GetOrgUnitRequest
+	(*GetOrgUnitResponse)(nil),                    // 25: orgcontext.v1.GetOrgUnitResponse
+	(*GetOrgUnitTreeRequest)(nil),                 // 26: orgcontext.v1.GetOrgUnitTreeRequest
+	(*OrgUnitTreeNode)(nil),                       // 27: orgcontext.v1.OrgUnitTreeNode
+	(*GetOrgUnitTreeResponse)(nil),                // 28: orgcontext.v1.GetOrgUnitTreeResponse
+	(*GetOrgLineageRequest)(nil),                  // 29: orgcontext.v1.GetOrgLineageRequest
+	(*GetOrgLineageResponse)(nil),                 // 30: orgcontext.v1.GetOrgLineageResponse
+	(*GetDirectReportsRequest)(nil),               // 31: orgcontext.v1.GetDirectReportsRequest
+	(*GetDirectReportsResponse)(nil),              // 32: orgcontext.v1.GetDirectReportsResponse
+	(*GetIndirectReportsRequest)(nil),             // 33: orgcontext.v1.GetIndirectReportsRequest
+	(*GetIndirectReportsResponse)(nil),            // 34: orgcontext.v1.GetIndirectReportsResponse
+	(*GetUnitMembersRequest)(nil),                 // 35: orgcontext.v1.GetUnitMembersRequest
+	(*GetUnitMembersResponse)(nil),                // 36: orgcontext.v1.GetUnitMembersResponse
+	(*GetHeadOfUnitRequest)(nil),                  // 37: orgcontext.v1.GetHeadOfUnitRequest
+	(*GetHeadOfUnitResponse)(nil),                 // 38: orgcontext.v1.GetHeadOfUnitResponse
+	(*GetAssignmentsRequest)(nil),                 // 39: orgcontext.v1.GetAssignmentsRequest
+	(*GetAssignmentsResponse)(nil),                // 40: orgcontext.v1.GetAssignmentsResponse
+	(*GetEmploymentHistoryRequest)(nil),           // 41: orgcontext.v1.GetEmploymentHistoryRequest
+	(*GetEmploymentHistoryResponse)(nil),          // 42: orgcontext.v1.GetEmploymentHistoryResponse
+	(*SearchAssociatesRequest)(nil),               // 43: orgcontext.v1.SearchAssociatesRequest
+	(*SearchAssociatesResponse)(nil),              // 44: orgcontext.v1.SearchAssociatesResponse
+	(*SearchOrgUnitsRequest)(nil),                 // 45: orgcontext.v1.SearchOrgUnitsRequest
+	(*SearchOrgUnitsResponse)(nil),                // 46: orgcontext.v1.SearchOrgUnitsResponse
+	(*GetUnassignedAssociatesRequest)(nil),        // 47: orgcontext.v1.GetUnassignedAssociatesRequest
+	(*GetUnassignedAssociatesResponse)(nil),       // 48: orgcontext.v1.GetUnassignedAssociatesResponse
+	(*UpsertOrgUnitRequest)(nil),                  // 49: orgcontext.v1.UpsertOrgUnitRequest
+	(*UpsertOrgUnitResponse)(nil),                 // 50: orgcontext.v1.UpsertOrgUnitResponse
+	(*UpsertPositionRequest)(nil),                 // 51: orgcontext.v1.UpsertPositionRequest
+	(*UpsertPositionResponse)(nil),                // 52: orgcontext.v1.UpsertPositionResponse
+	(*UpsertAssociateRequest)(nil),                // 53: orgcontext.v1.UpsertAssociateRequest
+	(*UpsertAssociateResponse)(nil),               // 54: orgcontext.v1.UpsertAssociateResponse
+	(*UpsertPositionAssignmentRequest)(nil),       // 55: orgcontext.v1.UpsertPositionAssignmentRequest
+	(*UpsertPositionAssignmentResponse)(nil),      // 56: orgcontext.v1.UpsertPositionAssignmentResponse
+	(*UpsertEmploymentEpisodeRequest)(nil),        // 57: orgcontext.v1.UpsertEmploymentEpisodeRequest
+	(*UpsertEmploymentEpisodeResponse)(nil),       // 58: orgcontext.v1.UpsertEmploymentEpisodeResponse
+	(*SetManagerRelationRequest)(nil),             // 59: orgcontext.v1.SetManagerRelationRequest
+	(*SetManagerRelationResponse)(nil),            // 60: orgcontext.v1.SetManagerRelationResponse
+	(*SetHeadOfUnitRequest)(nil),                  // 61: orgcontext.v1.SetHeadOfUnitRequest
+	(*SetHeadOfUnitResponse)(nil),                 // 62: orgcontext.v1.SetHeadOfUnitResponse
+	(*AssignAssociateToPositionRequest)(nil),      // 63: orgcontext.v1.AssignAssociateToPositionRequest
+	(*AssignAssociateToPositionResponse)(nil),     // 64: orgcontext.v1.AssignAssociateToPositionResponse
+	(*UnassignAssociateFromPositionRequest)(nil),  // 65: orgcontext.v1.UnassignAssociateFromPositionRequest
+	(*UnassignAssociateFromPositionResponse)(nil), // 66: orgcontext.v1.UnassignAssociateFromPositionResponse
+	(*RawAssociatePayload)(nil),                   // 67: orgcontext.v1.RawAssociatePayload
+	(*IngestAssociateBatchRequest)(nil),           // 68: orgcontext.v1.IngestAssociateBatchRequest
+	(*IngestAssociateBatchResponse)(nil),          // 69: orgcontext.v1.IngestAssociateBatchResponse
+	(*IngestSnapshotRequest)(nil),                 // 70: orgcontext.v1.IngestSnapshotRequest
+	(*IngestSnapshotResponse)(nil),                // 71: orgcontext.v1.IngestSnapshotResponse
+	(*ApplyDeltaRequest)(nil),                     // 72: orgcontext.v1.ApplyDeltaRequest
+	(*ApplyDeltaResponse)(nil),                    // 73: orgcontext.v1.ApplyDeltaResponse
+	(*RebuildDerivedRelationsRequest)(nil),        // 74: orgcontext.v1.RebuildDerivedRelationsRequest
+	(*RebuildDerivedRelationsResponse)(nil),       // 75: orgcontext.v1.RebuildDerivedRelationsResponse
+	(*timestamppb.Timestamp)(nil),                 // 76: google.protobuf.Timestamp
 }
 var file_orgcontext_v1_orgcontext_proto_depIdxs = []int32{
-	0,  // 0: orgcontext.v1.GetAssociateResponse.positions:type_name -> orgcontext.v1.Position
-	1,  // 1: orgcontext.v1.GetAssociateResponse.units:type_name -> orgcontext.v1.UnitRef
-	0,  // 2: orgcontext.v1.AssociateDetail.positions:type_name -> orgcontext.v1.Position
-	1,  // 3: orgcontext.v1.AssociateDetail.units:type_name -> orgcontext.v1.UnitRef
-	4,  // 4: orgcontext.v1.GetAllAssociatesResponse.associates:type_name -> orgcontext.v1.AssociateDetail
-	10, // 5: orgcontext.v1.SearchAssociatesResponse.results:type_name -> orgcontext.v1.SearchResult
-	13, // 6: orgcontext.v1.GetDirectReportsResponse.reports:type_name -> orgcontext.v1.DirectReport
-	16, // 7: orgcontext.v1.GetReportingChainResponse.chain:type_name -> orgcontext.v1.ChainLink
-	19, // 8: orgcontext.v1.GetOrgChartResponse.entries:type_name -> orgcontext.v1.OrgChartEntry
-	22, // 9: orgcontext.v1.GetUnitSubtreeResponse.entries:type_name -> orgcontext.v1.UnitTreeEntry
-	25, // 10: orgcontext.v1.GetUnitHeadcountResponse.summaries:type_name -> orgcontext.v1.UnitSummary
-	28, // 11: orgcontext.v1.GetSpanOfControlResponse.entries:type_name -> orgcontext.v1.SpanEntry
-	31, // 12: orgcontext.v1.GetShortestPathResponse.steps:type_name -> orgcontext.v1.PathStep
-	34, // 13: orgcontext.v1.GetOrphansResponse.orphans:type_name -> orgcontext.v1.OrphanEntry
-	14, // [14:14] is the sub-list for method output_type
-	14, // [14:14] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	8,  // 0: orgcontext.v1.Person.localized_names:type_name -> orgcontext.v1.PersonName
+	7,  // 1: orgcontext.v1.Company.localized_names:type_name -> orgcontext.v1.LocalizedString
+	6,  // 2: orgcontext.v1.OrgUnit.node_group:type_name -> orgcontext.v1.OrgUnitNodeGroup
+	7,  // 3: orgcontext.v1.OrgUnit.localized_names:type_name -> orgcontext.v1.LocalizedString
+	7,  // 4: orgcontext.v1.PositionType.localized_names:type_name -> orgcontext.v1.LocalizedString
+	12, // 5: orgcontext.v1.Position.position_type:type_name -> orgcontext.v1.PositionType
+	2,  // 6: orgcontext.v1.PositionAssignment.status:type_name -> orgcontext.v1.AssignmentStatus
+	76, // 7: orgcontext.v1.PositionAssignment.created_at:type_name -> google.protobuf.Timestamp
+	76, // 8: orgcontext.v1.PositionAssignment.updated_at:type_name -> google.protobuf.Timestamp
+	13, // 9: orgcontext.v1.PositionAssignment.position:type_name -> orgcontext.v1.Position
+	11, // 10: orgcontext.v1.PositionAssignment.org_unit:type_name -> orgcontext.v1.OrgUnit
+	3,  // 11: orgcontext.v1.EmploymentEpisode.status:type_name -> orgcontext.v1.EmploymentEpisodeStatus
+	76, // 12: orgcontext.v1.EmploymentEpisode.employment_date:type_name -> google.protobuf.Timestamp
+	76, // 13: orgcontext.v1.EmploymentEpisode.appointment_start_date:type_name -> google.protobuf.Timestamp
+	76, // 14: orgcontext.v1.EmploymentEpisode.appointment_end_date:type_name -> google.protobuf.Timestamp
+	1,  // 15: orgcontext.v1.ManagerRelation.relation_type:type_name -> orgcontext.v1.ManagerRelationType
+	76, // 16: orgcontext.v1.ManagerRelation.start_at:type_name -> google.protobuf.Timestamp
+	76, // 17: orgcontext.v1.ManagerRelation.end_at:type_name -> google.protobuf.Timestamp
+	0,  // 18: orgcontext.v1.Associate.state:type_name -> orgcontext.v1.AssociateState
+	9,  // 19: orgcontext.v1.Associate.person:type_name -> orgcontext.v1.Person
+	14, // 20: orgcontext.v1.Associate.assignments:type_name -> orgcontext.v1.PositionAssignment
+	15, // 21: orgcontext.v1.Associate.employment_history:type_name -> orgcontext.v1.EmploymentEpisode
+	17, // 22: orgcontext.v1.GetAssociateResponse.associate:type_name -> orgcontext.v1.Associate
+	17, // 23: orgcontext.v1.GetAssociateByUserIdResponse.associate:type_name -> orgcontext.v1.Associate
+	17, // 24: orgcontext.v1.ResolveAssociateContextResponse.associate:type_name -> orgcontext.v1.Associate
+	14, // 25: orgcontext.v1.ResolveAssociateContextResponse.primary_assignment:type_name -> orgcontext.v1.PositionAssignment
+	11, // 26: orgcontext.v1.ResolveAssociateContextResponse.current_org_unit:type_name -> orgcontext.v1.OrgUnit
+	11, // 27: orgcontext.v1.ResolveAssociateContextResponse.lineage:type_name -> orgcontext.v1.OrgUnit
+	17, // 28: orgcontext.v1.ResolveAssociateContextResponse.manager:type_name -> orgcontext.v1.Associate
+	11, // 29: orgcontext.v1.GetOrgUnitResponse.org_unit:type_name -> orgcontext.v1.OrgUnit
+	11, // 30: orgcontext.v1.OrgUnitTreeNode.org_unit:type_name -> orgcontext.v1.OrgUnit
+	27, // 31: orgcontext.v1.OrgUnitTreeNode.children:type_name -> orgcontext.v1.OrgUnitTreeNode
+	27, // 32: orgcontext.v1.GetOrgUnitTreeResponse.root:type_name -> orgcontext.v1.OrgUnitTreeNode
+	11, // 33: orgcontext.v1.GetOrgLineageResponse.lineage:type_name -> orgcontext.v1.OrgUnit
+	17, // 34: orgcontext.v1.GetDirectReportsResponse.associates:type_name -> orgcontext.v1.Associate
+	17, // 35: orgcontext.v1.GetIndirectReportsResponse.associates:type_name -> orgcontext.v1.Associate
+	17, // 36: orgcontext.v1.GetUnitMembersResponse.associates:type_name -> orgcontext.v1.Associate
+	17, // 37: orgcontext.v1.GetHeadOfUnitResponse.associate:type_name -> orgcontext.v1.Associate
+	14, // 38: orgcontext.v1.GetAssignmentsResponse.assignments:type_name -> orgcontext.v1.PositionAssignment
+	15, // 39: orgcontext.v1.GetEmploymentHistoryResponse.episodes:type_name -> orgcontext.v1.EmploymentEpisode
+	17, // 40: orgcontext.v1.SearchAssociatesResponse.associates:type_name -> orgcontext.v1.Associate
+	11, // 41: orgcontext.v1.SearchOrgUnitsResponse.org_units:type_name -> orgcontext.v1.OrgUnit
+	17, // 42: orgcontext.v1.GetUnassignedAssociatesResponse.associates:type_name -> orgcontext.v1.Associate
+	11, // 43: orgcontext.v1.UpsertOrgUnitRequest.org_unit:type_name -> orgcontext.v1.OrgUnit
+	4,  // 44: orgcontext.v1.UpsertOrgUnitRequest.source_type:type_name -> orgcontext.v1.SyncSourceType
+	11, // 45: orgcontext.v1.UpsertOrgUnitResponse.org_unit:type_name -> orgcontext.v1.OrgUnit
+	13, // 46: orgcontext.v1.UpsertPositionRequest.position:type_name -> orgcontext.v1.Position
+	4,  // 47: orgcontext.v1.UpsertPositionRequest.source_type:type_name -> orgcontext.v1.SyncSourceType
+	13, // 48: orgcontext.v1.UpsertPositionResponse.position:type_name -> orgcontext.v1.Position
+	17, // 49: orgcontext.v1.UpsertAssociateRequest.associate:type_name -> orgcontext.v1.Associate
+	4,  // 50: orgcontext.v1.UpsertAssociateRequest.source_type:type_name -> orgcontext.v1.SyncSourceType
+	17, // 51: orgcontext.v1.UpsertAssociateResponse.associate:type_name -> orgcontext.v1.Associate
+	14, // 52: orgcontext.v1.UpsertPositionAssignmentRequest.assignment:type_name -> orgcontext.v1.PositionAssignment
+	4,  // 53: orgcontext.v1.UpsertPositionAssignmentRequest.source_type:type_name -> orgcontext.v1.SyncSourceType
+	14, // 54: orgcontext.v1.UpsertPositionAssignmentResponse.assignment:type_name -> orgcontext.v1.PositionAssignment
+	15, // 55: orgcontext.v1.UpsertEmploymentEpisodeRequest.episode:type_name -> orgcontext.v1.EmploymentEpisode
+	4,  // 56: orgcontext.v1.UpsertEmploymentEpisodeRequest.source_type:type_name -> orgcontext.v1.SyncSourceType
+	15, // 57: orgcontext.v1.UpsertEmploymentEpisodeResponse.episode:type_name -> orgcontext.v1.EmploymentEpisode
+	16, // 58: orgcontext.v1.SetManagerRelationRequest.relation:type_name -> orgcontext.v1.ManagerRelation
+	16, // 59: orgcontext.v1.SetManagerRelationResponse.relation:type_name -> orgcontext.v1.ManagerRelation
+	14, // 60: orgcontext.v1.AssignAssociateToPositionResponse.assignment:type_name -> orgcontext.v1.PositionAssignment
+	76, // 61: orgcontext.v1.UnassignAssociateFromPositionRequest.ended_at:type_name -> google.protobuf.Timestamp
+	67, // 62: orgcontext.v1.IngestAssociateBatchRequest.items:type_name -> orgcontext.v1.RawAssociatePayload
+	4,  // 63: orgcontext.v1.IngestAssociateBatchRequest.source_type:type_name -> orgcontext.v1.SyncSourceType
+	4,  // 64: orgcontext.v1.IngestSnapshotRequest.source_type:type_name -> orgcontext.v1.SyncSourceType
+	5,  // 65: orgcontext.v1.IngestSnapshotRequest.sync_mode:type_name -> orgcontext.v1.SyncMode
+	4,  // 66: orgcontext.v1.ApplyDeltaRequest.source_type:type_name -> orgcontext.v1.SyncSourceType
+	67, // [67:67] is the sub-list for method output_type
+	67, // [67:67] is the sub-list for method input_type
+	67, // [67:67] is the sub-list for extension type_name
+	67, // [67:67] is the sub-list for extension extendee
+	0,  // [0:67] is the sub-list for field type_name
 }
 
 func init() { file_orgcontext_v1_orgcontext_proto_init() }
@@ -2473,18 +5442,27 @@ func file_orgcontext_v1_orgcontext_proto_init() {
 	if File_orgcontext_v1_orgcontext_proto != nil {
 		return
 	}
+	file_orgcontext_v1_orgcontext_proto_msgTypes[15].OneofWrappers = []any{
+		(*ResolveAssociateContextRequest_AssociateId)(nil),
+		(*ResolveAssociateContextRequest_UserId)(nil),
+	}
+	file_orgcontext_v1_orgcontext_proto_msgTypes[22].OneofWrappers = []any{
+		(*GetOrgLineageRequest_UnitNodeId)(nil),
+		(*GetOrgLineageRequest_AssociateId)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_orgcontext_v1_orgcontext_proto_rawDesc), len(file_orgcontext_v1_orgcontext_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   38,
+			NumEnums:      7,
+			NumMessages:   69,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_orgcontext_v1_orgcontext_proto_goTypes,
 		DependencyIndexes: file_orgcontext_v1_orgcontext_proto_depIdxs,
+		EnumInfos:         file_orgcontext_v1_orgcontext_proto_enumTypes,
 		MessageInfos:      file_orgcontext_v1_orgcontext_proto_msgTypes,
 	}.Build()
 	File_orgcontext_v1_orgcontext_proto = out.File

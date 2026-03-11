@@ -2,270 +2,525 @@ syntax = "proto3";
 
 package orgcontext.v1;
 
-option go_package = "peoplesuite/platform-contracts/gen/go/orgcontext/v1;orgcontextv1";
+option go_package = "github.com/peoplesuite/platform-core/api/proto/orgcontext/v1;orgcontextv1";
 
-// ═══════════════════════════════════════════════════════════════
-//  SHARED MESSAGES
-// ═══════════════════════════════════════════════════════════════
+import "google/protobuf/timestamp.proto";
+
+/***************
+ * ENUMS
+ ***************/
+
+enum AssociateState {
+  ASSOCIATE_STATE_UNSPECIFIED = 0;
+  ASSOCIATE_STATE_ACTIVE_ASSIGNED = 1;
+  ASSOCIATE_STATE_ACTIVE_UNASSIGNED = 2;
+  ASSOCIATE_STATE_INACTIVE_HISTORY_ONLY = 3;
+  ASSOCIATE_STATE_TERMINATED = 4;
+  ASSOCIATE_STATE_PENDING_RECONCILIATION = 5;
+}
+
+enum ManagerRelationType {
+  MANAGER_RELATION_TYPE_UNSPECIFIED = 0;
+  MANAGER_RELATION_TYPE_PRIMARY = 1;
+  MANAGER_RELATION_TYPE_DOTTED = 2;
+  MANAGER_RELATION_TYPE_OTHER = 3;
+  MANAGER_RELATION_TYPE_ACTING = 4;
+  MANAGER_RELATION_TYPE_DERIVED_HEAD_OF_UNIT = 5;
+}
+
+enum AssignmentStatus {
+  ASSIGNMENT_STATUS_UNSPECIFIED = 0;
+  ASSIGNMENT_STATUS_ACTIVE = 1;
+  ASSIGNMENT_STATUS_INACTIVE = 2;
+  ASSIGNMENT_STATUS_HISTORICAL = 3;
+}
+
+enum EmploymentEpisodeStatus {
+  EMPLOYMENT_EPISODE_STATUS_UNSPECIFIED = 0;
+  EMPLOYMENT_EPISODE_STATUS_VALID = 1;
+  EMPLOYMENT_EPISODE_STATUS_INVALID = 2;
+  EMPLOYMENT_EPISODE_STATUS_CLOSED = 3;
+}
+
+enum SyncSourceType {
+  SYNC_SOURCE_TYPE_UNSPECIFIED = 0;
+  SYNC_SOURCE_TYPE_PEOPLESPACE = 1;
+  SYNC_SOURCE_TYPE_HRIS = 2;
+  SYNC_SOURCE_TYPE_ADMIN_OVERRIDE = 3;
+}
+
+enum SyncMode {
+  SYNC_MODE_UNSPECIFIED = 0;
+  SYNC_MODE_FULL_SNAPSHOT = 1;
+  SYNC_MODE_DELTA = 2;
+  SYNC_MODE_RECONCILIATION = 3;
+}
+
+enum OrgUnitNodeGroup {
+  ORG_UNIT_NODE_GROUP_UNSPECIFIED = 0;
+  ORG_UNIT_NODE_GROUP_COMPANY = 1;
+  ORG_UNIT_NODE_GROUP_BUSINESS_UNIT = 2;
+  ORG_UNIT_NODE_GROUP_DEPARTMENT = 3;
+  ORG_UNIT_NODE_GROUP_CENTER = 4;
+  ORG_UNIT_NODE_GROUP_DIVISION = 5;
+  ORG_UNIT_NODE_GROUP_TEAM = 6;
+}
+
+/***************
+ * COMMON
+ ***************/
+
+message LocalizedString {
+  string language = 1;
+  string value = 2;
+}
+
+message PersonName {
+  string language = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string middle_name = 4;
+  string patronymic_name = 5;
+}
+
+message Person {
+  int64 person_id = 1;
+  string user_id = 2;
+  string username = 3;
+  string birth_date = 4;
+  string passport_number = 5;
+  string issue_date = 6;
+  string ssn = 7;
+  string country = 8;
+  string city = 9;
+  string address = 10;
+  string mobile_number = 11;
+  string email_address = 12;
+  string business_phone_number = 13;
+  string business_email_address = 14;
+  int32 gender_id = 15;
+  bool two_fa = 16;
+  repeated PersonName localized_names = 17;
+}
+
+message Company {
+  int64 company_node_id = 1;
+  string tenant_id = 2;
+  string code_by_the_system = 3;
+  repeated LocalizedString localized_names = 4;
+}
+
+message OrgUnit {
+  int64 unit_node_id = 1;
+  string tenant_id = 2;
+  int64 company_node_id = 3;
+  int64 parent_unit_node_id = 4;
+  string code_by_the_system = 5;
+  string department_code = 6;
+  int32 node_group_id = 7;
+  OrgUnitNodeGroup node_group = 8;
+  repeated LocalizedString localized_names = 9;
+}
+
+message PositionType {
+  int64 position_type_id = 1;
+  string default_name = 2;
+  repeated LocalizedString localized_names = 3;
+}
 
 message Position {
-  string position_type  = 1;
-  bool   is_primary     = 2;
-  bool   is_manager     = 3;
-  bool   head_of_unit   = 4;
-  int32  layer_id       = 5;
-  int32  unit_id        = 6;
+  int64 position_id = 1;
+  int64 unit_node_id = 2;
+  int64 position_type_id = 3;
+  int32 position_layer_id = 4;
+  PositionType position_type = 5;
 }
 
-message UnitRef {
-  int32  unit_id   = 1;
-  string unit_name = 2;
+message PositionAssignment {
+  int64 position_node_id = 1;
+  int64 associate_id = 2;
+  int64 position_id = 3;
+  int64 unit_node_id = 4;
+  bool is_primary = 5;
+  bool is_manager = 6;
+  bool head_of_unit = 7;
+  AssignmentStatus status = 8;
+  google.protobuf.Timestamp created_at = 9;
+  google.protobuf.Timestamp updated_at = 10;
+  Position position = 11;
+  OrgUnit org_unit = 12;
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  ASSOCIATE
-// ═══════════════════════════════════════════════════════════════
+message EmploymentEpisode {
+  int64 employment_episode_id = 1;
+  int64 associate_id = 2;
+  int64 position_node_id = 3;
+  int64 unit_node_id = 4;
+  int64 company_node_id = 5;
+  int64 employment_story_id = 6;
+  string code_by_the_system = 7;
+  bool is_valid = 8;
+  EmploymentEpisodeStatus status = 9;
+  google.protobuf.Timestamp employment_date = 10;
+  google.protobuf.Timestamp appointment_start_date = 11;
+  google.protobuf.Timestamp appointment_end_date = 12;
+}
+
+message ManagerRelation {
+  string relation_id = 1;
+  int64 associate_id = 2;
+  int64 manager_associate_id = 3;
+  ManagerRelationType relation_type = 4;
+  bool is_active = 5;
+  string source = 6;
+  google.protobuf.Timestamp start_at = 7;
+  google.protobuf.Timestamp end_at = 8;
+}
+
+message Associate {
+  int64 associate_id = 1;
+  string tenant_id = 2;
+  string employee_card_id = 3;
+  string employee_client_code = 4;
+  bool evaluation = 5;
+  int32 number_of_attempts = 6;
+  int32 grade_id = 7;
+  int32 associate_type_id = 8;
+  int64 person_id = 9;
+  bool is_terminated = 10;
+  AssociateState state = 11;
+  Person person = 12;
+  repeated PositionAssignment assignments = 13;
+  repeated EmploymentEpisode employment_history = 14;
+}
+
+/***************
+ * QUERY API
+ ***************/
 
 message GetAssociateRequest {
-  int32 associate_id = 1;
+  string tenant_id = 1;
+  int64 associate_id = 2;
 }
 
-// GetAssociateResponse is the response for GetAssociate RPC (buf lint: RPC response naming).
+message GetAssociateByUserIdRequest {
+  string tenant_id = 1;
+  string user_id = 2;
+}
+
 message GetAssociateResponse {
-  int32              associate_id        = 1;
-  string             employee_card_id    = 2;
-  string             associate_type      = 3;
-  bool               is_terminated       = 4;
-  string             name                = 5;
-  string             email               = 6;
-  string             business_email      = 7;
-  repeated Position  positions           = 8;
-  repeated UnitRef   units               = 9;
+  Associate associate = 1;
 }
 
-// AssociateDetail is the shared associate payload (e.g. in GetAllAssociatesResponse).
-message AssociateDetail {
-  int32              associate_id        = 1;
-  string             employee_card_id    = 2;
-  string             associate_type      = 3;
-  bool               is_terminated       = 4;
-  string             name                = 5;
-  string             email               = 6;
-  string             business_email      = 7;
-  repeated Position  positions           = 8;
-  repeated UnitRef   units               = 9;
+message GetAssociateByUserIdResponse {
+  Associate associate = 1;
 }
 
-message GetAssociateByEmailRequest {
-  string email = 1;
+message ResolveAssociateContextRequest {
+  string tenant_id = 1;
+  oneof ref {
+    int64 associate_id = 2;
+    string user_id = 3;
+  }
 }
 
-message GetAssociateByEmailResponse {
-  int32  associate_id = 1;
-  bool   found        = 2;
+message ResolveAssociateContextResponse {
+  Associate associate = 1;
+  PositionAssignment primary_assignment = 2;
+  OrgUnit current_org_unit = 3;
+  repeated OrgUnit lineage = 4;
+  Associate manager = 5;
+  int32 direct_reports_count = 6;
+  bool is_head_of_unit = 7;
+  bool is_manager = 8;
+  repeated string role_hints = 9;
 }
 
-message GetAllAssociatesRequest {
-  int32 limit  = 1;  // 0 = server default
-  int32 offset = 2;
+message GetOrgUnitRequest {
+  string tenant_id = 1;
+  int64 unit_node_id = 2;
 }
 
-message GetAllAssociatesResponse {
-  repeated AssociateDetail associates = 1;
+message GetOrgUnitResponse {
+  OrgUnit org_unit = 1;
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  SEARCH
-// ═══════════════════════════════════════════════════════════════
-
-message SearchAssociatesRequest {
-  string query = 1;
-  int32  limit = 2;
+message GetOrgUnitTreeRequest {
+  string tenant_id = 1;
+  int64 root_unit_node_id = 2;
+  int32 max_depth = 3;
 }
 
-message SearchResult {
-  int32  associate_id = 1;
-  string name         = 2;
-  string position     = 3;
-  string unit         = 4;
-  string type         = 5;
+message OrgUnitTreeNode {
+  OrgUnit org_unit = 1;
+  repeated OrgUnitTreeNode children = 2;
 }
 
-message SearchAssociatesResponse {
-  repeated SearchResult results = 1;
+message GetOrgUnitTreeResponse {
+  OrgUnitTreeNode root = 1;
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  DIRECT REPORTS
-// ═══════════════════════════════════════════════════════════════
+message GetOrgLineageRequest {
+  string tenant_id = 1;
+  oneof ref {
+    int64 unit_node_id = 2;
+    int64 associate_id = 3;
+  }
+}
+
+message GetOrgLineageResponse {
+  repeated OrgUnit lineage = 1;
+}
 
 message GetDirectReportsRequest {
-  int32 manager_id = 1;
-}
-
-message DirectReport {
-  string manager_name = 1;
-  int32  associate_id = 2;
-  string name         = 3;
-  string position     = 4;
-  string unit         = 5;
-  string report_type  = 6;
+  string tenant_id = 1;
+  int64 associate_id = 2;
+  bool include_secondary = 3;
 }
 
 message GetDirectReportsResponse {
-  repeated DirectReport reports = 1;
+  repeated Associate associates = 1;
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  REPORTING CHAIN
-// ═══════════════════════════════════════════════════════════════
-
-message GetReportingChainRequest {
-  int32 associate_id = 1;
+message GetIndirectReportsRequest {
+  string tenant_id = 1;
+  int64 associate_id = 2;
+  int32 max_depth = 3;
 }
 
-message ChainLink {
-  int32  level        = 1;
-  int32  associate_id = 2;
-  string name         = 3;
-  string position     = 4;
-  string unit         = 5;
+message GetIndirectReportsResponse {
+  repeated Associate associates = 1;
 }
 
-message GetReportingChainResponse {
-  repeated ChainLink chain = 1;
+message GetUnitMembersRequest {
+  string tenant_id = 1;
+  int64 unit_node_id = 2;
+  bool recursive = 3;
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  ORG CHART
-// ═══════════════════════════════════════════════════════════════
-
-message GetOrgChartRequest {
-  string department_code = 1;
+message GetUnitMembersResponse {
+  repeated Associate associates = 1;
 }
 
-message OrgChartEntry {
-  int32  unit_id      = 1;
-  string unit_name    = 2;
-  string unit_type    = 3;
-  int32  depth        = 4;
-  int32  associate_id = 5;
-  string name         = 6;
-  string position     = 7;
-  bool   is_manager   = 8;
-  bool   head_of_unit = 9;
-  int32  layer_id     = 10;
+message GetHeadOfUnitRequest {
+  string tenant_id = 1;
+  int64 unit_node_id = 2;
 }
 
-message GetOrgChartResponse {
-  repeated OrgChartEntry entries = 1;
+message GetHeadOfUnitResponse {
+  Associate associate = 1;
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  UNIT SUBTREE
-// ═══════════════════════════════════════════════════════════════
-
-message GetUnitSubtreeRequest {
-  int32 root_unit_id = 1;
+message GetAssignmentsRequest {
+  string tenant_id = 1;
+  int64 associate_id = 2;
+  bool include_historical = 3;
 }
 
-message UnitTreeEntry {
-  int32  unit_id        = 1;
-  string name           = 2;
-  string node_group     = 3;
-  string dept_code      = 4;
-  int32  relative_depth = 5;
-  int32  headcount      = 6;
+message GetAssignmentsResponse {
+  repeated PositionAssignment assignments = 1;
 }
 
-message GetUnitSubtreeResponse {
-  repeated UnitTreeEntry entries = 1;
+message GetEmploymentHistoryRequest {
+  string tenant_id = 1;
+  int64 associate_id = 2;
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  UNIT HEADCOUNT
-// ═══════════════════════════════════════════════════════════════
-
-message GetUnitHeadcountRequest {}
-
-message UnitSummary {
-  int32  unit_id       = 1;
-  string unit_name     = 2;
-  string unit_type     = 3;
-  string dept_code     = 4;
-  int32  headcount     = 5;
-  int32  employees     = 6;
-  int32  board_members = 7;
-  string head_name     = 8;
-  string head_position = 9;
+message GetEmploymentHistoryResponse {
+  repeated EmploymentEpisode episodes = 1;
 }
 
-message GetUnitHeadcountResponse {
-  repeated UnitSummary summaries = 1;
+message SearchAssociatesRequest {
+  string tenant_id = 1;
+  string query = 2;
+  int32 limit = 3;
+  bool only_active = 4;
+  bool only_assigned = 5;
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  SPAN OF CONTROL
-// ═══════════════════════════════════════════════════════════════
-
-message GetSpanOfControlRequest {
-  int32 limit = 1;
+message SearchAssociatesResponse {
+  repeated Associate associates = 1;
 }
 
-message SpanEntry {
-  int32  associate_id   = 1;
-  string name           = 2;
-  string position       = 3;
-  int32  direct_reports = 4;
+message SearchOrgUnitsRequest {
+  string tenant_id = 1;
+  string query = 2;
+  int32 limit = 3;
 }
 
-message GetSpanOfControlResponse {
-  repeated SpanEntry entries = 1;
+message SearchOrgUnitsResponse {
+  repeated OrgUnit org_units = 1;
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  SHORTEST PATH
-// ═══════════════════════════════════════════════════════════════
-
-message GetShortestPathRequest {
-  int32 from_id = 1;
-  int32 to_id   = 2;
+message GetUnassignedAssociatesRequest {
+  string tenant_id = 1;
+  int32 limit = 2;
 }
 
-message PathStep {
-  int32  step         = 1;
-  string name         = 2;
-  int32  associate_id = 3;
+message GetUnassignedAssociatesResponse {
+  repeated Associate associates = 1;
 }
 
-message GetShortestPathResponse {
-  repeated PathStep steps = 1;
+/***************
+ * COMMAND API
+ ***************/
+
+message UpsertOrgUnitRequest {
+  OrgUnit org_unit = 1;
+  SyncSourceType source_type = 2;
+  string source_ref = 3;
+  string correlation_id = 4;
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  ORPHANS
-// ═══════════════════════════════════════════════════════════════
-
-message GetOrphansRequest {}
-
-message OrphanEntry {
-  int32  associate_id = 1;
-  string name         = 2;
-  string unit         = 3;
+message UpsertOrgUnitResponse {
+  OrgUnit org_unit = 1;
+  bool created = 2;
 }
 
-message GetOrphansResponse {
-  repeated OrphanEntry orphans = 1;
+message UpsertPositionRequest {
+  string tenant_id = 1;
+  Position position = 2;
+  SyncSourceType source_type = 3;
+  string source_ref = 4;
+  string correlation_id = 5;
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  TRIGGER SYNC
-// ═══════════════════════════════════════════════════════════════
-
-message TriggerSyncRequest {}
-
-message TriggerSyncResponse {
-  string workflow_id = 1;
-  string run_id      = 2;
-  string status      = 3;
+message UpsertPositionResponse {
+  Position position = 1;
+  bool created = 2;
 }
+
+message UpsertAssociateRequest {
+  Associate associate = 1;
+  SyncSourceType source_type = 2;
+  string source_ref = 3;
+  string correlation_id = 4;
+}
+
+message UpsertAssociateResponse {
+  Associate associate = 1;
+  bool created = 2;
+}
+
+message UpsertPositionAssignmentRequest {
+  string tenant_id = 1;
+  PositionAssignment assignment = 2;
+  SyncSourceType source_type = 3;
+  string source_ref = 4;
+  string correlation_id = 5;
+}
+
+message UpsertPositionAssignmentResponse {
+  PositionAssignment assignment = 1;
+  bool created = 2;
+}
+
+message UpsertEmploymentEpisodeRequest {
+  string tenant_id = 1;
+  EmploymentEpisode episode = 2;
+  SyncSourceType source_type = 3;
+  string source_ref = 4;
+  string correlation_id = 5;
+}
+
+message UpsertEmploymentEpisodeResponse {
+  EmploymentEpisode episode = 1;
+  bool created = 2;
+}
+
+message SetManagerRelationRequest {
+  string tenant_id = 1;
+  ManagerRelation relation = 2;
+  string correlation_id = 3;
+}
+
+message SetManagerRelationResponse {
+  ManagerRelation relation = 1;
+}
+
+message SetHeadOfUnitRequest {
+  string tenant_id = 1;
+  int64 unit_node_id = 2;
+  int64 associate_id = 3;
+  string correlation_id = 4;
+}
+
+message SetHeadOfUnitResponse {
+  bool ok = 1;
+}
+
+message AssignAssociateToPositionRequest {
+  string tenant_id = 1;
+  int64 associate_id = 2;
+  int64 position_node_id = 3;
+  bool is_primary = 4;
+  string correlation_id = 5;
+}
+
+message AssignAssociateToPositionResponse {
+  PositionAssignment assignment = 1;
+}
+
+message UnassignAssociateFromPositionRequest {
+  string tenant_id = 1;
+  int64 associate_id = 2;
+  int64 position_node_id = 3;
+  google.protobuf.Timestamp ended_at = 4;
+  string correlation_id = 5;
+}
+
+message UnassignAssociateFromPositionResponse {
+  bool ok = 1;
+}
+
+message RawAssociatePayload {
+  bytes json_payload = 1;
+}
+
+message IngestAssociateBatchRequest {
+  string tenant_id = 1;
+  repeated RawAssociatePayload items = 2;
+  SyncSourceType source_type = 3;
+  string source_ref = 4;
+  string correlation_id = 5;
+}
+
+message IngestAssociateBatchResponse {
+  int32 received = 1;
+  int32 accepted = 2;
+  int32 rejected = 3;
+}
+
+message IngestSnapshotRequest {
+  string tenant_id = 1;
+  bytes snapshot_json = 2;
+  SyncSourceType source_type = 3;
+  SyncMode sync_mode = 4;
+  string source_ref = 5;
+  string correlation_id = 6;
+}
+
+message IngestSnapshotResponse {
+  string sync_run_id = 1;
+}
+
+message ApplyDeltaRequest {
+  string tenant_id = 1;
+  bytes delta_json = 2;
+  SyncSourceType source_type = 3;
+  string source_ref = 4;
+  string correlation_id = 5;
+}
+
+message ApplyDeltaResponse {
+  string sync_run_id = 1;
+}
+
+message RebuildDerivedRelationsRequest {
+  string tenant_id = 1;
+  bool rebuild_manager_relations = 2;
+  bool rebuild_head_of_unit = 3;
+  bool rebuild_membership = 4;
+}
+
+message RebuildDerivedRelationsResponse {}
