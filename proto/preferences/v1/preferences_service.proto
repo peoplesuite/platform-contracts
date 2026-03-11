@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package preferences.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/preferences/v1;preferencesv1";
+
+import "preferences/v1/preferences.proto";
+
+service PreferencesService {
+  rpc GetPreferences(GetPreferencesRequest) returns (GetPreferencesResponse);
+  rpc UpdatePreferences(UpdatePreferencesRequest) returns (UpdatePreferencesResponse);
+
+  rpc GetNotificationPreferences(GetNotificationPreferencesRequest) returns (GetNotificationPreferencesResponse);
+  rpc UpdateNotificationPreferences(UpdateNotificationPreferencesRequest) returns (UpdateNotificationPreferencesResponse);
+
+  rpc GetCommunicationPreferences(GetCommunicationPreferencesRequest) returns (GetCommunicationPreferencesResponse);
+  rpc UpdateCommunicationPreferences(UpdateCommunicationPreferencesRequest) returns (UpdateCommunicationPreferencesResponse);
+}

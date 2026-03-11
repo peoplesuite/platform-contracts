@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package shared.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "peoplesuite/platform-contracts/gen/go/shared/v1;sharedv1";
+
+message Pagination {
+  int32 page_size = 1;
+  string page_token = 2;
+}
+
+message PageInfo {
+  int32 total_size = 1;
+  string next_page_token = 2;
+}
+
+message PageRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+}
+
+message PageResponse {
+  int32 total_size = 1;
+  string next_page_token = 2;
+}
+
+message AuditInfo {
+  google.protobuf.Timestamp created_at = 1;
+  google.protobuf.Timestamp updated_at = 2;
+  string created_by = 3;
+  string updated_by = 4;
+}

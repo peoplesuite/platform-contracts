@@ -1,0 +1,98 @@
+syntax = "proto3";
+
+package feedback.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/feedback/v1;feedbackv1";
+
+enum FeedbackType {
+  FEEDBACK_TYPE_UNSPECIFIED = 0;
+  FEEDBACK_TYPE_PEER = 1;
+  FEEDBACK_TYPE_MANAGER_TO_EMPLOYEE = 2;
+  FEEDBACK_TYPE_UPWARD = 3;
+  FEEDBACK_TYPE_SELF = 4;
+}
+
+enum FeedbackRequestStatus {
+  FEEDBACK_REQUEST_STATUS_UNSPECIFIED = 0;
+  FEEDBACK_REQUEST_STATUS_PENDING = 1;
+  FEEDBACK_REQUEST_STATUS_COMPLETED = 2;
+  FEEDBACK_REQUEST_STATUS_DECLINED = 3;
+  FEEDBACK_REQUEST_STATUS_EXPIRED = 4;
+}
+
+message FeedbackRequest {
+  string id = 1;
+  string tenant_id = 2;
+  string requester_id = 3;
+  string subject_id = 4;
+  string respondent_id = 5;
+  FeedbackType type = 6;
+  FeedbackRequestStatus status = 7;
+  int64 due_date_unix = 8;
+  int64 created_at_unix = 9;
+}
+
+message FeedbackResponse {
+  string id = 1;
+  string request_id = 2;
+  string respondent_id = 3;
+  string content = 4;
+  bytes structured_data = 5;
+  bool is_anonymous = 6;
+  int64 submitted_at_unix = 7;
+}
+
+message CreateFeedbackRequestRequest {
+  string tenant_id = 1;
+  string requester_id = 2;
+  string subject_id = 3;
+  string respondent_id = 4;
+  FeedbackType type = 5;
+  int64 due_date_unix = 6;
+}
+message CreateFeedbackRequestResponse { FeedbackRequest request = 1; }
+
+message GetFeedbackRequestRequest { string request_id = 1; }
+message GetFeedbackRequestResponse { FeedbackRequest request = 1; }
+
+message ListFeedbackRequestsByRequesterRequest {
+  string tenant_id = 1;
+  string requester_id = 2;
+  FeedbackRequestStatus status_filter = 3;
+}
+message ListFeedbackRequestsByRequesterResponse { repeated FeedbackRequest requests = 1; }
+
+message ListFeedbackRequestsBySubjectRequest {
+  string tenant_id = 1;
+  string subject_id = 2;
+  FeedbackRequestStatus status_filter = 3;
+}
+message ListFeedbackRequestsBySubjectResponse { repeated FeedbackRequest requests = 1; }
+
+message ListFeedbackRequestsByRespondentRequest {
+  string tenant_id = 1;
+  string respondent_id = 2;
+  FeedbackRequestStatus status_filter = 3;
+}
+message ListFeedbackRequestsByRespondentResponse { repeated FeedbackRequest requests = 1; }
+
+message UpdateRequestStatusRequest {
+  string request_id = 1;
+  FeedbackRequestStatus status = 2;
+}
+message UpdateRequestStatusResponse { FeedbackRequest request = 1; }
+
+message SubmitFeedbackResponseRequest {
+  string request_id = 1;
+  string respondent_id = 2;
+  string content = 3;
+  bytes structured_data = 4;
+  bool is_anonymous = 5;
+}
+message SubmitFeedbackResponseResponse { FeedbackResponse response = 1; }
+
+message GetFeedbackResponseRequest { string request_id = 1; }
+message GetFeedbackResponseResponse { FeedbackResponse response = 1; }
+
+message ListResponsesRequest { string request_id = 1; }
+message ListResponsesResponse { repeated FeedbackResponse responses = 1; }

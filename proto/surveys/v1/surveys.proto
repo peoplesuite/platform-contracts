@@ -1,0 +1,101 @@
+syntax = "proto3";
+
+package surveys.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/surveys/v1;surveysv1";
+
+import "google/protobuf/timestamp.proto";
+
+// -----------------------------------------------------------------------------
+// GetUserSurveys
+// -----------------------------------------------------------------------------
+
+message GetUserSurveysRequest {
+  string tenant_id = 1;  // Required
+  string user_id = 2;    // Keycloak sub
+}
+
+message UserSurvey {
+  string survey_id = 1;
+  string title = 2;
+  AssignmentStatus status = 3;
+  google.protobuf.Timestamp start_date = 4;
+  google.protobuf.Timestamp end_date = 5;
+  google.protobuf.Timestamp seen_at = 6;
+  google.protobuf.Timestamp opened_at = 7;
+}
+
+message GetUserSurveysResponse {
+  repeated UserSurvey surveys = 1;
+}
+
+// -----------------------------------------------------------------------------
+// GetLaunchContext
+// -----------------------------------------------------------------------------
+
+message GetLaunchContextRequest {
+  string tenant_id = 1;
+  string survey_id = 2;
+  string user_id = 3;  // Keycloak sub
+}
+
+message GetLaunchContextResponse {
+  string survey_id = 1;
+  string formbricks_survey_id = 2;
+
+  // Echo back canonical identity so frontend sets:
+  // formbricks.setUserId(user_id)
+  string user_id = 3;
+  string embed_url = 4;
+  google.protobuf.Timestamp expires_at = 5;
+}
+
+// -----------------------------------------------------------------------------
+// RegisterSurveyEvent
+// -----------------------------------------------------------------------------
+
+message RegisterSurveyEventRequest {
+  string tenant_id = 1;
+
+  // Used to map external survey to internal survey
+  string formbricks_survey_id = 2;
+
+  // Canonical user identity (Keycloak sub)
+  string user_id = 3;
+
+  SurveyEventType event_type = 4;
+
+  google.protobuf.Timestamp occurred_at = 5;
+
+  // Optional raw JSON payload for audit/debug
+  string raw_payload = 6;
+}
+
+message RegisterSurveyEventResponse {}
+
+// -----------------------------------------------------------------------------
+// Enums
+// -----------------------------------------------------------------------------
+
+enum AssignmentStatus {
+  ASSIGNMENT_STATUS_UNSPECIFIED = 0;
+  ASSIGNMENT_STATUS_NOT_STARTED = 1;
+  ASSIGNMENT_STATUS_STARTED = 2;
+  ASSIGNMENT_STATUS_COMPLETED = 3;
+}
+
+enum SurveyEventType {
+  SURVEY_EVENT_TYPE_UNSPECIFIED = 0;
+  SURVEY_EVENT_TYPE_STARTED = 1;
+  SURVEY_EVENT_TYPE_COMPLETED = 2;
+}
+
+// -----------------------------------------------------------------------------
+// Health
+// -----------------------------------------------------------------------------
+
+message HealthRequest {}
+
+message HealthResponse {
+  string status = 1; // "ok"
+}

@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package orgcontext.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/orgcontext/v1;orgcontextv1";
+
+import "orgcontext/v1/orgcontext.proto";
+
+// ═══════════════════════════════════════════════════════════════
+//  SERVICE
+// ═══════════════════════════════════════════════════════════════
+
+service OrgService {
+  // ── Queries ─────────────────────────────────────────────
+  rpc GetAssociate(GetAssociateRequest)             returns (GetAssociateResponse);
+  rpc GetAssociateByEmail(GetAssociateByEmailRequest) returns (GetAssociateByEmailResponse);
+  rpc GetAllAssociates(GetAllAssociatesRequest)     returns (GetAllAssociatesResponse);
+  rpc SearchAssociates(SearchAssociatesRequest)     returns (SearchAssociatesResponse);
+  rpc GetDirectReports(GetDirectReportsRequest)     returns (GetDirectReportsResponse);
+  rpc GetReportingChain(GetReportingChainRequest)   returns (GetReportingChainResponse);
+  rpc GetOrgChart(GetOrgChartRequest)               returns (GetOrgChartResponse);
+  rpc GetUnitSubtree(GetUnitSubtreeRequest)         returns (GetUnitSubtreeResponse);
+  rpc GetUnitHeadcount(GetUnitHeadcountRequest)     returns (GetUnitHeadcountResponse);
+  rpc GetSpanOfControl(GetSpanOfControlRequest)     returns (GetSpanOfControlResponse);
+  rpc GetShortestPath(GetShortestPathRequest)       returns (GetShortestPathResponse);
+  rpc GetOrphans(GetOrphansRequest)                 returns (GetOrphansResponse);
+
+  // ── Commands ────────────────────────────────────────────
+  rpc TriggerSync(TriggerSyncRequest)               returns (TriggerSyncResponse);
+}

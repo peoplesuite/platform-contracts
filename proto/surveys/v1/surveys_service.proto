@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package surveys.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/surveys/v1;surveysv1";
+
+import "surveys/v1/surveys.proto";
+
+// -----------------------------------------------------------------------------
+// SurveysService - Phase 1 (Employee-side only)
+// -----------------------------------------------------------------------------
+
+service SurveysService {
+
+  // Returns all published surveys assigned to a user.
+  rpc GetUserSurveys(GetUserSurveysRequest)
+      returns (GetUserSurveysResponse);
+
+  // Returns information required to launch a survey in Formbricks.
+  rpc GetLaunchContext(GetLaunchContextRequest)
+      returns (GetLaunchContextResponse);
+
+  // Registers survey lifecycle events coming from Formbricks webhook.
+  rpc RegisterSurveyEvent(RegisterSurveyEventRequest)
+      returns (RegisterSurveyEventResponse);
+
+  // Basic health endpoint.
+  rpc Health(HealthRequest)
+      returns (HealthResponse);
+}

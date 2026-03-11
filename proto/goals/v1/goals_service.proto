@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package goals.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/goals/v1;goalsv1";
+
+import "goals/v1/goals.proto";
+
+service GoalsService {
+  rpc CreateGoal(CreateGoalRequest) returns (CreateGoalResponse);
+  rpc GetGoal(GetGoalRequest) returns (GetGoalResponse);
+  rpc ListGoals(ListGoalsRequest) returns (ListGoalsResponse);
+  rpc ListTeamGoals(ListTeamGoalsRequest) returns (ListTeamGoalsResponse);
+  rpc UpdateGoalProgress(UpdateGoalProgressRequest) returns (UpdateGoalProgressResponse);
+  rpc CancelGoal(CancelGoalRequest) returns (CancelGoalResponse);
+  rpc CreateGoalUpdate(CreateGoalUpdateRequest) returns (CreateGoalUpdateResponse);
+  rpc ListGoalUpdates(ListGoalUpdatesRequest) returns (ListGoalUpdatesResponse);
+  rpc ListChildGoals(ListChildGoalsRequest) returns (ListChildGoalsResponse);
+  rpc AddMilestone(AddMilestoneRequest) returns (AddMilestoneResponse);
+  rpc UpdateMilestone(UpdateMilestoneRequest) returns (UpdateMilestoneResponse);
+  rpc GetGoalActivity(GetGoalActivityRequest) returns (GetGoalActivityResponse);
+  rpc CreateReviewCycle(CreateReviewCycleRequest) returns (CreateReviewCycleResponse);
+  rpc ListReviewCycles(ListReviewCyclesRequest) returns (ListReviewCyclesResponse);
+  rpc SubmitGoalReview(SubmitGoalReviewRequest) returns (SubmitGoalReviewResponse);
+  rpc GetGoalReviews(GetGoalReviewsRequest) returns (GetGoalReviewsResponse);
+}

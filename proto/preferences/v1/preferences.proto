@@ -1,0 +1,145 @@
+syntax = "proto3";
+
+package preferences.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/preferences/v1;preferencesv1";
+
+import "google/protobuf/timestamp.proto";
+
+enum Theme {
+  THEME_UNSPECIFIED = 0;
+  THEME_SYSTEM = 1;
+  THEME_LIGHT = 2;
+  THEME_DARK = 3;
+}
+
+enum NotificationChannel {
+  NOTIFICATION_CHANNEL_UNSPECIFIED = 0;
+  NOTIFICATION_CHANNEL_EMAIL = 1;
+  NOTIFICATION_CHANNEL_PUSH = 2;
+  NOTIFICATION_CHANNEL_TELEGRAM = 3;
+  NOTIFICATION_CHANNEL_SLACK = 4;
+  NOTIFICATION_CHANNEL_TEAMS = 5;
+  NOTIFICATION_CHANNEL_IN_APP = 6;
+}
+
+enum NotificationCategory {
+  NOTIFICATION_CATEGORY_UNSPECIFIED = 0;
+  NOTIFICATION_CATEGORY_SYSTEM = 1;
+  NOTIFICATION_CATEGORY_SURVEY = 2;
+  NOTIFICATION_CATEGORY_PDP = 3;
+  NOTIFICATION_CATEGORY_GOALS = 4;
+  NOTIFICATION_CATEGORY_MENTORSHIP = 5;
+  NOTIFICATION_CATEGORY_ONE_ON_ONE = 6;
+  NOTIFICATION_CATEGORY_REMINDER = 7;
+}
+
+enum DigestFrequency {
+  DIGEST_FREQUENCY_UNSPECIFIED = 0;
+  DIGEST_FREQUENCY_NEVER = 1;
+  DIGEST_FREQUENCY_DAILY = 2;
+  DIGEST_FREQUENCY_WEEKLY = 3;
+  DIGEST_FREQUENCY_MONTHLY = 4;
+}
+
+message Preferences {
+  string user_id = 1;
+  Theme theme = 2;
+  string language_code = 3; // e.g. en, hy, ru
+  string timezone = 4;      // e.g. Asia/Yerevan
+  string default_landing_page = 5;
+  bool compact_mode = 6;
+  google.protobuf.Timestamp updated_at = 7;
+}
+
+message NotificationPreference {
+  string preference_id = 1;
+  string user_id = 2;
+  NotificationCategory category = 3;
+  NotificationChannel channel = 4;
+  bool enabled = 5;
+  DigestFrequency digest_frequency = 6;
+  google.protobuf.Timestamp updated_at = 7;
+}
+
+message CommunicationPreferences {
+  string user_id = 1;
+  bool allow_email = 2;
+  bool allow_push = 3;
+  bool allow_telegram = 4;
+  bool allow_slack = 5;
+  bool allow_teams = 6;
+  bool quiet_hours_enabled = 7;
+  string quiet_hours_start = 8; // "22:00"
+  string quiet_hours_end = 9;   // "08:00"
+  google.protobuf.Timestamp updated_at = 10;
+}
+
+message GetPreferencesRequest {
+  string user_id = 1;
+}
+
+message GetPreferencesResponse {
+  Preferences preferences = 1;
+}
+
+message UpdatePreferencesRequest {
+  string user_id = 1;
+  optional Theme theme = 2;
+  optional string language_code = 3;
+  optional string timezone = 4;
+  optional string default_landing_page = 5;
+  optional bool compact_mode = 6;
+}
+
+message UpdatePreferencesResponse {
+  Preferences preferences = 1;
+}
+
+message GetNotificationPreferencesRequest {
+  string user_id = 1;
+}
+
+message GetNotificationPreferencesResponse {
+  repeated NotificationPreference preferences = 1;
+}
+
+message NotificationPreferenceInput {
+  NotificationCategory category = 1;
+  NotificationChannel channel = 2;
+  bool enabled = 3;
+  DigestFrequency digest_frequency = 4;
+}
+
+message UpdateNotificationPreferencesRequest {
+  string user_id = 1;
+  repeated NotificationPreferenceInput preferences = 2;
+}
+
+message UpdateNotificationPreferencesResponse {
+  repeated NotificationPreference preferences = 1;
+}
+
+message GetCommunicationPreferencesRequest {
+  string user_id = 1;
+}
+
+message GetCommunicationPreferencesResponse {
+  CommunicationPreferences preferences = 1;
+}
+
+message UpdateCommunicationPreferencesRequest {
+  string user_id = 1;
+  optional bool allow_email = 2;
+  optional bool allow_push = 3;
+  optional bool allow_telegram = 4;
+  optional bool allow_slack = 5;
+  optional bool allow_teams = 6;
+  optional bool quiet_hours_enabled = 7;
+  optional string quiet_hours_start = 8;
+  optional string quiet_hours_end = 9;
+}
+
+message UpdateCommunicationPreferencesResponse {
+  CommunicationPreferences preferences = 1;
+}

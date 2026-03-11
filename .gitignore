@@ -1,0 +1,23 @@
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+*.tmp
+
+# Go build artifacts
+*.test
+*.out
+*.exe
+coverage.out
+coverage.html
+
+# Temporary and backup files
+*.log
+*.bak
+*.orig

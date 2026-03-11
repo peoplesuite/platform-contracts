@@ -1,0 +1,40 @@
+name: Generate
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'proto/**'
+      - 'buf.gen.yaml'
+      - 'buf.yaml'
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install buf
+        uses: bufbuild/buf-setup-action@v1
+        with:
+          github_token: ${{ github.token }}
+
+      - name: Generate code
+        run: buf generate
+
+      - name: Check for changes
+        id: changes
+        run: |
+          git diff --exit-code gen/ || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Create PR with generated code
+        if: steps.changes.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore: regenerate code from proto definitions"
+          branch: "chore/regenerate-code"
+          delete-branch: true
+          title: "chore: regenerate code from proto definitions"
+          body: |
+            Auto-generated PR to update generated code after proto changes.

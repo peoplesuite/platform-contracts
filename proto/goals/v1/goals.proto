@@ -1,0 +1,267 @@
+syntax = "proto3";
+
+package goals.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/goals/v1;goalsv1";
+
+enum GoalStatus {
+  GOAL_STATUS_UNSPECIFIED = 0;
+  GOAL_STATUS_NOT_STARTED = 1;
+  GOAL_STATUS_IN_PROGRESS = 2;
+  GOAL_STATUS_COMPLETE = 3;
+  GOAL_STATUS_OVERDUE = 4;
+  GOAL_STATUS_CANCELLED = 5;
+}
+
+enum GoalVisibility {
+  GOAL_VISIBILITY_UNSPECIFIED = 0;
+  GOAL_VISIBILITY_PRIVATE = 1;
+  GOAL_VISIBILITY_MANAGER = 2;
+  GOAL_VISIBILITY_TEAM = 3;
+  GOAL_VISIBILITY_ORG = 4;
+}
+
+enum GoalActivityType {
+  GOAL_ACTIVITY_TYPE_UNSPECIFIED = 0;
+  GOAL_ACTIVITY_TYPE_CREATED = 1;
+  GOAL_ACTIVITY_TYPE_UPDATED = 2;
+  GOAL_ACTIVITY_TYPE_COMMENTED = 3;
+  GOAL_ACTIVITY_TYPE_STATUS_CHANGED = 4;
+  GOAL_ACTIVITY_TYPE_PROGRESS_UPDATED = 5;
+}
+
+enum OKRType {
+  OKR_TYPE_UNSPECIFIED = 0;
+  OKR_TYPE_OBJECTIVE = 1;
+  OKR_TYPE_KEY_RESULT = 2;
+}
+
+enum AmountType {
+  AMOUNT_TYPE_UNSPECIFIED = 0;
+  AMOUNT_TYPE_BINARY = 1;
+  AMOUNT_TYPE_NUMERIC = 2;
+  AMOUNT_TYPE_PERCENTAGE = 3;
+  AMOUNT_TYPE_DOLLAR = 4;
+}
+
+enum GoalScope {
+  GOAL_SCOPE_UNSPECIFIED = 0;
+  GOAL_SCOPE_INDIVIDUAL = 1;
+  GOAL_SCOPE_DEPARTMENT = 2;
+  GOAL_SCOPE_COMPANY = 3;
+  GOAL_SCOPE_GROUP = 4;
+}
+
+enum GoalUpdateStatus {
+  GOAL_UPDATE_STATUS_UNSPECIFIED = 0;
+  GOAL_UPDATE_STATUS_GREEN = 1;
+  GOAL_UPDATE_STATUS_AMBER = 2;
+  GOAL_UPDATE_STATUS_RED = 3;
+}
+
+message Goal {
+  string id = 1;
+  string tenant_id = 2;
+  string owner_id = 3;
+  string title = 4;
+  string description = 5;
+  int64 due_date_unix = 6;
+  GoalStatus status = 7;
+  int32 progress_pct = 8;
+  GoalVisibility visibility = 9;
+  string parent_goal_id = 10;
+  string created_by = 11;
+  int64 created_at_unix = 12;
+  int64 updated_at_unix = 13;
+  OKRType okr_type = 14;
+  AmountType amount_type = 15;
+  double starting_amount = 16;
+  double target_amount = 17;
+  double current_amount = 18;
+  GoalScope goal_scope = 19;
+  string department_id = 20;
+  bool is_draft = 21;
+  string goal_cycle_id = 22;
+  repeated string tags = 23;
+  int32 priority = 24;
+  int64 start_date_unix = 25;
+}
+
+message GoalUpdate {
+  string id = 1;
+  string goal_id = 2;
+  string actor_id = 3;
+  string comment = 4;
+  GoalUpdateStatus status = 5;
+  double increment = 6;
+  int64 created_at_unix = 7;
+}
+
+message GoalMilestone {
+  string id = 1;
+  string goal_id = 2;
+  string title = 3;
+  int64 due_date_unix = 4;
+  bool completed = 5;
+  int64 completed_at_unix = 6;
+  int64 created_at_unix = 7;
+}
+
+message GoalActivity {
+  string id = 1;
+  string goal_id = 2;
+  string actor_id = 3;
+  GoalActivityType type = 4;
+  bytes payload = 5;
+  int64 created_at_unix = 6;
+}
+
+message GoalReviewCycle {
+  string id = 1;
+  string tenant_id = 2;
+  string name = 3;
+  string frequency = 4;
+  int64 start_date_unix = 5;
+  int64 end_date_unix = 6;
+  int64 created_at_unix = 7;
+}
+
+message GoalReview {
+  string id = 1;
+  string goal_id = 2;
+  string cycle_id = 3;
+  string reviewer_id = 4;
+  int32 rating = 5;
+  string comment = 6;
+  int64 created_at_unix = 7;
+}
+
+message CreateGoalRequest {
+  string tenant_id = 1;
+  string owner_id = 2;
+  string created_by = 3;
+  string title = 4;
+  string description = 5;
+  int64 due_date_unix = 6;
+  GoalVisibility visibility = 7;
+  string parent_goal_id = 8;
+  OKRType okr_type = 9;
+  AmountType amount_type = 10;
+  double starting_amount = 11;
+  double target_amount = 12;
+  GoalScope goal_scope = 13;
+  string department_id = 14;
+  bool is_draft = 15;
+  string goal_cycle_id = 16;
+  repeated string tags = 17;
+  int32 priority = 18;
+  int64 start_date_unix = 19;
+}
+message CreateGoalResponse { Goal goal = 1; }
+
+message GetGoalRequest {
+  string goal_id = 1;
+  string requester_id = 2;
+}
+message GetGoalResponse { Goal goal = 1; }
+
+message ListGoalsRequest {
+  string tenant_id = 1;
+  string owner_id = 2;
+  string requester_id = 3;
+  GoalStatus status_filter = 4;
+  string goal_cycle_id = 5;
+  GoalScope goal_scope = 6;
+}
+message ListGoalsResponse { repeated Goal goals = 1; }
+
+message ListTeamGoalsRequest {
+  string tenant_id = 1;
+  string requester_id = 2;
+  repeated string owner_ids = 3;
+  GoalStatus status_filter = 4;
+  string goal_cycle_id = 5;
+  GoalScope goal_scope = 6;
+}
+message ListTeamGoalsResponse { repeated Goal goals = 1; }
+
+message UpdateGoalProgressRequest {
+  string goal_id = 1;
+  int32 progress_pct = 2;
+  GoalStatus status = 3;
+  string comment = 4;
+  string actor_id = 5;
+  double current_amount = 6;
+}
+message UpdateGoalProgressResponse { Goal goal = 1; }
+
+message CreateGoalUpdateRequest {
+  string goal_id = 1;
+  string actor_id = 2;
+  string comment = 3;
+  GoalUpdateStatus status = 4;
+  double increment = 5;
+}
+message CreateGoalUpdateResponse { GoalUpdate goal_update = 1; }
+
+message ListGoalUpdatesRequest {
+  string goal_id = 1;
+  int32 limit = 2;
+}
+message ListGoalUpdatesResponse { repeated GoalUpdate goal_updates = 1; }
+
+message ListChildGoalsRequest { string parent_goal_id = 1; }
+message ListChildGoalsResponse { repeated Goal goals = 1; }
+
+message CancelGoalRequest {
+  string goal_id = 1;
+  string reason = 2;
+  string actor_id = 3;
+}
+message CancelGoalResponse { Goal goal = 1; }
+
+message AddMilestoneRequest {
+  string goal_id = 1;
+  string title = 2;
+  int64 due_date_unix = 3;
+}
+message AddMilestoneResponse { GoalMilestone milestone = 1; }
+
+message UpdateMilestoneRequest {
+  string milestone_id = 1;
+  string title = 2;
+  int64 due_date_unix = 3;
+  bool completed = 4;
+  int64 completed_at_unix = 5;
+}
+message UpdateMilestoneResponse { GoalMilestone milestone = 1; }
+
+message GetGoalActivityRequest {
+  string goal_id = 1;
+  int32 limit = 2;
+}
+message GetGoalActivityResponse { repeated GoalActivity activities = 1; }
+
+message CreateReviewCycleRequest {
+  string tenant_id = 1;
+  string name = 2;
+  string frequency = 3;
+  int64 start_date_unix = 4;
+  int64 end_date_unix = 5;
+}
+message CreateReviewCycleResponse { GoalReviewCycle cycle = 1; }
+
+message ListReviewCyclesRequest { string tenant_id = 1; }
+message ListReviewCyclesResponse { repeated GoalReviewCycle cycles = 1; }
+
+message SubmitGoalReviewRequest {
+  string goal_id = 1;
+  string cycle_id = 2;
+  string reviewer_id = 3;
+  int32 rating = 4;
+  string comment = 5;
+}
+message SubmitGoalReviewResponse { GoalReview review = 1; }
+
+message GetGoalReviewsRequest { string goal_id = 1; }
+message GetGoalReviewsResponse { repeated GoalReview reviews = 1; }
