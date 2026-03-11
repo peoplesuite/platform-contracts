@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package pdp.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/pdp/v1;pdpv1";
+
+import "pdp/v1/pdp.proto";
+
+service PdpService {
+  // Plans
+  rpc CreatePlan(CreatePlanRequest) returns (CreatePlanResponse);
+  rpc GetPlan(GetPlanRequest) returns (GetPlanResponse);
+  rpc ListPlans(ListPlansRequest) returns (ListPlansResponse);
+  rpc ActivatePlan(ActivatePlanRequest) returns (ActivatePlanResponse);
+  rpc ArchivePlan(ArchivePlanRequest) returns (ArchivePlanResponse);
+  rpc UpdatePlan(UpdatePlanRequest) returns (UpdatePlanResponse);
+
+  // Tracks
+  rpc CreateTrack(CreateTrackRequest) returns (CreateTrackResponse);
+  rpc ListTracks(ListTracksRequest) returns (ListTracksResponse);
+  rpc UpdateTrackStatus(UpdateTrackStatusRequest) returns (UpdateTrackStatusResponse);
+
+  // Goals
+  rpc CreateGoal(CreateGoalRequest) returns (CreateGoalResponse);
+  rpc ListGoals(ListGoalsRequest) returns (ListGoalsResponse);
+  rpc UpdateGoalProgress(UpdateGoalProgressRequest) returns (UpdateGoalProgressResponse);
+  rpc CompleteGoal(CompleteGoalRequest) returns (CompleteGoalResponse);
+  rpc CancelGoal(CancelGoalRequest) returns (CancelGoalResponse);
+
+  // Tasks
+  rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse);
+  rpc ListTasks(ListTasksRequest) returns (ListTasksResponse);
+  rpc CompleteTask(CompleteTaskRequest) returns (CompleteTaskResponse);
+
+  // Check-ins
+  rpc SubmitCheckIn(SubmitCheckInRequest) returns (SubmitCheckInResponse);
+  rpc ListCheckIns(ListCheckInsRequest) returns (ListCheckInsResponse);
+  rpc RequestCheckIn(RequestCheckInRequest) returns (RequestCheckInResponse);
+}

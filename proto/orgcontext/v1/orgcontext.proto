@@ -1,0 +1,271 @@
+syntax = "proto3";
+
+package orgcontext.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/orgcontext/v1;orgcontextv1";
+
+// ═══════════════════════════════════════════════════════════════
+//  SHARED MESSAGES
+// ═══════════════════════════════════════════════════════════════
+
+message Position {
+  string position_type  = 1;
+  bool   is_primary     = 2;
+  bool   is_manager     = 3;
+  bool   head_of_unit   = 4;
+  int32  layer_id       = 5;
+  int32  unit_id        = 6;
+}
+
+message UnitRef {
+  int32  unit_id   = 1;
+  string unit_name = 2;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  ASSOCIATE
+// ═══════════════════════════════════════════════════════════════
+
+message GetAssociateRequest {
+  int32 associate_id = 1;
+}
+
+// GetAssociateResponse is the response for GetAssociate RPC (buf lint: RPC response naming).
+message GetAssociateResponse {
+  int32              associate_id        = 1;
+  string             employee_card_id    = 2;
+  string             associate_type      = 3;
+  bool               is_terminated       = 4;
+  string             name                = 5;
+  string             email               = 6;
+  string             business_email      = 7;
+  repeated Position  positions           = 8;
+  repeated UnitRef   units               = 9;
+}
+
+// AssociateDetail is the shared associate payload (e.g. in GetAllAssociatesResponse).
+message AssociateDetail {
+  int32              associate_id        = 1;
+  string             employee_card_id    = 2;
+  string             associate_type      = 3;
+  bool               is_terminated       = 4;
+  string             name                = 5;
+  string             email               = 6;
+  string             business_email      = 7;
+  repeated Position  positions           = 8;
+  repeated UnitRef   units               = 9;
+}
+
+message GetAssociateByEmailRequest {
+  string email = 1;
+}
+
+message GetAssociateByEmailResponse {
+  int32  associate_id = 1;
+  bool   found        = 2;
+}
+
+message GetAllAssociatesRequest {
+  int32 limit  = 1;  // 0 = server default
+  int32 offset = 2;
+}
+
+message GetAllAssociatesResponse {
+  repeated AssociateDetail associates = 1;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  SEARCH
+// ═══════════════════════════════════════════════════════════════
+
+message SearchAssociatesRequest {
+  string query = 1;
+  int32  limit = 2;
+}
+
+message SearchResult {
+  int32  associate_id = 1;
+  string name         = 2;
+  string position     = 3;
+  string unit         = 4;
+  string type         = 5;
+}
+
+message SearchAssociatesResponse {
+  repeated SearchResult results = 1;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  DIRECT REPORTS
+// ═══════════════════════════════════════════════════════════════
+
+message GetDirectReportsRequest {
+  int32 manager_id = 1;
+}
+
+message DirectReport {
+  string manager_name = 1;
+  int32  associate_id = 2;
+  string name         = 3;
+  string position     = 4;
+  string unit         = 5;
+  string report_type  = 6;
+}
+
+message GetDirectReportsResponse {
+  repeated DirectReport reports = 1;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  REPORTING CHAIN
+// ═══════════════════════════════════════════════════════════════
+
+message GetReportingChainRequest {
+  int32 associate_id = 1;
+}
+
+message ChainLink {
+  int32  level        = 1;
+  int32  associate_id = 2;
+  string name         = 3;
+  string position     = 4;
+  string unit         = 5;
+}
+
+message GetReportingChainResponse {
+  repeated ChainLink chain = 1;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  ORG CHART
+// ═══════════════════════════════════════════════════════════════
+
+message GetOrgChartRequest {
+  string department_code = 1;
+}
+
+message OrgChartEntry {
+  int32  unit_id      = 1;
+  string unit_name    = 2;
+  string unit_type    = 3;
+  int32  depth        = 4;
+  int32  associate_id = 5;
+  string name         = 6;
+  string position     = 7;
+  bool   is_manager   = 8;
+  bool   head_of_unit = 9;
+  int32  layer_id     = 10;
+}
+
+message GetOrgChartResponse {
+  repeated OrgChartEntry entries = 1;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  UNIT SUBTREE
+// ═══════════════════════════════════════════════════════════════
+
+message GetUnitSubtreeRequest {
+  int32 root_unit_id = 1;
+}
+
+message UnitTreeEntry {
+  int32  unit_id        = 1;
+  string name           = 2;
+  string node_group     = 3;
+  string dept_code      = 4;
+  int32  relative_depth = 5;
+  int32  headcount      = 6;
+}
+
+message GetUnitSubtreeResponse {
+  repeated UnitTreeEntry entries = 1;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  UNIT HEADCOUNT
+// ═══════════════════════════════════════════════════════════════
+
+message GetUnitHeadcountRequest {}
+
+message UnitSummary {
+  int32  unit_id       = 1;
+  string unit_name     = 2;
+  string unit_type     = 3;
+  string dept_code     = 4;
+  int32  headcount     = 5;
+  int32  employees     = 6;
+  int32  board_members = 7;
+  string head_name     = 8;
+  string head_position = 9;
+}
+
+message GetUnitHeadcountResponse {
+  repeated UnitSummary summaries = 1;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  SPAN OF CONTROL
+// ═══════════════════════════════════════════════════════════════
+
+message GetSpanOfControlRequest {
+  int32 limit = 1;
+}
+
+message SpanEntry {
+  int32  associate_id   = 1;
+  string name           = 2;
+  string position       = 3;
+  int32  direct_reports = 4;
+}
+
+message GetSpanOfControlResponse {
+  repeated SpanEntry entries = 1;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  SHORTEST PATH
+// ═══════════════════════════════════════════════════════════════
+
+message GetShortestPathRequest {
+  int32 from_id = 1;
+  int32 to_id   = 2;
+}
+
+message PathStep {
+  int32  step         = 1;
+  string name         = 2;
+  int32  associate_id = 3;
+}
+
+message GetShortestPathResponse {
+  repeated PathStep steps = 1;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  ORPHANS
+// ═══════════════════════════════════════════════════════════════
+
+message GetOrphansRequest {}
+
+message OrphanEntry {
+  int32  associate_id = 1;
+  string name         = 2;
+  string unit         = 3;
+}
+
+message GetOrphansResponse {
+  repeated OrphanEntry orphans = 1;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  TRIGGER SYNC
+// ═══════════════════════════════════════════════════════════════
+
+message TriggerSyncRequest {}
+
+message TriggerSyncResponse {
+  string workflow_id = 1;
+  string run_id      = 2;
+  string status      = 3;
+}

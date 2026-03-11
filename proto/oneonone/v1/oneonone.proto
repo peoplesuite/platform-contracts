@@ -1,0 +1,150 @@
+syntax = "proto3";
+
+package oneonone.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/oneonone/v1;oneononev1";
+
+enum SeriesCadence {
+  SERIES_CADENCE_UNSPECIFIED = 0;
+  SERIES_CADENCE_WEEKLY = 1;
+  SERIES_CADENCE_BIWEEKLY = 2;
+  SERIES_CADENCE_MONTHLY = 3;
+  SERIES_CADENCE_AD_HOC = 4;
+}
+
+enum SeriesStatus {
+  SERIES_STATUS_UNSPECIFIED = 0;
+  SERIES_STATUS_ACTIVE = 1;
+  SERIES_STATUS_ENDED = 2;
+}
+
+enum SessionStatus {
+  SESSION_STATUS_UNSPECIFIED = 0;
+  SESSION_STATUS_UPCOMING = 1;
+  SESSION_STATUS_COMPLETED = 2;
+  SESSION_STATUS_CANCELLED = 3;
+  SESSION_STATUS_NO_NOTES = 4;
+}
+
+enum ActionItemStatus {
+  ACTION_ITEM_STATUS_UNSPECIFIED = 0;
+  ACTION_ITEM_STATUS_OPEN = 1;
+  ACTION_ITEM_STATUS_COMPLETE = 2;
+}
+
+message OneOnOneSeries {
+  string id = 1;
+  string tenant_id = 2;
+  string manager_id = 3;
+  string employee_id = 4;
+  SeriesCadence cadence = 5;
+  SeriesStatus status = 6;
+  int64 created_at_unix = 7;
+}
+
+message OneOnOneSession {
+  string id = 1;
+  string series_id = 2;
+  int64 scheduled_at_unix = 3;
+  string notes = 4;
+  SessionStatus status = 5;
+  int64 created_at_unix = 6;
+  int64 updated_at_unix = 7;
+}
+
+message AgendaItem {
+  string id = 1;
+  string session_id = 2;
+  string added_by = 3;
+  string title = 4;
+  string notes = 5;
+  int32 order = 6;
+  int64 created_at_unix = 7;
+}
+
+message OneOnOneActionItem {
+  string id = 1;
+  string session_id = 2;
+  string title = 3;
+  string assigned_to = 4;
+  int64 due_date_unix = 5;
+  ActionItemStatus status = 6;
+  int64 created_at_unix = 7;
+  int64 completed_at_unix = 8;
+}
+
+message CreateSeriesRequest {
+  string tenant_id = 1;
+  string manager_id = 2;
+  string employee_id = 3;
+  SeriesCadence cadence = 4;
+}
+message CreateSeriesResponse { OneOnOneSeries series = 1; }
+
+message GetSeriesRequest { string series_id = 1; }
+message GetSeriesResponse { OneOnOneSeries series = 1; }
+
+message ListSeriesByManagerRequest { string manager_id = 1; }
+message ListSeriesByManagerResponse { repeated OneOnOneSeries series = 1; }
+
+message ListSeriesByEmployeeRequest { string employee_id = 1; }
+message ListSeriesByEmployeeResponse { repeated OneOnOneSeries series = 1; }
+
+message EndSeriesRequest { string series_id = 1; }
+message EndSeriesResponse { OneOnOneSeries series = 1; }
+
+message CreateSessionRequest {
+  string series_id = 1;
+  int64 scheduled_at_unix = 2;
+}
+message CreateSessionResponse { OneOnOneSession session = 1; }
+
+message GetSessionRequest { string session_id = 1; }
+message GetSessionResponse { OneOnOneSession session = 1; }
+
+message ListSessionsRequest { string series_id = 1; }
+message ListSessionsResponse { repeated OneOnOneSession sessions = 1; }
+
+message UpdateSessionNotesRequest {
+  string session_id = 1;
+  string notes = 2;
+}
+message UpdateSessionNotesResponse { OneOnOneSession session = 1; }
+
+message SetSessionStatusRequest {
+  string session_id = 1;
+  SessionStatus status = 2;
+}
+message SetSessionStatusResponse { OneOnOneSession session = 1; }
+
+message AddAgendaItemRequest {
+  string session_id = 1;
+  string added_by = 2;
+  string title = 3;
+  string notes = 4;
+  int32 order = 5;
+}
+message AddAgendaItemResponse { AgendaItem item = 1; }
+
+message ListAgendaItemsRequest { string session_id = 1; }
+message ListAgendaItemsResponse { repeated AgendaItem items = 1; }
+
+message ReorderAgendaItemsRequest {
+  string item_id = 1;
+  int32 order = 2;
+}
+message ReorderAgendaItemsResponse {}
+
+message CreateActionItemRequest {
+  string session_id = 1;
+  string title = 2;
+  string assigned_to = 3;
+  int64 due_date_unix = 4;
+}
+message CreateActionItemResponse { OneOnOneActionItem action_item = 1; }
+
+message ListActionItemsRequest { string session_id = 1; }
+message ListActionItemsResponse { repeated OneOnOneActionItem action_items = 1; }
+
+message CompleteActionItemRequest { string action_item_id = 1; }
+message CompleteActionItemResponse { OneOnOneActionItem action_item = 1; }

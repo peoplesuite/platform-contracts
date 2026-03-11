@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package oneonone.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/oneonone/v1;oneononev1";
+
+import "oneonone/v1/oneonone.proto";
+
+service OneOnOneService {
+  rpc CreateSeries(CreateSeriesRequest) returns (CreateSeriesResponse);
+  rpc GetSeries(GetSeriesRequest) returns (GetSeriesResponse);
+  rpc ListSeriesByManager(ListSeriesByManagerRequest) returns (ListSeriesByManagerResponse);
+  rpc ListSeriesByEmployee(ListSeriesByEmployeeRequest) returns (ListSeriesByEmployeeResponse);
+  rpc EndSeries(EndSeriesRequest) returns (EndSeriesResponse);
+  rpc CreateSession(CreateSessionRequest) returns (CreateSessionResponse);
+  rpc GetSession(GetSessionRequest) returns (GetSessionResponse);
+  rpc ListSessions(ListSessionsRequest) returns (ListSessionsResponse);
+  rpc UpdateSessionNotes(UpdateSessionNotesRequest) returns (UpdateSessionNotesResponse);
+  rpc SetSessionStatus(SetSessionStatusRequest) returns (SetSessionStatusResponse);
+  rpc AddAgendaItem(AddAgendaItemRequest) returns (AddAgendaItemResponse);
+  rpc ListAgendaItems(ListAgendaItemsRequest) returns (ListAgendaItemsResponse);
+  rpc ReorderAgendaItems(ReorderAgendaItemsRequest) returns (ReorderAgendaItemsResponse);
+  rpc CreateActionItem(CreateActionItemRequest) returns (CreateActionItemResponse);
+  rpc ListActionItems(ListActionItemsRequest) returns (ListActionItemsResponse);
+  rpc CompleteActionItem(CompleteActionItemRequest) returns (CompleteActionItemResponse);
+}

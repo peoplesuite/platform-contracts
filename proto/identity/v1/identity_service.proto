@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package identity.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/identity/v1;identityv1";
+
+import "identity/v1/identity.proto";
+
+service IdentityService {
+  rpc ResolveIdentity(ResolveIdentityRequest) returns (ResolveIdentityResponse);
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
+  rpc GetUserByExternalIdentity(GetUserByExternalIdentityRequest) returns (GetUserByExternalIdentityResponse);
+
+  rpc ConnectAccount(ConnectAccountRequest) returns (ConnectAccountResponse);
+  rpc DisconnectAccount(DisconnectAccountRequest) returns (DisconnectAccountResponse);
+  rpc ListConnectedAccounts(ListConnectedAccountsRequest) returns (ListConnectedAccountsResponse);
+
+  rpc RegisterDevice(RegisterDeviceRequest) returns (RegisterDeviceResponse);
+  rpc ListDevices(ListDevicesRequest) returns (ListDevicesResponse);
+  rpc RevokeDevice(RevokeDeviceRequest) returns (RevokeDeviceResponse);
+
+  rpc UpdateUserStatus(UpdateUserStatusRequest) returns (UpdateUserStatusResponse);
+
+  rpc GetAssociateIDForUser(GetAssociateIDForUserRequest) returns (GetAssociateIDForUserResponse);
+}

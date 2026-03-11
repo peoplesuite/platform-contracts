@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package profile.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/profile/v1;profilev1";
+
+import "profile/v1/profile.proto";
+
+service ProfileService {
+  rpc CreateProfile(CreateProfileRequest) returns (CreateProfileResponse);
+  rpc GetProfile(GetProfileRequest) returns (GetProfileResponse);
+  rpc GetPublicProfile(GetPublicProfileRequest) returns (GetPublicProfileResponse);
+  rpc UpdateProfile(UpdateProfileRequest) returns (UpdateProfileResponse);
+
+  rpc AddExperience(AddExperienceRequest) returns (AddExperienceResponse);
+  rpc UpdateExperience(UpdateExperienceRequest) returns (UpdateExperienceResponse);
+  rpc RemoveExperience(RemoveExperienceRequest) returns (RemoveExperienceResponse);
+
+  rpc AddEducation(AddEducationRequest) returns (AddEducationResponse);
+  rpc UpdateEducation(UpdateEducationRequest) returns (UpdateEducationResponse);
+  rpc RemoveEducation(RemoveEducationRequest) returns (RemoveEducationResponse);
+
+  rpc AddSkill(AddSkillRequest) returns (AddSkillResponse);
+  rpc RemoveSkill(RemoveSkillRequest) returns (RemoveSkillResponse);
+  rpc ListSkills(ListSkillsRequest) returns (ListSkillsResponse);
+
+  rpc UploadCV(UploadCVRequest) returns (UploadCVResponse);
+  rpc ImportLinkedInProfile(ImportLinkedInProfileRequest) returns (ImportLinkedInProfileResponse);
+}

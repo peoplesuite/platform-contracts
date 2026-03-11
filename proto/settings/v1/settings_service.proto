@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package settings.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/settings/v1;settingsv1";
+
+import "settings/v1/settings.proto";
+
+service SettingsService {
+  rpc GetTenantConfig(GetTenantConfigRequest) returns (GetTenantConfigResponse);
+  rpc GetFeatureFlag(GetFeatureFlagRequest) returns (GetFeatureFlagResponse);
+  rpc GetModuleRegistry(GetModuleRegistryRequest) returns (GetModuleRegistryResponse);
+  rpc GetNotificationTemplate(GetNotificationTemplateRequest) returns (GetNotificationTemplateResponse);
+  rpc UpdateTenantConfig(UpdateTenantConfigRequest) returns (UpdateTenantConfigResponse);
+  rpc GetMicroApps(GetMicroAppsRequest) returns (GetMicroAppsResponse);
+  rpc GetFeatureDefinitions(GetFeatureDefinitionsRequest) returns (GetFeatureDefinitionsResponse);
+  rpc GetFeaturesForTenant(GetFeaturesForTenantRequest) returns (GetFeaturesForTenantResponse);
+  rpc GetNavigation(GetNavigationRequest) returns (GetNavigationResponse);
+  rpc UpsertNavigation(UpsertNavigationRequest) returns (UpsertNavigationResponse);
+  rpc ListNotices(ListNoticesRequest) returns (ListNoticesResponse);
+  rpc GetShellConfig(GetShellConfigRequest) returns (GetShellConfigResponse);
+  rpc UpdateShellConfig(UpdateShellConfigRequest) returns (UpdateShellConfigResponse);
+}

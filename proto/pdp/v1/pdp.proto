@@ -1,0 +1,346 @@
+syntax = "proto3";
+
+package pdp.v1;
+
+import "shared/v1/common.proto";
+
+option go_package = "peoplesuite/platform-contracts/gen/go/pdp/v1;pdpv1";
+
+enum PlanStatus {
+  PLAN_STATUS_UNSPECIFIED = 0;
+  PLAN_STATUS_DRAFT = 1;
+  PLAN_STATUS_ACTIVE = 2;
+  PLAN_STATUS_ARCHIVED = 3;
+}
+enum TrackStatus {
+  TRACK_STATUS_UNSPECIFIED = 0;
+  TRACK_STATUS_ACTIVE = 1;
+  TRACK_STATUS_PAUSED = 2;
+  TRACK_STATUS_DONE = 3;
+}
+enum GoalStatus {
+  GOAL_STATUS_UNSPECIFIED = 0;
+  GOAL_STATUS_ACTIVE = 1;
+  GOAL_STATUS_DONE = 2;
+  GOAL_STATUS_CANCELLED = 3;
+}
+enum TaskStatus {
+  TASK_STATUS_UNSPECIFIED = 0;
+  TASK_STATUS_OPEN = 1;
+  TASK_STATUS_DONE = 2;
+  TASK_STATUS_CANCELLED = 3;
+}
+enum MetricType {
+  METRIC_TYPE_UNSPECIFIED = 0;
+  METRIC_TYPE_PERCENT = 1;
+  METRIC_TYPE_COUNT = 2;
+  METRIC_TYPE_BOOL = 3;
+  METRIC_TYPE_CUSTOM = 4;
+}
+
+message Plan {
+  string id = 1;
+  string tenant_id = 2;
+  string profile_id = 3;
+  string title = 4;
+  PlanStatus status = 5;
+  int64 period_start_unix = 6;
+  int64 period_end_unix = 7;
+  int64 activated_at_unix = 8;
+  int64 archived_at_unix = 9;
+  int64 created_at_unix = 10;
+  int64 updated_at_unix = 11;
+}
+
+message Track {
+  string id = 1;
+  string plan_id = 2;
+  string tenant_id = 3;
+  string title = 4;
+  string description = 5;
+  int32 weekly_hours = 6;
+  TrackStatus status = 7;
+  int64 created_at_unix = 8;
+  int64 updated_at_unix = 9;
+}
+
+message Goal {
+  string id = 1;
+  string plan_id = 2;
+  string tenant_id = 3;
+  string track_id = 4;
+  string title = 5;
+  string description = 6;
+  GoalStatus status = 7;
+  MetricType metric_type = 8;
+  double target = 9;
+  double current = 10;
+  string unit = 11;
+  int64 due_date_unix = 12;
+  int64 completed_at_unix = 13;
+  int64 created_at_unix = 14;
+  int64 updated_at_unix = 15;
+}
+
+message Task {
+  string id = 1;
+  string plan_id = 2;
+  string tenant_id = 3;
+  string goal_id = 4;
+  string title = 5;
+  TaskStatus status = 6;
+  int64 due_date_unix = 7;
+  int64 completed_at_unix = 8;
+  int64 created_at_unix = 9;
+  int64 updated_at_unix = 10;
+}
+
+message CheckIn {
+  string id = 1;
+  string plan_id = 2;
+  string tenant_id = 3;
+  string profile_id = 4;
+  string week_start = 5;  // YYYY-MM-DD
+  string reflection = 6;
+  string blockers = 7;
+  repeated string next_actions = 8;
+  int64 created_at_unix = 9;
+}
+
+// --- Plans ---
+message CreatePlanRequest {
+  string tenant_id = 1;
+  string profile_id = 2;
+  string title = 3;
+  int64 period_start_unix = 4;
+  int64 period_end_unix = 5;
+}
+message CreatePlanResponse { Plan plan = 1; }
+
+message GetPlanRequest { string plan_id = 1; }
+message GetPlanResponse { Plan plan = 1; }
+
+message ListPlansRequest {
+  string tenant_id = 1;
+  string profile_id = 2;
+  PlanStatus status = 3;  // optional filter; 0 = return all
+  shared.v1.Pagination pagination = 4;
+}
+message ListPlansResponse {
+  repeated Plan plans = 1;
+  shared.v1.PageInfo page = 2;
+}
+
+message ActivatePlanRequest { string plan_id = 1; }
+message ActivatePlanResponse { Plan plan = 1; }
+
+message ArchivePlanRequest { string plan_id = 1; string reason = 2; }
+message ArchivePlanResponse { Plan plan = 1; }
+
+message UpdatePlanRequest {
+  string plan_id = 1;
+  string title = 2;
+  int64 period_start_unix = 3;
+  int64 period_end_unix = 4;
+}
+message UpdatePlanResponse { Plan plan = 1; }
+
+// --- Tracks ---
+message CreateTrackRequest {
+  string plan_id = 1;
+  string tenant_id = 2;
+  string title = 3;
+  string description = 4;
+  int32 weekly_hours = 5;
+}
+message CreateTrackResponse { Track track = 1; }
+
+message ListTracksRequest { string plan_id = 1; }
+message ListTracksResponse { repeated Track tracks = 1; }
+
+message UpdateTrackStatusRequest { string track_id = 1; TrackStatus status = 2; }
+message UpdateTrackStatusResponse { Track track = 1; }
+
+// --- Goals ---
+message CreateGoalRequest {
+  string plan_id = 1;
+  string tenant_id = 2;
+  string track_id = 3;
+  string title = 4;
+  string description = 5;
+  MetricType metric_type = 6;
+  double target = 7;
+  string unit = 8;
+  int64 due_date_unix = 9;
+}
+message CreateGoalResponse { Goal goal = 1; }
+
+message ListGoalsRequest {
+  string plan_id = 1;
+  GoalStatus status = 2;  // 0 = return all
+}
+message ListGoalsResponse { repeated Goal goals = 1; }
+
+message UpdateGoalProgressRequest { string goal_id = 1; double current = 2; }
+message UpdateGoalProgressResponse { Goal goal = 1; }
+
+message CompleteGoalRequest { string goal_id = 1; }
+message CompleteGoalResponse { Goal goal = 1; }
+
+message CancelGoalRequest { string goal_id = 1; string reason = 2; }
+message CancelGoalResponse { Goal goal = 1; }
+
+// --- Tasks ---
+message CreateTaskRequest {
+  string plan_id = 1;
+  string tenant_id = 2;
+  string goal_id = 3;
+  string title = 4;
+  int64 due_date_unix = 5;
+}
+message CreateTaskResponse { Task task = 1; }
+
+message ListTasksRequest {
+  string plan_id = 1;
+  TaskStatus status = 2;  // 0 = return all
+}
+message ListTasksResponse { repeated Task tasks = 1; }
+
+message CompleteTaskRequest { string task_id = 1; }
+message CompleteTaskResponse { Task task = 1; }
+
+// --- Check-ins ---
+message SubmitCheckInRequest {
+  string plan_id = 1;
+  string tenant_id = 2;
+  string profile_id = 3;
+  string week_start = 4;  // YYYY-MM-DD
+  string reflection = 5;
+  string blockers = 6;
+  repeated string next_actions = 7;
+}
+message SubmitCheckInResponse { CheckIn checkin = 1; }
+
+message ListCheckInsRequest { string plan_id = 1; int32 limit = 2; }
+message ListCheckInsResponse { repeated CheckIn checkins = 1; }
+
+message RequestCheckInRequest { string plan_id = 1; }
+message RequestCheckInResponse { bool success = 1; }
+
+// ---------------------------------------------------------------------------
+// Development plans (Talent Domain: PDP refactor)
+// ---------------------------------------------------------------------------
+
+service DevelopmentPlanService {
+  rpc CreateDevelopmentPlan(CreateDevelopmentPlanRequest) returns (CreateDevelopmentPlanResponse);
+  rpc GetDevelopmentPlan(GetDevelopmentPlanRequest) returns (GetDevelopmentPlanResponse);
+  rpc ListDevelopmentPlans(ListDevelopmentPlansRequest) returns (ListDevelopmentPlansResponse);
+  rpc UpdateDevelopmentPlan(UpdateDevelopmentPlanRequest) returns (UpdateDevelopmentPlanResponse);
+  rpc ArchiveDevelopmentPlan(ArchiveDevelopmentPlanRequest) returns (ArchiveDevelopmentPlanResponse);
+  rpc CreateDevelopmentAction(CreateDevelopmentActionRequest) returns (CreateDevelopmentActionResponse);
+  rpc ListDevelopmentActions(ListDevelopmentActionsRequest) returns (ListDevelopmentActionsResponse);
+  rpc UpdateDevelopmentAction(UpdateDevelopmentActionRequest) returns (UpdateDevelopmentActionResponse);
+  rpc CompleteDevelopmentAction(CompleteDevelopmentActionRequest) returns (CompleteDevelopmentActionResponse);
+  rpc CreatePlanCheckpoint(CreatePlanCheckpointRequest) returns (CreatePlanCheckpointResponse);
+  rpc ListPlanCheckpoints(ListPlanCheckpointsRequest) returns (ListPlanCheckpointsResponse);
+}
+
+message DevelopmentPlan {
+  string id = 1;
+  string tenant_id = 2;
+  string owner_id = 3;
+  string title = 4;
+  string summary = 5;
+  string status = 6;
+  int64 created_at_unix = 7;
+  int64 updated_at_unix = 8;
+}
+
+message DevelopmentAction {
+  string id = 1;
+  string plan_id = 2;
+  string title = 3;
+  string description = 4;
+  int64 due_date_unix = 5;
+  string status = 6;
+  repeated string evidence = 7;  // file UUIDs
+  int64 created_at_unix = 8;
+  int64 updated_at_unix = 9;
+}
+
+message PlanCheckpoint {
+  string id = 1;
+  string plan_id = 2;
+  string reviewer_id = 3;
+  int64 review_date_unix = 4;
+  string notes = 5;
+  int64 created_at_unix = 6;
+}
+
+message CreateDevelopmentPlanRequest {
+  string tenant_id = 1;
+  string owner_id = 2;
+  string title = 3;
+  string summary = 4;
+}
+message CreateDevelopmentPlanResponse { DevelopmentPlan plan = 1; }
+
+message GetDevelopmentPlanRequest { string plan_id = 1; }
+message GetDevelopmentPlanResponse { DevelopmentPlan plan = 1; }
+
+message ListDevelopmentPlansRequest {
+  string tenant_id = 1;
+  string owner_id = 2;
+  string status_filter = 3;
+}
+message ListDevelopmentPlansResponse { repeated DevelopmentPlan plans = 1; }
+
+message UpdateDevelopmentPlanRequest {
+  string plan_id = 1;
+  string title = 2;
+  string summary = 3;
+  string status = 4;
+}
+message UpdateDevelopmentPlanResponse { DevelopmentPlan plan = 1; }
+
+message ArchiveDevelopmentPlanRequest { string plan_id = 1; }
+message ArchiveDevelopmentPlanResponse { DevelopmentPlan plan = 1; }
+
+message CreateDevelopmentActionRequest {
+  string plan_id = 1;
+  string title = 2;
+  string description = 3;
+  int64 due_date_unix = 4;
+  repeated string evidence = 5;
+}
+message CreateDevelopmentActionResponse { DevelopmentAction action = 1; }
+
+message ListDevelopmentActionsRequest {
+  string plan_id = 1;
+  string status_filter = 2;
+}
+message ListDevelopmentActionsResponse { repeated DevelopmentAction actions = 1; }
+
+message UpdateDevelopmentActionRequest {
+  string action_id = 1;
+  string title = 2;
+  string description = 3;
+  int64 due_date_unix = 4;
+  string status = 5;
+  repeated string evidence = 6;
+}
+message UpdateDevelopmentActionResponse { DevelopmentAction action = 1; }
+
+message CompleteDevelopmentActionRequest { string action_id = 1; }
+message CompleteDevelopmentActionResponse { DevelopmentAction action = 1; }
+
+message CreatePlanCheckpointRequest {
+  string plan_id = 1;
+  string reviewer_id = 2;
+  int64 review_date_unix = 3;
+  string notes = 4;
+}
+message CreatePlanCheckpointResponse { PlanCheckpoint checkpoint = 1; }
+
+message ListPlanCheckpointsRequest { string plan_id = 1; }
+message ListPlanCheckpointsResponse { repeated PlanCheckpoint checkpoints = 1; }

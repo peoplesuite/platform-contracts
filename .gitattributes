@@ -1,0 +1,11 @@
+# Auto-detect text files and normalize line endings
+* text=auto
+
+# Proto files: enforce LF for cross-platform compatibility
+*.proto text eol=lf
+
+# Go files: enforce LF
+*.go text eol=lf
+
+# Mark generated code for GitHub linguist (exclude from language stats)
+gen/** linguist-generated=true

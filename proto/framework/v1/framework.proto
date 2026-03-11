@@ -1,0 +1,268 @@
+syntax = "proto3";
+
+package framework.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/framework/v1;frameworkv1";
+
+import "google/protobuf/timestamp.proto";
+import "shared/v1/common.proto";
+
+message ListCareerPathsRequest {
+  shared.v1.Pagination pagination = 1;
+}
+
+message CareerPath {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  bool is_public = 4;
+  shared.v1.AuditInfo audit = 100;
+}
+
+message CareerLevel {
+  string id = 1;
+  string path_id = 2;
+  string code = 3;   // L3, L4, ...
+  string name = 4;
+  int32 rank = 5;
+  string description = 6;
+  shared.v1.AuditInfo audit = 100;
+}
+
+message CareerPathResponse {
+  CareerPath path = 1;
+  repeated CareerLevel levels = 2;
+}
+
+message ListCareerPathsResponse {
+  repeated CareerPath paths = 1;
+  shared.v1.PageInfo page = 2;
+}
+
+message GetCareerPathRequest {
+  string id = 1;
+}
+
+message GetCareerPathResponse {
+  CareerPath path = 1;
+  repeated CareerLevel levels = 2;
+}
+
+message UpsertCareerPathRequest {
+  string id = 1; // empty => create
+  string name = 2;
+  string description = 3;
+  bool is_public = 4;
+}
+
+message UpsertCareerPathResponse {
+  CareerPath path = 1;
+  repeated CareerLevel levels = 2;
+}
+
+message UpsertCareerLevelRequest {
+  string id = 1;
+  string path_id = 2;
+  string code = 3;
+  string name = 4;
+  int32 rank = 5;
+  string description = 6;
+}
+
+message CareerLevelResponse {
+  CareerLevel level = 1;
+}
+
+message UpsertCareerLevelResponse {
+  CareerLevel level = 1;
+}
+
+message CompetencyArea {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  shared.v1.AuditInfo audit = 100;
+}
+
+message ListCompetencyAreasRequest {
+  shared.v1.Pagination pagination = 1;
+}
+
+message ListCompetencyAreasResponse {
+  repeated CompetencyArea areas = 1;
+  shared.v1.PageInfo page = 2;
+}
+
+message UpsertCompetencyAreaRequest {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+}
+
+message CompetencyAreaResponse {
+  CompetencyArea area = 1;
+}
+
+message UpsertCompetencyAreaResponse {
+  CompetencyArea area = 1;
+}
+
+message Competency {
+  string id = 1;
+  string area_id = 2;
+  string name = 3;
+  string description = 4;
+  shared.v1.AuditInfo audit = 100;
+}
+
+message ListCompetenciesRequest {
+  string area_id = 1; // optional filter
+  shared.v1.Pagination pagination = 2;
+}
+
+message ListCompetenciesResponse {
+  repeated Competency competencies = 1;
+  shared.v1.PageInfo page = 2;
+}
+
+message CompetencyResponse {
+  Competency competency = 1;
+}
+
+message GetCompetencyRequest {
+  string id = 1;
+}
+
+message GetCompetencyResponse {
+  Competency competency = 1;
+}
+
+message UpsertCompetencyRequest {
+  string id = 1;
+  string area_id = 2;
+  string name = 3;
+  string description = 4;
+}
+
+message UpsertCompetencyResponse {
+  Competency competency = 1;
+}
+
+message Rubric {
+  string id = 1;
+  string competency_id = 2;
+  string level_id = 3;
+  string indicators_json = 4; // JSON blob (keeps rubric flexible)
+  shared.v1.AuditInfo audit = 100;
+}
+
+message UpsertRubricRequest {
+  string id = 1;
+  string competency_id = 2;
+  string level_id = 3;
+  string indicators_json = 4;
+}
+
+message GetRubricRequest {
+  string competency_id = 1;
+  string level_id = 2;
+}
+
+message RubricResponse {
+  Rubric rubric = 1;
+}
+
+message UpsertRubricResponse {
+  Rubric rubric = 1;
+}
+
+message GetRubricResponse {
+  Rubric rubric = 1;
+}
+
+message FrameworkVersion {
+  string id = 1;
+  string version = 2; // e.g. "2026.1"
+  string status = 3;  // draft/published/deprecated
+  google.protobuf.Timestamp published_at = 4;
+  shared.v1.AuditInfo audit = 100;
+}
+
+message PublishFrameworkVersionRequest {
+  string version = 1;
+}
+
+message FrameworkVersionResponse {
+  FrameworkVersion framework_version = 1;
+}
+
+message PublishFrameworkVersionResponse {
+  FrameworkVersion framework_version = 1;
+}
+
+message GetFrameworkSnapshotRequest {
+  string version = 1; // optional, default latest published
+}
+
+message FrameworkSnapshotResponse {
+  FrameworkVersion framework_version = 1;
+  repeated CareerPath paths = 2;
+  repeated CareerLevel levels = 3;
+  repeated CompetencyArea areas = 4;
+  repeated Competency competencies = 5;
+  repeated Rubric rubrics = 6;
+}
+
+message GetFrameworkSnapshotResponse {
+  FrameworkVersion framework_version = 1;
+  repeated CareerPath paths = 2;
+  repeated CareerLevel levels = 3;
+  repeated CompetencyArea areas = 4;
+  repeated Competency competencies = 5;
+  repeated Rubric rubrics = 6;
+}
+
+// ----- ListLevels / GetLevel -----
+message ListLevelsRequest {
+  shared.v1.Pagination pagination = 1;
+}
+message ListLevelsResponse {
+  repeated CareerLevel items = 1;
+  shared.v1.PageInfo page = 2;
+}
+message GetLevelRequest {
+  string level_id = 1;
+}
+message GetLevelResponse {
+  CareerLevel item = 1;
+}
+
+// ----- GetExpectations (path + level -> expected competencies) -----
+message Expectation {
+  string competency_id = 1;
+  float expected_score = 2;
+  string rationale = 3;
+}
+message Expectations {
+  string career_path_id = 1;
+  string level_id = 2;
+  repeated Expectation items = 3;
+}
+message GetExpectationsRequest {
+  string career_path_id = 1;
+  string level_id = 2;
+}
+message GetExpectationsResponse {
+  Expectations expectations = 1;
+}
+
+// ----- Search (paths + competencies by query) -----
+message SearchRequest {
+  string query = 1;
+  shared.v1.Pagination page = 2;
+}
+message SearchResponse {
+  repeated CareerPath paths = 1;
+  repeated Competency competencies = 2;
+  shared.v1.PageInfo page = 3;
+}

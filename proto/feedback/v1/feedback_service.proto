@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package feedback.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/feedback/v1;feedbackv1";
+
+import "feedback/v1/feedback.proto";
+
+service FeedbackService {
+  rpc CreateFeedbackRequest(CreateFeedbackRequestRequest) returns (CreateFeedbackRequestResponse);
+  rpc GetFeedbackRequest(GetFeedbackRequestRequest) returns (GetFeedbackRequestResponse);
+  rpc ListFeedbackRequestsByRequester(ListFeedbackRequestsByRequesterRequest) returns (ListFeedbackRequestsByRequesterResponse);
+  rpc ListFeedbackRequestsBySubject(ListFeedbackRequestsBySubjectRequest) returns (ListFeedbackRequestsBySubjectResponse);
+  rpc ListFeedbackRequestsByRespondent(ListFeedbackRequestsByRespondentRequest) returns (ListFeedbackRequestsByRespondentResponse);
+  rpc UpdateRequestStatus(UpdateRequestStatusRequest) returns (UpdateRequestStatusResponse);
+  rpc SubmitFeedbackResponse(SubmitFeedbackResponseRequest) returns (SubmitFeedbackResponseResponse);
+  rpc GetFeedbackResponse(GetFeedbackResponseRequest) returns (GetFeedbackResponseResponse);
+  rpc ListResponses(ListResponsesRequest) returns (ListResponsesResponse);
+}

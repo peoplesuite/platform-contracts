@@ -1,0 +1,212 @@
+syntax = "proto3";
+
+package identity.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/identity/v1;identityv1";
+
+import "google/protobuf/timestamp.proto";
+
+enum IdentityProvider {
+  IDENTITY_PROVIDER_UNSPECIFIED = 0;
+  IDENTITY_PROVIDER_KEYCLOAK = 1;
+  IDENTITY_PROVIDER_GOOGLE = 2;
+  IDENTITY_PROVIDER_MICROSOFT = 3;
+  IDENTITY_PROVIDER_GITHUB = 4;
+  IDENTITY_PROVIDER_LINKEDIN = 5;
+  IDENTITY_PROVIDER_TELEGRAM = 6;
+  IDENTITY_PROVIDER_SLACK = 7;
+  IDENTITY_PROVIDER_TEAMS = 8;
+}
+
+enum UserStatus {
+  USER_STATUS_UNSPECIFIED = 0;
+  USER_STATUS_ACTIVE = 1;
+  USER_STATUS_DISABLED = 2;
+  USER_STATUS_SUSPENDED = 3;
+  USER_STATUS_PENDING = 4;
+  USER_STATUS_TERMINATED = 5;
+}
+
+enum ConnectedAccountStatus {
+  CONNECTED_ACCOUNT_STATUS_UNSPECIFIED = 0;
+  CONNECTED_ACCOUNT_STATUS_ACTIVE = 1;
+  CONNECTED_ACCOUNT_STATUS_DISCONNECTED = 2;
+  CONNECTED_ACCOUNT_STATUS_EXPIRED = 3;
+  CONNECTED_ACCOUNT_STATUS_REVOKED = 4;
+}
+
+enum DeviceType {
+  DEVICE_TYPE_UNSPECIFIED = 0;
+  DEVICE_TYPE_WEB = 1;
+  DEVICE_TYPE_MOBILE = 2;
+  DEVICE_TYPE_DESKTOP = 3;
+  DEVICE_TYPE_BOT = 4;
+}
+
+message User {
+  string user_id = 1;
+  UserStatus status = 2;
+  google.protobuf.Timestamp created_at = 3;
+  google.protobuf.Timestamp last_login_at = 4;
+}
+
+message UserIdentity {
+  string user_identity_id = 1;
+  string user_id = 2;
+  IdentityProvider provider = 3;
+  string provider_subject = 4;
+  string email = 5;
+  string username = 6;
+  string given_name = 7;
+  string family_name = 8;
+  google.protobuf.Timestamp created_at = 9;
+  google.protobuf.Timestamp last_login_at = 10;
+}
+
+message ConnectedAccount {
+  string connected_account_id = 1;
+  string user_id = 2;
+  IdentityProvider provider = 3;
+  string external_user_id = 4;
+  string external_username = 5;
+  repeated string scopes = 6;
+  ConnectedAccountStatus status = 7;
+  google.protobuf.Timestamp connected_at = 8;
+  google.protobuf.Timestamp last_synced_at = 9;
+
+  // Reference to token storage owned by auth-gateway / secure token store.
+  string token_ref = 10;
+}
+
+message Device {
+  string device_id = 1;
+  string user_id = 2;
+  DeviceType device_type = 3;
+  string device_name = 4;
+  string os = 5;
+  string app_version = 6;
+  string ip_address = 7;
+  string user_agent = 8;
+  bool trusted = 9;
+  google.protobuf.Timestamp created_at = 10;
+  google.protobuf.Timestamp last_seen_at = 11;
+  google.protobuf.Timestamp revoked_at = 12;
+}
+
+message ResolveIdentityRequest {
+  IdentityProvider provider = 1;
+  string provider_subject = 2;
+
+  string email = 3;
+  string username = 4;
+  string given_name = 5;
+  string family_name = 6;
+
+  // Optional source metadata
+  string source = 7; // e.g. "auth-gateway", "telegram-bot-login"
+}
+
+message ResolveIdentityResponse {
+  User user = 1;
+  UserIdentity identity = 2;
+  bool created = 3;
+}
+
+message GetUserRequest {
+  string user_id = 1;
+}
+
+message GetUserResponse {
+  User user = 1;
+  repeated UserIdentity identities = 2;
+}
+
+message GetUserByExternalIdentityRequest {
+  IdentityProvider provider = 1;
+  string external_user_id = 2;
+}
+
+message GetUserByExternalIdentityResponse {
+  User user = 1;
+  ConnectedAccount connected_account = 2;
+}
+
+message ConnectAccountRequest {
+  string user_id = 1;
+  IdentityProvider provider = 2;
+  string external_user_id = 3;
+  string external_username = 4;
+  repeated string scopes = 5;
+  string token_ref = 6;
+}
+
+message ConnectAccountResponse {
+  ConnectedAccount connected_account = 1;
+}
+
+message DisconnectAccountRequest {
+  string connected_account_id = 1;
+}
+
+message DisconnectAccountResponse {
+  bool success = 1;
+}
+
+message ListConnectedAccountsRequest {
+  string user_id = 1;
+}
+
+message ListConnectedAccountsResponse {
+  repeated ConnectedAccount connected_accounts = 1;
+}
+
+message RegisterDeviceRequest {
+  string user_id = 1;
+  DeviceType device_type = 2;
+  string device_name = 3;
+  string os = 4;
+  string app_version = 5;
+  string ip_address = 6;
+  string user_agent = 7;
+  bool trusted = 8;
+}
+
+message RegisterDeviceResponse {
+  Device device = 1;
+}
+
+message ListDevicesRequest {
+  string user_id = 1;
+  bool include_revoked = 2;
+}
+
+message ListDevicesResponse {
+  repeated Device devices = 1;
+}
+
+message RevokeDeviceRequest {
+  string device_id = 1;
+}
+
+message RevokeDeviceResponse {
+  bool success = 1;
+}
+
+message UpdateUserStatusRequest {
+  string user_id = 1;
+  UserStatus status = 2;
+  string reason = 3;
+}
+
+message UpdateUserStatusResponse {
+  User user = 1;
+}
+
+message GetAssociateIDForUserRequest {
+  string user_id = 1;
+}
+
+message GetAssociateIDForUserResponse {
+  int32  associate_id = 1;
+  bool   found        = 2;
+}

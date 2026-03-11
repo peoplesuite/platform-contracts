@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package framework.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/framework/v1;frameworkv1";
+
+import "framework/v1/framework.proto";
+
+service FrameworkService {
+  rpc ListCareerPaths(ListCareerPathsRequest) returns (ListCareerPathsResponse);
+  rpc GetCareerPath(GetCareerPathRequest) returns (GetCareerPathResponse);
+  rpc UpsertCareerPath(UpsertCareerPathRequest) returns (UpsertCareerPathResponse);
+
+  rpc UpsertCareerLevel(UpsertCareerLevelRequest) returns (UpsertCareerLevelResponse);
+
+  rpc ListCompetencyAreas(ListCompetencyAreasRequest) returns (ListCompetencyAreasResponse);
+  rpc UpsertCompetencyArea(UpsertCompetencyAreaRequest) returns (UpsertCompetencyAreaResponse);
+
+  rpc ListCompetencies(ListCompetenciesRequest) returns (ListCompetenciesResponse);
+  rpc GetCompetency(GetCompetencyRequest) returns (GetCompetencyResponse);
+  rpc UpsertCompetency(UpsertCompetencyRequest) returns (UpsertCompetencyResponse);
+
+  rpc UpsertRubric(UpsertRubricRequest) returns (UpsertRubricResponse);
+  rpc GetRubric(GetRubricRequest) returns (GetRubricResponse);
+
+  rpc PublishFrameworkVersion(PublishFrameworkVersionRequest) returns (PublishFrameworkVersionResponse);
+  rpc GetFrameworkSnapshot(GetFrameworkSnapshotRequest) returns (GetFrameworkSnapshotResponse);
+
+  // Standalone levels and expectations (CareerBlueprint Core).
+  rpc ListLevels(ListLevelsRequest) returns (ListLevelsResponse);
+  rpc GetLevel(GetLevelRequest) returns (GetLevelResponse);
+  rpc GetExpectations(GetExpectationsRequest) returns (GetExpectationsResponse);
+  rpc Search(SearchRequest) returns (SearchResponse);
+}

@@ -1,0 +1,302 @@
+syntax = "proto3";
+
+package profile.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/profile/v1;profilev1";
+
+import "google/protobuf/timestamp.proto";
+
+enum EmploymentType {
+  EMPLOYMENT_TYPE_UNSPECIFIED = 0;
+  EMPLOYMENT_TYPE_FULL_TIME = 1;
+  EMPLOYMENT_TYPE_PART_TIME = 2;
+  EMPLOYMENT_TYPE_CONTRACT = 3;
+  EMPLOYMENT_TYPE_FREELANCE = 4;
+  EMPLOYMENT_TYPE_INTERNSHIP = 5;
+}
+
+enum SkillLevel {
+  SKILL_LEVEL_UNSPECIFIED = 0;
+  SKILL_LEVEL_BEGINNER = 1;
+  SKILL_LEVEL_INTERMEDIATE = 2;
+  SKILL_LEVEL_ADVANCED = 3;
+  SKILL_LEVEL_EXPERT = 4;
+}
+
+enum ProfileDocumentType {
+  PROFILE_DOCUMENT_TYPE_UNSPECIFIED = 0;
+  PROFILE_DOCUMENT_TYPE_CV = 1;
+  PROFILE_DOCUMENT_TYPE_RESUME = 2;
+  PROFILE_DOCUMENT_TYPE_CERTIFICATE = 3;
+  PROFILE_DOCUMENT_TYPE_PORTFOLIO = 4;
+}
+
+enum ImportSource {
+  IMPORT_SOURCE_UNSPECIFIED = 0;
+  IMPORT_SOURCE_LINKEDIN = 1;
+  IMPORT_SOURCE_CV = 2;
+  IMPORT_SOURCE_MANUAL = 3;
+}
+
+message Profile {
+  string profile_id = 1;
+  string user_id = 2;
+
+  string first_name = 3;
+  string last_name = 4;
+  string display_name = 5;
+  string headline = 6;
+  string bio = 7;
+  string avatar_url = 8;
+  string location = 9;
+
+  repeated string languages = 10;
+  repeated string interests = 11;
+
+  google.protobuf.Timestamp created_at = 12;
+  google.protobuf.Timestamp updated_at = 13;
+}
+
+message Experience {
+  string experience_id = 1;
+  string user_id = 2;
+  string title = 3;
+  string company = 4;
+  string location = 5;
+  EmploymentType employment_type = 6;
+  string description = 7;
+  google.protobuf.Timestamp start_date = 8;
+  google.protobuf.Timestamp end_date = 9;
+  bool is_current = 10;
+  ImportSource source = 11;
+}
+
+message Education {
+  string education_id = 1;
+  string user_id = 2;
+  string school = 3;
+  string degree = 4;
+  string field_of_study = 5;
+  string description = 6;
+  google.protobuf.Timestamp start_date = 7;
+  google.protobuf.Timestamp end_date = 8;
+  bool is_current = 9;
+  ImportSource source = 10;
+}
+
+message Skill {
+  string skill_id = 1;
+  string user_id = 2;
+  string name = 3;
+  SkillLevel level = 4;
+  int32 years_of_experience = 5;
+  ImportSource source = 6;
+}
+
+message ProfileDocument {
+  string document_id = 1;
+  string user_id = 2;
+  ProfileDocumentType document_type = 3;
+  string file_name = 4;
+  string storage_url = 5;
+  google.protobuf.Timestamp uploaded_at = 6;
+}
+
+message CreateProfileRequest {
+  string user_id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string display_name = 4;
+}
+
+message CreateProfileResponse {
+  Profile profile = 1;
+}
+
+message GetProfileRequest {
+  string user_id = 1;
+}
+
+message GetProfileResponse {
+  Profile profile = 1;
+  repeated Experience experiences = 2;
+  repeated Education educations = 3;
+  repeated Skill skills = 4;
+  repeated ProfileDocument documents = 5;
+}
+
+message GetPublicProfileRequest {
+  string user_id = 1;
+}
+
+message GetPublicProfileResponse {
+  Profile profile = 1;
+  repeated Experience experiences = 2;
+  repeated Education educations = 3;
+  repeated Skill skills = 4;
+}
+
+message UpdateProfileRequest {
+  string user_id = 1;
+
+  optional string first_name = 2;
+  optional string last_name = 3;
+  optional string display_name = 4;
+  optional string headline = 5;
+  optional string bio = 6;
+  optional string avatar_url = 7;
+  optional string location = 8;
+
+  repeated string languages = 9;
+  repeated string interests = 10;
+}
+
+message UpdateProfileResponse {
+  Profile profile = 1;
+}
+
+message AddExperienceRequest {
+  string user_id = 1;
+  string title = 2;
+  string company = 3;
+  string location = 4;
+  EmploymentType employment_type = 5;
+  string description = 6;
+  google.protobuf.Timestamp start_date = 7;
+  google.protobuf.Timestamp end_date = 8;
+  bool is_current = 9;
+  ImportSource source = 10;
+}
+
+message AddExperienceResponse {
+  Experience experience = 1;
+}
+
+message UpdateExperienceRequest {
+  string experience_id = 1;
+  string user_id = 2;
+
+  optional string title = 3;
+  optional string company = 4;
+  optional string location = 5;
+  optional EmploymentType employment_type = 6;
+  optional string description = 7;
+  google.protobuf.Timestamp start_date = 8;
+  google.protobuf.Timestamp end_date = 9;
+  optional bool is_current = 10;
+}
+
+message UpdateExperienceResponse {
+  Experience experience = 1;
+}
+
+message RemoveExperienceRequest {
+  string experience_id = 1;
+  string user_id = 2;
+}
+
+message RemoveExperienceResponse {
+  bool success = 1;
+}
+
+message AddEducationRequest {
+  string user_id = 1;
+  string school = 2;
+  string degree = 3;
+  string field_of_study = 4;
+  string description = 5;
+  google.protobuf.Timestamp start_date = 6;
+  google.protobuf.Timestamp end_date = 7;
+  bool is_current = 8;
+  ImportSource source = 9;
+}
+
+message AddEducationResponse {
+  Education education = 1;
+}
+
+message UpdateEducationRequest {
+  string education_id = 1;
+  string user_id = 2;
+
+  optional string school = 3;
+  optional string degree = 4;
+  optional string field_of_study = 5;
+  optional string description = 6;
+  google.protobuf.Timestamp start_date = 7;
+  google.protobuf.Timestamp end_date = 8;
+  optional bool is_current = 9;
+}
+
+message UpdateEducationResponse {
+  Education education = 1;
+}
+
+message RemoveEducationRequest {
+  string education_id = 1;
+  string user_id = 2;
+}
+
+message RemoveEducationResponse {
+  bool success = 1;
+}
+
+message AddSkillRequest {
+  string user_id = 1;
+  string name = 2;
+  SkillLevel level = 3;
+  int32 years_of_experience = 4;
+  ImportSource source = 5;
+}
+
+message AddSkillResponse {
+  Skill skill = 1;
+}
+
+message RemoveSkillRequest {
+  string skill_id = 1;
+  string user_id = 2;
+}
+
+message RemoveSkillResponse {
+  bool success = 1;
+}
+
+message ListSkillsRequest {
+  string user_id = 1;
+}
+
+message ListSkillsResponse {
+  repeated Skill skills = 1;
+}
+
+message UploadCVRequest {
+  string user_id = 1;
+  string file_name = 2;
+  bytes content = 3;
+  string content_type = 4; // application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document
+}
+
+message UploadCVResponse {
+  ProfileDocument document = 1;
+  repeated Experience extracted_experiences = 2;
+  repeated Education extracted_educations = 3;
+  repeated Skill extracted_skills = 4;
+}
+
+message ImportLinkedInProfileRequest {
+  string user_id = 1;
+  bool import_experiences = 2;
+  bool import_educations = 3;
+  bool import_skills = 4;
+
+  // token_ref usually comes from identity-svc / secure token store
+  string token_ref = 5;
+}
+
+message ImportLinkedInProfileResponse {
+  Profile profile = 1;
+  repeated Experience imported_experiences = 2;
+  repeated Education imported_educations = 3;
+  repeated Skill imported_skills = 4;
+}
