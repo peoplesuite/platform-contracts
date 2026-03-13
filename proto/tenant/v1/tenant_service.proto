@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package tenant.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/tenant/v1;tenantv1";
+
+import "tenant/v1/tenant.proto";
+
+service TenantService {
+  // Tenant CRUD + lifecycle
+  rpc CreateTenant(CreateTenantRequest) returns (CreateTenantResponse);
+  rpc GetTenant(GetTenantRequest) returns (GetTenantResponse);
+  rpc GetTenantBySlug(GetTenantBySlugRequest) returns (GetTenantBySlugResponse);
+  rpc GetTenantByDomain(GetTenantByDomainRequest) returns (GetTenantByDomainResponse);
+  rpc UpdateTenant(UpdateTenantRequest) returns (UpdateTenantResponse);
+  rpc SuspendTenant(SuspendTenantRequest) returns (SuspendTenantResponse);
+  rpc ActivateTenant(ActivateTenantRequest) returns (ActivateTenantResponse);
+  rpc ArchiveTenant(ArchiveTenantRequest) returns (ArchiveTenantResponse);
+  rpc ListTenants(ListTenantsRequest) returns (ListTenantsResponse);
+
+  // Membership
+  rpc GetTenantMembership(GetTenantMembershipRequest) returns (GetTenantMembershipResponse);
+  rpc ListTenantMembers(ListTenantMembersRequest) returns (ListTenantMembersResponse);
+  rpc InviteTenantMember(InviteTenantMemberRequest) returns (InviteTenantMemberResponse);
+  rpc RemoveTenantMember(RemoveTenantMemberRequest) returns (RemoveTenantMemberResponse);
+  rpc ChangeTenantRole(ChangeTenantRoleRequest) returns (ChangeTenantRoleResponse);
+  rpc GetMyTenantMemberships(GetMyTenantMembershipsRequest) returns (GetMyTenantMembershipsResponse);
+}

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package tenantconfig.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/tenantconfig/v1;tenantconfigv1";
+
+import "tenantconfig/v1/tenantconfig.proto";
+
+service TenantConfigService {
+  rpc GetTenantConfig(GetTenantConfigRequest) returns (GetTenantConfigResponse);
+  rpc UpdateTenantConfig(UpdateTenantConfigRequest) returns (UpdateTenantConfigResponse);
+  rpc GetModuleRegistry(GetModuleRegistryRequest) returns (GetModuleRegistryResponse);
+  rpc GetNotificationTemplate(GetNotificationTemplateRequest) returns (GetNotificationTemplateResponse);
+  rpc GetNavigation(GetNavigationRequest) returns (GetNavigationResponse);
+  rpc UpsertNavigation(UpsertNavigationRequest) returns (UpsertNavigationResponse);
+  rpc ListNotices(ListNoticesRequest) returns (ListNoticesResponse);
+}

@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package accesscontrol.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/accesscontrol/v1;accesscontrolv1";
+
+// PlatformRole represents a platform-level role (no tenant_id).
+message PlatformRole {
+  string id = 1;   // e.g. "platform_admin", "platform_support"
+  string name = 2;
+  repeated string permissions = 3;
+}
+
+// Permission represents a resource + action pair.
+message Permission {
+  string resource = 1;  // e.g. "tenants", "users"
+  string action = 2;    // e.g. "read", "write", "suspend"
+}
+
+// AssignPlatformRole
+message AssignPlatformRoleRequest {
+  string user_id = 1;
+  string role_id = 2;
+}
+
+message AssignPlatformRoleResponse {
+  PlatformRole role = 1;
+}
+
+// RevokePlatformRole
+message RevokePlatformRoleRequest {
+  string user_id = 1;
+  string role_id = 2;
+}
+
+message RevokePlatformRoleResponse {}
+
+// GetUserPlatformRoles
+message GetUserPlatformRolesRequest {
+  string user_id = 1;
+}
+
+message GetUserPlatformRolesResponse {
+  repeated PlatformRole roles = 1;
+}
+
+// ListPlatformRoles
+message ListPlatformRolesRequest {}
+
+message ListPlatformRolesResponse {
+  repeated PlatformRole roles = 1;
+}
+
+// CheckPermission (used by admin gateway)
+message CheckPermissionRequest {
+  string user_id = 1;
+  string resource = 2;
+  string action = 3;
+}
+
+message CheckPermissionResponse {
+  bool allowed = 1;
+}

@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package accesscontrol.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/accesscontrol/v1;accesscontrolv1";
+
+import "accesscontrol/v1/accesscontrol.proto";
+
+service AccessControlService {
+  // Role assignment (platform-level only)
+  rpc AssignPlatformRole(AssignPlatformRoleRequest) returns (AssignPlatformRoleResponse);
+  rpc RevokePlatformRole(RevokePlatformRoleRequest) returns (RevokePlatformRoleResponse);
+  rpc GetUserPlatformRoles(GetUserPlatformRolesRequest) returns (GetUserPlatformRolesResponse);
+  rpc ListPlatformRoles(ListPlatformRolesRequest) returns (ListPlatformRolesResponse);
+
+  // Permission check (single call used by admin gateway)
+  rpc CheckPermission(CheckPermissionRequest) returns (CheckPermissionResponse);
+}

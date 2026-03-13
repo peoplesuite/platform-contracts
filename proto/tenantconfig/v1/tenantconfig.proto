@@ -1,0 +1,127 @@
+syntax = "proto3";
+
+package tenantconfig.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/tenantconfig/v1;tenantconfigv1";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+
+// TenantConfig holds tenant-level configuration.
+message TenantConfig {
+  string tenant_id = 1;
+  string display_name = 2;
+  string timezone = 3;   // e.g. America/New_York
+  string locale = 4;     // e.g. en-US
+  string branding_json = 5;  // JSON object for branding (logo URL, colors, etc.)
+  google.protobuf.Struct extra = 6;  // extensible key-value config
+  google.protobuf.Timestamp updated_at = 7;
+}
+
+message GetTenantConfigRequest {
+  string tenant_id = 1;
+}
+
+message GetTenantConfigResponse {
+  TenantConfig config = 1;
+}
+
+// Module registry: list of enabled module identifiers for a tenant.
+message ModuleEntry {
+  string module_id = 1;
+  string name = 2;       // optional display name
+  bool enabled = 3;
+}
+
+message GetModuleRegistryRequest {
+  string tenant_id = 1;
+}
+
+message GetModuleRegistryResponse {
+  repeated ModuleEntry modules = 1;
+}
+
+// Notification template: stored body, optionally rendered with variables.
+message GetNotificationTemplateRequest {
+  string tenant_id = 1;
+  string template_id = 2;
+  map<string, string> variables = 3;  // optional; for variable substitution
+}
+
+message GetNotificationTemplateResponse {
+  string rendered = 1;  // final string (body as-is or with variables applied)
+}
+
+// UpdateTenantConfig: partial update; only set fields are updated.
+message UpdateTenantConfigRequest {
+  string tenant_id = 1;
+  optional string display_name = 2;
+  optional string timezone = 3;
+  optional string locale = 4;
+  optional string branding_json = 5;
+  optional google.protobuf.Struct extra = 6;
+}
+
+message UpdateTenantConfigResponse {
+  TenantConfig config = 1;
+}
+
+// Navigation: tree of nav items for bootstrap/shell.
+message NavIcon {
+  string name = 1;
+  string url = 2;
+}
+
+message NavBadge {
+  string key = 1;
+  string label = 2;
+  string level = 3;
+}
+
+message NavItem {
+  string key = 1;
+  string title = 2;
+  NavIcon icon = 3;
+  string feature_key = 4;
+  string entry_url = 5;
+  string entry_path = 6;
+  bool admin_only = 7;
+  bool manager_only = 8;
+  repeated NavBadge badges = 9;
+  repeated NavItem children = 10;
+}
+
+message GetNavigationRequest {
+  string tenant_id = 1;
+  string context = 2;  // e.g. "default", "workforce", "admin"
+}
+
+message GetNavigationResponse {
+  repeated NavItem items = 1;
+}
+
+message UpsertNavigationRequest {
+  string tenant_id = 1;
+  string context = 2;
+  repeated NavItem items = 3;
+}
+
+message UpsertNavigationResponse {
+  repeated NavItem items = 1;
+}
+
+// Notice for bootstrap.notices.
+message Notice {
+  string id = 1;
+  string level = 2;
+  string title = 3;
+  string message = 4;
+}
+
+message ListNoticesRequest {
+  string tenant_id = 1;
+}
+
+message ListNoticesResponse {
+  repeated Notice notices = 1;
+}

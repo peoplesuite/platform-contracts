@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package featureregistry.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/featureregistry/v1;featureregistryv1";
+
+import "featureregistry/v1/featureregistry.proto";
+
+service FeatureRegistryService {
+  // Global catalog (no tenant_id)
+  rpc GetMicroApps(GetMicroAppsRequest) returns (GetMicroAppsResponse);
+  rpc GetFeatureDefinitions(GetFeatureDefinitionsRequest) returns (GetFeatureDefinitionsResponse);
+
+  // Tenant-scoped resolution (feature-registry calls tenant-config internally for module list)
+  rpc GetFeaturesForTenant(GetFeaturesForTenantRequest) returns (GetFeaturesForTenantResponse);
+  rpc GetFeatureFlag(GetFeatureFlagRequest) returns (GetFeatureFlagResponse);
+  rpc SetFeatureFlag(SetFeatureFlagRequest) returns (SetFeatureFlagResponse);
+}

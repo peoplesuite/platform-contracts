@@ -1,0 +1,173 @@
+syntax = "proto3";
+
+package tenant.v1;
+
+option go_package = "peoplesuite/platform-contracts/gen/go/tenant/v1;tenantv1";
+
+import "google/protobuf/timestamp.proto";
+
+message Tenant {
+  string id = 1;
+  string code = 2;
+  string display_name = 3;
+  string slug = 4;   // immutable after creation
+  string primary_domain = 5;
+  string status = 6;   // active | suspended | archived
+  string timezone = 7;
+  string locale = 8;
+  string country = 9;
+  string lifecycle_state = 10;  // trial | active | churned
+  google.protobuf.Timestamp created_at = 11;
+}
+
+message TenantMembership {
+  string tenant_id = 1;
+  string user_id = 2;
+  string status = 3;   // active | invited | suspended | removed
+  repeated string role_bindings = 4;   // tenant-scoped: "employee","manager","tenant_admin"
+  google.protobuf.Timestamp joined_at = 5;
+  string invited_by = 6;
+}
+
+// Tenant CRUD + lifecycle
+message CreateTenantRequest {
+  string code = 1;
+  string display_name = 2;
+  string slug = 3;
+  string primary_domain = 4;
+  string timezone = 5;
+  string locale = 6;
+  string country = 7;
+}
+
+message CreateTenantResponse {
+  Tenant tenant = 1;
+}
+
+message GetTenantRequest {
+  string tenant_id = 1;
+}
+
+message GetTenantResponse {
+  Tenant tenant = 1;
+}
+
+message GetTenantBySlugRequest {
+  string slug = 1;
+}
+
+message GetTenantBySlugResponse {
+  Tenant tenant = 1;
+}
+
+message GetTenantByDomainRequest {
+  string domain = 1;
+}
+
+message GetTenantByDomainResponse {
+  Tenant tenant = 1;
+}
+
+message UpdateTenantRequest {
+  string tenant_id = 1;
+  optional string display_name = 2;
+  optional string primary_domain = 3;
+  optional string timezone = 4;
+  optional string locale = 5;
+  optional string country = 6;
+}
+
+message UpdateTenantResponse {
+  Tenant tenant = 1;
+}
+
+message SuspendTenantRequest {
+  string tenant_id = 1;
+}
+
+message SuspendTenantResponse {
+  Tenant tenant = 1;
+}
+
+message ActivateTenantRequest {
+  string tenant_id = 1;
+}
+
+message ActivateTenantResponse {
+  Tenant tenant = 1;
+}
+
+message ArchiveTenantRequest {
+  string tenant_id = 1;
+}
+
+message ArchiveTenantResponse {
+  Tenant tenant = 1;
+}
+
+message ListTenantsRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+}
+
+message ListTenantsResponse {
+  repeated Tenant tenants = 1;
+  string next_page_token = 2;
+}
+
+// Membership
+message GetTenantMembershipRequest {
+  string tenant_id = 1;
+  string user_id = 2;
+}
+
+message GetTenantMembershipResponse {
+  TenantMembership membership = 1;
+}
+
+message ListTenantMembersRequest {
+  string tenant_id = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+message ListTenantMembersResponse {
+  repeated TenantMembership members = 1;
+  string next_page_token = 2;
+}
+
+message InviteTenantMemberRequest {
+  string tenant_id = 1;
+  string user_id = 2;
+  repeated string role_bindings = 3;
+  string invited_by = 4;
+}
+
+message InviteTenantMemberResponse {
+  TenantMembership membership = 1;
+}
+
+message RemoveTenantMemberRequest {
+  string tenant_id = 1;
+  string user_id = 2;
+}
+
+message RemoveTenantMemberResponse {}
+
+message ChangeTenantRoleRequest {
+  string tenant_id = 1;
+  string user_id = 2;
+  repeated string role_bindings = 3;
+}
+
+message ChangeTenantRoleResponse {
+  TenantMembership membership = 1;
+}
+
+message GetMyTenantMembershipsRequest {
+  string user_id = 1;
+}
+
+message GetMyTenantMembershipsResponse {
+  repeated TenantMembership memberships = 1;
+}
